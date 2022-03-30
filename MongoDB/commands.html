@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="Stylesheet" type="text/css" href="/home/alba/Documentos/GitRepos/Notes/style.css">
+<title>commands</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+
+<p>
+<a href="index.html">Back</a>
+</p>
+
+<div id="MongoDB Commands"><h1 id="MongoDB Commands" class="header"><a href="#MongoDB Commands">MongoDB Commands</a></h1></div>
+
+<p>
+To log into MongoDB with the created user and database:
+</p>
+
+<pre console>
+
+$ mongo -u &lt;your username&gt; -p &lt;your password&gt; \\
+                --authenticationDatabase &lt;your database name&gt;
+
+</pre>
+
+<p>
+Or 
+</p>
+
+<pre console>
+
+$ mongo -u &lt;your username&gt; \\ 
+        --authenticationDatabase &lt;your database name&gt;
+
+</pre>
+
+<p>
+To connect to the database use the following URI:
+</p>
+
+<pre>
+
+mongodb://YourUsername:YourPasswordHere@127.0.0.1:27017/your-database-name
+
+</pre>
+
+</body>
+</html>

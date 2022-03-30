@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="Stylesheet" type="text/css" href="/home/alba/Documentos/GitRepos/Notes/style.css">
+<title>intro</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+
+<p>
+<a href="index.html">Back</a>
+</p>
+
+<div id="Intro"><h1 id="Intro" class="header"><a href="#Intro">Intro</a></h1></div>
+
+<hr />
+
+<div id="Intro-What are containers"><h2 id="What are containers" class="header"><a href="#Intro-What are containers">What are containers</a></h2></div>
+
+<p>
+They are completely isolated environments, they have their own processes, network interfaces, etc. However they share the same <code>os kernel</code>.
+</p>
+
+<p>
+<code>Docker</code> uses <code>LXC</code> containers, which are very low lever, so <code>Docker</code> provides a high level tool that allows us to manage our containers easily.
+</p>
+
+<div id="Intro-Sharing the `Kernel`"><h2 id="Sharing the `Kernel`" class="header"><a href="#Intro-Sharing the `Kernel`">Sharing the <code>Kernel</code></a></h2></div>
+
+<p>
+As we have said, <code>Docker</code> uses the system's kernel, so it is capable of running any distributions whose underlying <code>kernel</code> is <code>Linux</code> (e.g. <code>Docker</code> running on <code>Ubuntu</code> can run a container based on <code>Debian</code>, <code>Fedora</code>, etc.)
+</p>
+
+<div id="Intro-Containers vs Virtual Machines"><h2 id="Containers vs Virtual Machines" class="header"><a href="#Intro-Containers vs Virtual Machines">Containers vs Virtual Machines</a></h2></div>
+
+<ul>
+<li>
+Containers:
+
+</ul>
+
+<table>
+<tr>
+<td>
+Application 1
+</td>
+<td>
+Application 2
+</td>
+</tr>
+<tr>
+<td>
+Libs/Dependencies 1
+</td>
+<td>
+Libs/Dependencies 2
+</td>
+</tr>
+<tr>
+<td>
+Container 1
+</td>
+<td>
+Container 2
+</td>
+</tr>
+<tr>
+<td>
+Docker
+</td>
+<td>
+&nbsp;
+</td>
+</tr>
+<tr>
+<td>
+OS
+</td>
+<td>
+&nbsp;
+</td>
+</tr>
+<tr>
+<td>
+Hardware
+</td>
+<td>
+&nbsp;
+</td>
+</tr>
+</table>
+
+<ul>
+<li>
+Virtual Machines:
+
+</ul>
+
+<table>
+<tr>
+<td>
+Application 1
+</td>
+<td>
+Application 2
+</td>
+</tr>
+<tr>
+<td>
+Libs/Dependencies 1
+</td>
+<td>
+Libs/Dependencies 2
+</td>
+</tr>
+<tr>
+<td>
+OS 1
+</td>
+<td>
+OS 2
+</td>
+</tr>
+<tr>
+<td>
+Virtual Machine 1
+</td>
+<td>
+Virtual Machine 2
+</td>
+</tr>
+<tr>
+<td>
+<code>Hypervisor</code>
+</td>
+<td>
+&nbsp;
+</td>
+</tr>
+<tr>
+<td>
+Hardware
+</td>
+<td>
+&nbsp;
+</td>
+</tr>
+</table>
+
+<p>
+The main differences are the use of <code>Hypervisors</code> in Virtual Machines and how on these, each instance has its own OS. Which results in needing more hardware resources. Also Virtual Machines have total isolation, as they use their own OS, which does not happen with containers, because these do share the same kernel.
+</p>
+
+<p>
+However the key is combining both technologies, so each virtual machine runs several applications hosted in different containers.
+</p>
+
+<div id="Intro-Container vs Image"><h2 id="Container vs Image" class="header"><a href="#Intro-Container vs Image">Container vs Image</a></h2></div>
+
+<p>
+An image can be thought as a package or a template that is used to create one or more containers. That is to say, containers are running instances of images that are isolated and have their own environment.
+</p>
+
+</body>
+</html>
