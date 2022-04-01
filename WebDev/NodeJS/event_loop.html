@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="Stylesheet" type="text/css" href="https://albamr09.github.io/style.css">
+<title>event_loop</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+
+<p>
+<a href="index.html">Back</a>
+</p>
+
+<div id="Event Loop"><h1 id="Event Loop" class="header"><a href="#Event Loop">Event Loop</a></h1></div>
+
+<hr />
+
+<p>
+It is what allows <code>Node.js</code> to perform non-blocking I/O operations, despite the fact that <code>JavaScript</code> is single-threaded- by offloading operations to the system kernel whenever possible.
+</p>
+
+<p>
+The <code>Event Loop</code> follows the next steps:
+</p>
+
+<ol>
+<li>
+An asynchronous request is made by a user
+
+<li>
+The <code>Event Loop</code> registers the callback of the request
+
+<li>
+When the request is completed and we are ready to execute the callback the <code>Event Loop</code> stores the callback at the end of the execution line, meaning, once the immediate tasks are done (i.e. synchronous code) the callback is executed
+
+</ol>
+
+<p>
+For example, we have the following code:
+</p>
+
+<pre javascript>
+
+const { readFile, writeFile } = require('fs')
+
+console.log('started a first task')
+readFile('./content/first.txt', 'utf8', (err, result) =&gt; {
+  if (err) {
+    console.log(err)
+    return
+  }
+  console.log(result)
+  console.log('completed first task')
+})
+console.log('starting next task')
+
+</pre>
+
+<p>
+Which outputs:
+</p>
+
+<pre bash>
+
+started first task
+starting next task
+Hello this is first text file
+Completed first task
+
+</pre>
+
+<p>
+So we can see that the synchronous code is run first, and then the callback of the asynchronous function <code>readFile</code> is called upon finishing reading the file. In the next example:
+</p>
+
+<pre javascript>
+
+// started operating system process
+console.log('first')
+setTimeout(() =&gt; {
+  console.log('second')
+}, 0)
+console.log('third')
+// completed and exited operating system process
+
+</pre>
+
+<p>
+Which outputs:
+</p>
+
+<pre bash>
+
+first
+third
+second
+
+</pre>
+
+<p>
+So even though the timeout is initialized to 0, because it is an asynchronous function it is offloaded and so it is put to the end of the execution line, and then it is executed after the synchronous code. It is important to note that the listen function of the <code>http</code> module is also asynchronous.
+</p>
+
+</body>
+</html>

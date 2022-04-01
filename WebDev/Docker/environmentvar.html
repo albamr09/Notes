@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="Stylesheet" type="text/css" href="https://albamr09.github.io/style.css">
+<title>environmentvar</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+
+<p>
+<a href="index.html">Back</a>
+</p>
+
+<div id="Environment Variables"><h1 id="Environment Variables" class="header"><a href="#Environment Variables">Environment Variables</a></h1></div>
+
+<hr />
+
+<p>
+In order to pass an environment variables to our container we run:
+</p>
+
+<pre console>
+
+$ docker run -e ENV_VAR=value &lt;image_name&gt;
+
+</pre>
+
+<p>
+This way we set up and environment variable within the container.
+</p>
+
+<p>
+If you inspect a running container, you will be able to see the environment variables defined, inside the <code>"Env"</code> object:
+</p>
+
+<pre console>
+
+$ docker inspect &lt;image_name&gt;
+
+{
+  .
+  .
+  "Config": {
+            "Hostname": "51049352a8ee",
+            "Domainname": "",
+            "User": "",
+            "AttachStdin": false,
+            "AttachStdout": false,
+            "AttachStderr": false,
+            "ExposedPorts": {
+                "3456/tcp": {},
+                "80/tcp": {}
+            },
+            "Tty": false,
+            "OpenStdin": false,
+            "StdinOnce": false,
+            "Env": [
+                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "NGINX_VERSION=1.19.10",
+                "NJS_VERSION=0.5.3",
+                "PKG_RELEASE=1"
+            ],
+            "Cmd": [
+                "nginx",
+                "-g",
+                "daemon off;"
+            ]
+  .
+  .
+  .
+}
+
+</pre>
+
+</body>
+</html>

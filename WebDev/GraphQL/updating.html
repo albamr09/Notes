@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="Stylesheet" type="text/css" href="https://albamr09.github.io/style.css">
+<title>updating</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+
+<p>
+<a href="index.html">Back</a>
+</p>
+
+<div id="Mutations"><h1 id="Mutations" class="header"><a href="#Mutations">Mutations</a></h1></div>
+
+<hr />
+
+<p>
+In order to update, delete or add new data using <code>GraphQL</code> we use <code>Mutations</code>.
+</p>
+
+<div id="Mutations-TypeDef"><h2 id="TypeDef" class="header"><a href="#Mutations-TypeDef">TypeDef</a></h2></div>
+
+<p>
+We create the type definition for the <code>Mutation</code> object (which is reserved in <code>GraphQL</code> to modify/add data, much like the <code>Query</code> object). In it, we define all the modifying functions we want, along with the data that must be provided to execute the modification, and also the type of object that is returned.
+</p>
+
+<pre>
+
+type Mutation {
+      addAnimal(
+        name: String!
+        description: [String!]!
+        parameter: String!
+        category: String!
+      ): Animal
+      removeAnimal(id: ID!): Boolean!
+  }
+
+</pre>
+
+<p>
+With this we have defined the <code>addAnimal</code> method, which creates and animal by specifying the name, description, URL parameter and the category. This function will return an <code>Animal</code> object. 
+</p>
+
+<p>
+We have also defined the <code>removeAnimal</code> method, that only takes an <code>id</code> as a parameter and returns a <code>Boolean</code>. 
+</p>
+
+<div id="Mutations-Resolvers"><h2 id="Resolvers" class="header"><a href="#Mutations-Resolvers">Resolvers</a></h2></div>
+
+<p>
+We now define the logic behind both of these methods, so we create a <code>Mutation.js</code> file as follows:
+</p>
+
+<pre>
+
+const { v4 } = require("uuid")
+
+const Mutation = {
+    addAnimal: (parent, { name, description, parameter, category }, { animals }) =&gt; {
+        let newAnimal = {
+            id: v4(),
+            name,
+            description,
+            parameter,
+            category,
+        }
+
+        // Only because this is an object: here we would create in the database
+        animals.push(newAnimal)
+        
+        return newAnimal
+    },
+
+    removeAnimal: (parent, { id }, { animals }) =&gt; {
+        // Here we would delete in the database
+        let index = animals.findIndex((animal) =&gt; {
+            return animal.id === id
+        });
+
+        animals.splice(index, 1);
+
+        return true
+    }
+}
+
+module.exports = Mutation
+
+</pre>
+
+<p>
+Note that we de-structure the parameters from the <code>args</code> object for readability sake.
+</p>
+
+</body>
+</html>

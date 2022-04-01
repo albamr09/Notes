@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="Stylesheet" type="text/css" href="https://albamr09.github.io/style.css">
+<title>qtr</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+
+<p>
+<a href="index.html">Back</a>
+</p>
+
+<div id="Queries TypeDefs and Resolvers"><h1 id="Queries TypeDefs and Resolvers" class="header"><a href="#Queries TypeDefs and Resolvers">Queries TypeDefs and Resolvers</a></h1></div>
+
+<hr />
+
+<ul>
+<li>
+<code>TypeDefs</code>: define how the data should look.
+
+<li>
+<code>Resolvers</code>: resolve what the actual data is going to be. Here we could introduce some logic, like calling the database or applying validation.
+
+<li>
+<code>Query</code>: defines how we can query our data
+<pre>
+
+type Query{
+  books: [Book]
+}
+
+</pre>
+
+</ul>
+<p>
+So the <code>book</code> resolver would return an array of books.
+</p>
+
+<div id="Queries TypeDefs and Resolvers-Data Specification"><h2 id="Data Specification" class="header"><a href="#Queries TypeDefs and Resolvers-Data Specification">Data Specification</a></h2></div>
+
+<ul>
+<li>
+Arrays: to define an array on <code>TypeDefs</code> or <code>Queries</code> you use <code>[]</code>.
+
+</ul>
+
+<pre>
+
+type Book {
+  author: [String]
+}
+
+</pre>
+
+<ul>
+<li>
+Non nullable field: to specify that an attribute cannot be null you use <code>!</code>.
+
+</ul>
+
+<pre>
+
+type Book {
+  author: String!
+  author: [String]! // the array must not be null
+  author: [String!]! // the elements of the array and the array must not be null
+}
+
+</pre>
+
+<div id="Queries TypeDefs and Resolvers-Queries"><h2 id="Queries" class="header"><a href="#Queries TypeDefs and Resolvers-Queries">Queries</a></h2></div>
+
+<ul>
+<li>
+Parameters: on the query object you add an argument between brackets (the <code>!</code> specifies the argument must be provided).
+
+</ul>
+
+<pre>
+
+type Animal {
+  id: ID!
+  name: String!
+  description: [String!]!
+}
+
+type Query {
+  animals: [Animal!]!
+  animal(id: String!): Animal
+}
+
+</pre>
+
+<p>
+On the resolver we use the <code>arg</code> parameter to retrieve the parameter passed:
+</p>
+
+<pre>
+
+const resolvers = {
+  Query: {
+    animals: () =&gt; animals,
+    animal: (parent, args, ctx) =&gt; {
+      let animal = animals.find((animal) =&gt; {
+        retunr animal.id === args.id
+      })
+      return animal
+    }
+  }
+}
+
+</pre>
+
+</body>
+</html>
