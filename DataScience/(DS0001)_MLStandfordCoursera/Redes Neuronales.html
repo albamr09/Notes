@@ -1,0 +1,180 @@
+<html>
+  <head>
+    <link rel="Stylesheet" type="text/css" href="https://albamr09.github.io/style.css" />
+    <title>Redes Neuronales</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <!-- For LaTeX -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script
+      id="MathJax-script"
+      async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+    ></script>
+  </head>
+  <body>
+    <a
+      href="https://albamr09.github.io/"
+      style="
+        color: white;
+        font-weight: bold;
+        text-decoration: none;
+        padding: 3px 6px;
+        border-radius: 3px;
+        background-color: #1e90ff;
+        text-transform: uppercase;
+      "
+      >Index</a
+    >
+    <hr />
+    <div class="content">
+<p>
+<a href="index.html">Back</a>
+</p>
+
+<div id="Redes Neuronales"><h1 id="Redes Neuronales" class="header"><a href="#Redes Neuronales">Redes Neuronales</a></h1></div>
+
+<hr />
+
+<div id="Redes Neuronales-Estructura"><h2 id="Estructura" class="header"><a href="#Redes Neuronales-Estructura">Estructura</a></h2></div>
+
+<p>
+Dado un ejemplo \(X\), tal que \(X\) es un vector fila \(1 \times 3\):
+</p>
+
+\[%align
+x = 
+\begin{bmatrix}x_1 &amp; x_2 &amp; x_3\end{bmatrix}
+\]
+
+<p>
+Tenemos que las entradas a la red neuronal con un capa se introducen como sigue:
+</p>
+
+<p>
+<img src="./assets/nn_ejemplo.svg" alt="Ejemplo Red Neuronal" style="width:350px;height:200px" />
+</p>
+
+<p>
+De tal manera que obtenemos una salida \(h_\Theta(x)\), esta función se denomina <span id="Redes Neuronales-Estructura-función de activación"></span><strong id="función de activación">función de activación</strong>
+</p>
+
+<p>
+Supongamos que utilizamos la función sigmoide (problema de clasificación con dos clases):
+</p>
+
+\[%align
+h_\Theta(X) = \frac{1}{1+e^{-\Theta^TX}}
+\]
+
+
+<div id="Redes Neuronales-Datos de entrada"><h2 id="Datos de entrada" class="header"><a href="#Redes Neuronales-Datos de entrada">Datos de entrada</a></h2></div>
+
+<ul>
+<li>
+\(X = (x_{ij})\) una matriz \(n \times m\) donde cada \(x_{ij}\) es la característica \(i\) del ejemplo \(j\), tal que 
+\begin{align}
+X = 
+\begin{bmatrix}
+x_{11} &amp; \cdots &amp; x_{1m} \\
+\cdots &amp; \ddots &amp; \cdots \\
+x_{n1} &amp; \cdots &amp; x_{nm} \\
+\end{bmatrix} 
+\end{align}
+
+</ul>
+
+<p>
+<em>Cada columna es un ejemplo</em>
+</p>
+
+<p>
+<em>En cada fila están los valores de una característica</em>
+</p>
+
+<ul>
+<li>
+\(Y = (y_j)\) es un vector fila \(1\times m\) donde cada \(y_j\) es la salida real para el ejemplo \(j\), tal que:
+
+</ul>
+
+\begin{align}
+Y = \begin{bmatrix} y_1 &amp; \cdots &amp; y_m\end{bmatrix} 
+\end{align}
+
+<div id="Redes Neuronales-Propagación"><h2 id="Propagación" class="header"><a href="#Redes Neuronales-Propagación">Propagación</a></h2></div>
+
+<div id="Redes Neuronales-Propagación-Notación"><h4 id="Notación" class="header"><a href="#Redes Neuronales-Propagación-Notación">Notación</a></h4></div>
+
+<ul>
+<li>
+\(k\) es el número de capas de la red
+
+<li>
+Para cada capa \(j\), asumimos que la capa tiene \(q\) nodos.
+
+<li>
+\(a_i^{(j)}\): Nodo \(i\) en la capa \(j\)
+
+<li>
+\(\Theta^{(j)}\): Matriz de pesos de la capa \(j\) a la capa \(j+1\)
+
+<li>
+La dimensión de cada \(\Theta^{(j)}\) es \(S_{j+1} \times (S_j + 1)\)
+
+<ul>
+<li>
+\(S_{j+1}\): número de características/nodos en la capa \(j+1\).
+
+<li>
+\((S_j + 1)\): número de características en la capa \(j\) más 1 (término independiente en cada capa)
+
+</ul>
+</ul>
+
+<div id="Redes Neuronales-Propagación-Funcionamiento"><h4 id="Funcionamiento" class="header"><a href="#Redes Neuronales-Propagación-Funcionamiento">Funcionamiento</a></h4></div>
+
+<p>
+Sean \(k\) el número de capas de la red. Para cada capa \(j\), con \(0 \leq j \leq k\), supongamos que la capa tiene \(q\) nodos. Con \(a^0 = X_l\) (donde \(X_l\) es un ejemplo: un vector columna en \(X\)):
+</p>
+
+<p>
+Primero se calcula el término intermedio \(z^{(j)}\), que es un vector columna \(q \times 1\):
+</p>
+
+\begin{align}
+z^{(j)} = \Theta^{(j)} \cdot a^{(j-1)}
+\end{align}
+
+
+<p>
+Donde, como ya hemos dicho, \(\Theta\) es la matriz \(q \times p\) de pesos de la capa \(j\), siendo \(p\) el número de nodos en la capa \((j-1)\) más uno (el término independiente).
+</p>
+
+<p>
+A continuación se aplica sobre \(z^{(j)}\) la función de activación, tal que:
+</p>
+
+
+\begin{align}
+a^{(j)} = g(z^{(j)})
+\end{align}
+
+
+<p>
+Esto se representa gráficamente en la siguiente imagen:
+</p>
+
+<p>
+<img src="./assets/nn_ejemplo_1.svg" alt="Ejemplo Red Neuronal" style="width:1050px;height:600px" />
+</p>
+
+<p>
+Cabe destacar que la función de activación de la última capa suele ser distinta al resto. De todas formas, las funciones de activación no tienen por qué ser iguales, nosotros en estes ejemplos hemos utilizado la función sigmoide, pero depende de la aplicación que se le quiera da a la red neuronal.
+</p>
+
+<div id="Redes Neuronales-Función de coste"><h2 id="Función de coste" class="header"><a href="#Redes Neuronales-Función de coste">Función de coste</a></h2></div>
+
+<div id="Redes Neuronales-Retropropagación"><h2 id="Retropropagación" class="header"><a href="#Redes Neuronales-Retropropagación">Retropropagación</a></h2></div>
+</div>
+  </body>
+</html>
