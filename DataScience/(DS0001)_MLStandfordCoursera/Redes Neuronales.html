@@ -579,7 +579,7 @@ Si sustituimos ambos términos, para la capa de salida \(k\):
 <div id="Redes Neuronales-Retropropagación-Capas intermedias"><h3 id="Capas intermedias" class="header"><a href="#Redes Neuronales-Retropropagación-Capas intermedias">Capas intermedias</a></h3></div>
 
 <p>
-Pero, ¿cómo calculamos el gradiente para los pesos de las capas intermedias?, es decir, cómo calculamos:
+Pero, ¿cómo calculamos el gradiente (o lo que contribuye el peso \(it\) en el error) para los pesos de las capas intermedias?, es decir, cómo calculamos:
 </p>
 
 \[%align
@@ -587,9 +587,41 @@ Pero, ¿cómo calculamos el gradiente para los pesos de las capas intermedias?, 
 \]
 
 <p>
-Donde \(q\) denota la capa, con \(1 \leq q \leq (k-1)\). Bien, haciendo referencia a la sección de notación, tenemos que \(\delta_i^{(q)}\) es el error del nodo \(i\) en la capa \(q\). Sea \(q = k - 1\), tenemos que:
+Donde \(q\) denota la capa, con \(1 \leq q \leq (k-1)\). Pues lo que tenemos que hacer es, de nuevo, aplicar la regla de la cadena, entre el peso \(\theta_{it}^{(q)}\) (peso \(t\) del nodo \(i\) de la capa \(q\)) y todo nodo \(a_{lj}^{(q+1)}\)(es decir para el nodo \(l\) en la capa \(q+1\) para el ejemplo \(j\)).
 </p>
 
+
+\[%align
+\frac{\delta J(\Theta)}{\delta \theta_{it}^{(q)}} = \frac{J(\Theta)}{\delta a^{(q+1)}_{1j}}\frac{\delta a_{1j}^{(q+1)}}{\delta \theta_{it}^{(q)}} + \cdots + \frac{J(\Theta)}{\delta a^{(q+1)}_{(S_(q+1))j}}\frac{\delta a_{(S_(q+1))j}^{(q+1)}}{\delta \theta_{it}^{(q)}}
+\]
+
+<p>
+Donde \(S_{(q+1)}\) es el número de nodos en la capa \(q+1\). Es decir:
+</p>
+
+\[%align
+\frac{\delta J(\Theta)}{\delta \theta_{it}^{(q)}} = \sum_{l=1}^{S_{(q+1)}} \frac{J(\Theta)}{\delta a^{(q+1)}_{lj}}\frac{\delta a_{lj}^{(q+1)}}{\delta \theta_{it}^{(q)}}
+\]
+
+<p>
+Cabe destacar que \(\frac{\delta a_{lj}^{(q+1)}}{\delta \theta_{it}^{(q)}} = \frac{\delta g(z_{lj}^{(q+1)})}{\delta z_{lj}^{(q+1)}} \frac{\delta z_{lj}^{(q+1)}}{\delta \theta_{it}^{(q)}}\) (explicado en la sección anterior).
+</p>
+
+<p>
+Entonces, si generalizamos para todos los ejemplos, \(m\):
+</p>
+
+\[%align
+\frac{\delta J(\Theta)}{\delta \theta_{it}^{(q)}} = \sum_{j=1}^m\sum_{l=1}^{S_{(q+1)}} \frac{J(\Theta)}{\delta a^{(q+1)}_{lj}}\frac{\delta a_{lj}^{(q+1)}}{\delta \theta_{it}^{(q)}}
+\]
+
+<p>
+El proceso se ve más claro gŕaficamente:
+</p>
+
+<p>
+<img src="./assets/backprop.svg" alt="Retropropagación" style="width:1000px;height:600px;" />
+</p>
 
 <div id="Redes Neuronales-Algoritmo"><h2 id="Algoritmo" class="header"><a href="#Redes Neuronales-Algoritmo">Algoritmo</a></h2></div>
 </div>
