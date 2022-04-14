@@ -5,7 +5,7 @@
       type="text/css"
       href="https://albamr09.github.io"
     />
-    <title>index</title>
+    <title>Props</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <!-- For LaTeX -->
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
@@ -38,47 +38,39 @@
     <hr />
     <div class="content">
 <p>
-<a href="../../index.html">Back</a>
+<a href="index.html">Back</a>
 </p>
 
-<div id="Vim Wiki"><h1 id="Vim Wiki" class="header"><a href="#Vim Wiki">Vim Wiki</a></h1></div>
+<div id="Props"><h1 id="Props" class="header"><a href="#Props">Props</a></h1></div>
 
 <hr />
 
-<div id="Vim Wiki-Key Bindings"><h2 id="Key Bindings" class="header"><a href="#Vim Wiki-Key Bindings">Key Bindings</a></h2></div>
+<pre javascript>
+import React from 'react'
 
-<ul>
-<li>
-Convert current file to html: <code>,wh</code>
+const Book = ({ img, title, author }) =&gt; {
+ return (
+  &lt;article
+   className='book'
+   onMouseOver={() =&gt; {
+    console.log(title);
+   }}
+  &gt;
+   &lt;img src={img} alt='' /&gt;
+   &lt;h1 onClick={() =&gt; console.log(title)}&gt;{title}&lt;/h1&gt;
+   &lt;h4&gt;{author}&lt;/h4&gt;
+   &lt;button type='button' onClick={clickHandler}&gt;
+    reference example
+      &lt;/button&gt;
+   &lt;button type='button' onClick={() =&gt; complexExample(author)}&gt;
+    more complex example
+      &lt;/button&gt;
+  &lt;/article&gt;
+ );
+};
 
-<li>
-See html file in browser: <code>,whh</code>
-
-</ul>
-
-<p>
-<a href="https://vimwiki.github.io/">More info on VimWiki</a>
-</p>
-
-<div id="Vim Wiki-LaTeX"><h2 id="LaTeX" class="header"><a href="#Vim Wiki-LaTeX">LaTeX</a></h2></div>
-
-<ul>
-<li>
-Inline
-
-</ul>
-<p>
-\(a = 1\)
-</p>
-
-<ul>
-<li>
-Equation
-\begin{align}
-A
-\end{align}
-
-</ul>
+export default Book
+</pre>
 </div>
   </body>
   <script
