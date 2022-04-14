@@ -1,7 +1,7 @@
 <html>
   <head>
     <link rel="Stylesheet" type="text/css" href="https://albamr09.github.io/style.css" />
-    <title>Props</title>
+    <title>Children in Props</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <!-- For LaTeX -->
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
@@ -37,75 +37,12 @@
 <a href="index.html">Back</a>
 </p>
 
-<div id="Props"><h1 id="Props" class="header"><a href="#Props">Props</a></h1></div>
+<div id="Children in Props"><h1 id="Children in Props" class="header"><a href="#Children in Props">Children in Props</a></h1></div>
 
 <hr />
 
 <p>
-In <code>React</code> to define parameters in our components, we do as follows:
-</p>
-
-
-<pre javascript>
-import React from 'react'
-
-// This are the props
-const Book = (props) =&gt; {
- return (
-  &lt;article className='book'&gt;
-   &lt;img src={props.img} alt='' /&gt;
-   &lt;h1&gt;{props.title}&lt;/h1&gt;
-   &lt;h4&gt;{props.author}&lt;/h4&gt;
-  &lt;/article&gt;
- );
-};
-
-export default Book
-</pre>
-
-<p>
-Another way (more readable), is to spread the object:
-</p>
-
-<pre javascript>
-import React from 'react'
-
-// This are the props
-const Book = ({ title, author }) =&gt; {
- return (
-  &lt;article className='book'&gt;
-   &lt;h1&gt;{title}&lt;/h1&gt;
-   &lt;h4&gt;{author}&lt;/h4&gt;
-  &lt;/article&gt;
- );
-};
-
-export default Book
-</pre>
-
-<p>
-Now, to pass these props we do:
-</p>
-
-<pre javascript>
-import React from 'react';
-import ReactDom from 'react-dom';
-
-// CSS
-import './index.css';
-
-import Book from './Book'
-
-ReactDom.render(
-  &lt;Book title='Book title' author='Book author'/&gt;, 
-  document.getElementById('root')
-);
-</pre>
-
-<div id="Props-Spread operator"><h2 id="Spread operator" class="header"><a href="#Props-Spread operator">Spread operator</a></h2></div>
-
-<p>
-Let's define an object <code>singleBook</code> that contains all of the book's properties and pass it to the <code>Book</code> component:
+You can nest content inside your component. If we have the following:
 </p>
 
 <pre javascript>
@@ -123,10 +60,32 @@ const singleBook = {
 }
 
 ReactDom.render(
-  // Use the spread operator
-  &lt;Book {...singleBook}/&gt;, 
+  &lt;Book {...singleBook}&gt;
+    &lt;p&gt; I am nested!&lt;/p&gt;
+  &lt;/Book&gt;, 
   document.getElementById('root')
 );
+</pre>
+
+<p>
+You can access the nested object from your component:
+</p>
+
+<pre javascript>
+import React from 'react'
+
+// De-structure the children prop
+const Book = ({ title, author, children }) =&gt; {
+ return (
+  &lt;article className='book'&gt;
+   &lt;h1&gt;{title}&lt;/h1&gt;
+   &lt;h4&gt;{author}&lt;/h4&gt;
+   {children}
+  &lt;/article&gt;
+ );
+};
+
+export default Book
 </pre>
 </div>
   </body>
