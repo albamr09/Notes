@@ -1,0 +1,179 @@
+<html>
+  <head>
+    <link rel="Stylesheet" type="text/css" href="https://albamr09.github.io/style.css" />
+    <title>useEffect</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <!-- For LaTeX -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script
+      id="MathJax-script"
+      async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+    ></script>
+    <!-- Code Highlight -->
+    <link
+      rel="Stylesheet"
+      type="text/css"
+      href="https://albamr09.github.io/atom-one-light.min.css"
+    />
+  </head>
+  <body>
+    <a
+      href="https://albamr09.github.io/"
+      style="
+        color: white;
+        font-weight: bold;
+        text-decoration: none;
+        padding: 3px 6px;
+        border-radius: 3px;
+        background-color: #1e90ff;
+        text-transform: uppercase;
+      "
+      >Index</a
+    >
+    <hr />
+    <div class="content">
+<p>
+<a href="index.html">Back</a>
+</p>
+
+<div id="useEffect"><h1 id="useEffect" class="header"><a href="#useEffect">useEffect</a></h1></div>
+
+<hr />
+
+<p>
+This <code>hook</code> is used for any work needed to be made outside of the component: fetch data, changing the document title, signing up for a subscription, setting up an event listener.
+</p>
+
+<ul>
+<li>
+Runs after every re-render
+
+<li>
+Cleanup function
+
+<li>
+Second parameter
+
+</ul>
+
+<pre javascript>
+import React, { useState, useEffect } from 'react';
+
+const UseEffectBasics = () =&gt; {
+
+  // Callback called whenever the component is rendered
+  useEffect(() =&gt; {
+    document.title = `New Messages(${value})`;
+  });
+  
+  return (
+    &lt;&gt;
+      &lt;h1&gt;{value}&lt;/h1&gt;
+      &lt;button className='btn'}&gt;
+        click me
+      &lt;/button&gt;
+    &lt;/&gt;
+  );
+};
+
+export default UseEffectBasics;
+</pre>
+
+
+<div id="useEffect-Dependencies"><h3 id="Dependencies" class="header"><a href="#useEffect-Dependencies">Dependencies</a></h3></div>
+
+<p>
+The <code>useEffect</code> definition allows you to pass an array of dependencies:
+</p>
+
+<ul>
+<li>
+If it is specified as <code>[]</code>: <code>useEffect</code> will only be triggered in the first render
+
+<li>
+If it is an array of state variables: it will be triggered every time the state variable is updated.
+
+</ul>
+
+<pre javascript>
+import React, { useState, useEffect } from 'react';
+
+const UseEffectBasics = () =&gt; {
+
+  const [value, setValue] = useState(0);
+  // Only trigger on first render
+  // useEffect(() =&gt; {
+  //   document.title = `New Messages(${value})`;
+  // }, []);
+  // Call whenever value is updated
+  useEffect(() =&gt; {
+    document.title = `New Messages(${value})`;
+  }, [value]);
+  
+  return (
+    &lt;&gt;
+      &lt;h1&gt;{value}&lt;/h1&gt;
+      &lt;button className='btn'}&gt;
+        click me
+      &lt;/button&gt;
+    &lt;/&gt;
+  );
+};
+
+export default UseEffectBasics;
+</pre>
+
+<div id="useEffect-Clean up Function"><h3 id="Clean up Function" class="header"><a href="#useEffect-Clean up Function">Clean up Function</a></h3></div>
+
+<p>
+<code>useEffect</code> lets us define a function that is invoked once we exit the function:
+</p>
+
+<pre javascript>
+import React, { useState, useEffect } from 'react';
+
+const UseEffectCleanup = () =&gt; {
+  const [size, setSize] = useState(window.innerWidth);
+
+  const checkSize = () =&gt; {
+    setSize(window.innerWidth);
+  };
+
+  useEffect(() =&gt; {
+    console.log('useEffect');
+    window.addEventListener('resize', checkSize);
+    // Clean up function
+    return () =&gt; {
+      console.log('cleanup');
+      window.removeEventListener('resize', checkSize);
+    };
+  }, []);
+  console.log('render');
+  return (
+    &lt;&gt;
+      &lt;h1&gt;window&lt;/h1&gt;
+      &lt;h2&gt;{size} PX&lt;/h2&gt;
+    &lt;/&gt;
+  );
+};
+
+export default UseEffectCleanup;
+</pre>
+</div>
+  </body>
+  <script
+    type="text/javascript"
+    src="https://albamr09.github.io/highlight.min.js"
+  ></script>
+  <script
+    type="text/javascript"
+    src="https://albamr09.github.io/zepto.min.js"
+  ></script>
+  <script type="text/javascript">
+    $("pre").each(function (index, item) {
+      $(item).html("<code>" + $(item).html() + "</code>");
+    });
+    hljs.initHighlightingOnLoad();
+  </script>
+</html>
