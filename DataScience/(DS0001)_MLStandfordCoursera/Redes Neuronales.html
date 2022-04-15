@@ -97,14 +97,40 @@ x_{n1} &amp; \cdots &amp; x_{nm} \\
 <em>En cada fila están los valores de una característica</em>
 </p>
 
+<p>
+Para regresión lineal, donde hay una salida por cada ejemplo \(j\):
+</p>
+
 <ul>
 <li>
 \(Y = (y_j)\) es un vector fila \(1\times m\) donde cada \(y_j\) es la salida real para el ejemplo \(j\), tal que:
 
+<li>
+
+\begin{align}
+Y = \begin{bmatrix} 
+y_{1} &amp; \cdots &amp; y_{m} \\
+\end{bmatrix} 
+\end{align}
+
+</ul>
+
+<p>
+Para regresión logística, donde hay \(c\) salidas por cada ejemplo \(j\) (cada salida es la probabilidad de que el ejemplo sea de la clase \(l\): <a href="Redes Neuronales.html#Redes Neuronales-Propagación-Clasificación múltiple">Clasificación múltiple</a>).
+</p>
+
+<ul>
+<li>
+\(Y = (y_{ij})\) es una matriz \(c\times m\) donde cada \(y_{ij}\) es la salida real para el ejemplo \(j\) y la clase \(i\), es decir es un valor binario que indica si el ejemplo \(j\) pertenece (1) o no (0) a la clase \(i\), tal que:
+
 </ul>
 
 \begin{align}
-Y = \begin{bmatrix} y_1 &amp; \cdots &amp; y_m\end{bmatrix} 
+Y = \begin{bmatrix} 
+y_{11} &amp; \cdots &amp; y_{m1} \\
+\vdots &amp; \ddots &amp; \vdots \\
+y_{c1} &amp; \cdots &amp; y_{mc} \\
+\end{bmatrix} 
 \end{align}
 
 <div id="Redes Neuronales-Propagación"><h2 id="Propagación" class="header"><a href="#Redes Neuronales-Propagación">Propagación</a></h2></div>
@@ -235,78 +261,13 @@ El primer sumatorio que va de 1 a \(m\) se encarga de calcular el coste para cad
 </p>
 
 <p>
-Esta función se aplica sobre los \(k\) nodos en la capa de salida. Tal que, por ejemplo para la figura anterior tenemos que \(c=3\), y la hipótesis tiene los valores:
+Esta función se aplica sobre los \(k\) nodos en la capa de salida. 
 </p>
-
-\begin{align}
-h_\Theta(x_1) = 
-\begin{bmatrix}
-0.02 \\
-0.1 \\
-0.88 \\
-\end{bmatrix}
-\end{align}
 
 <p>
-y la salida real para el ejemplo \(x_1\) tiene los valores:
+<a href="Ejemplo Cálculo Función de Coste.html">Ejemplo Cálculo Función de Coste</a>
 </p>
 
-\begin{align}
-y_1 = 
-\begin{bmatrix}
-0 \\
-0 \\
-1 \\
-\end{bmatrix}
-\end{align}
-
-<p>
-Entonces la función de coste se calcularía como (observa que esto es sólo para un ejemplo, por lo que obviamos el primer sumatorio):
-</p>
-
-\begin{align}
-J(\Theta) = - \sum_{i=1}^c [y_{ij}\cdot \log(h_\Theta(x_j)_i)] + [(1-y_{ij})\cdot \log(1-(h_\Theta(x_j)_i))]
-\end{align}
-
-\begin{align}
-J(\Theta) = - \{[(y_{11}\cdot\log(h_\Theta(x_1)_{1})) + (1-y_{11})\cdot\log(1-h_\Theta(x_1)_{1})] +
-\end{align}
-
-\begin{align}
-+ [(y_{21}\cdot\log(h_\Theta(x_1)_{2})) + (1-y_{21})\cdot\log(1-h_\Theta(x_1)_{2})] +
-\end{align}
-
-\begin{align}
-+ [(y_{31}\cdot\log(h_\Theta(x_1)_{3})) + (1-y_{31})\cdot\log(1-h_\Theta(x_1)_{3})]\}
-\end{align}
-
-<p>
-Sustituimos los valores de cada vector:
-</p>
-
-\begin{align}
-J(\Theta) = - \{ [(0\cdot\log(0.02)) + (1-0)\cdot\log(1-0.02)] +
-\end{align}
-
-\begin{align}
-+ [(0\cdot\log(0.1)) + (1-0)\cdot\log(1-0.1)] +
-\end{align}
-
-\begin{align}
-+ [(1\cdot\log(0.88)) + (1-1)\cdot\log(1-0.88)] \} = 
-\end{align}
-
-<p>
-Calculamos los valores:
-</p>
-
-\begin{align}
-J(\Theta) = - (\log(0.98) + \log(0.9) + \log(0.88)) 
-\end{align}
-
-\begin{align}
-J(\Theta) = - (-0.009 - 0.046 -0.056) = - (-0.111) = 0.111
-\end{align}
 
 <div id="Redes Neuronales-Función de coste-Regularización"><h4 id="Regularización" class="header"><a href="#Redes Neuronales-Función de coste-Regularización">Regularización</a></h4></div>
 
@@ -350,15 +311,6 @@ Una vez se han sumado todas las matrices de pesos obtenemos un escalar, que mult
 
 <div id="Redes Neuronales-Retropropagación-Notación"><h4 id="Notación" class="header"><a href="#Redes Neuronales-Retropropagación-Notación">Notación</a></h4></div>
 
-<ul>
-<li>
-\(\delta^{(q)}_i\) denota el error del nodo \(i\) en la capa \(q\)
-
-<li>
-\(a^{(q)}_i\) denota la salida del nodo \(i\) en la capa \(q\)
-
-</ul>
-
 <p>
 La salida de cada capa \(q\) es una matriz \(S_q \times m\), donde \(S_q\) denota el número de nodos en la capa \(q\) y \(m\) denota el número de ejemplos. 
 </p>
@@ -382,210 +334,104 @@ Vamos, ahora a explicar cómo se aplica la retropropagación. Lo primero que deb
 </p>
 
 <p>
-El problema es que debemos derivar \(\frac{\delta J(\Theta)}{\delta \Theta}\), donde \(\Theta\) ya no es una matriz, si no que es un tensor, es decir tenemos que calcular \(\frac{\delta J(\Theta)}{\delta \theta^{(k)}_{it}}\). Entonces, sabemos que la función de coste:
+El problema es que debemos derivar \(\frac{\delta J(\Theta)}{\delta \Theta}\), donde \(\Theta\) ya no es una matriz, si no que es un tensor, es decir tenemos que calcular \(\frac{\delta J(\Theta)}{\delta \theta^{(k)}_{it}}\). Los pasos a seguir para calcular los gradientes (cuánto contribuye cada peso \(\theta\) al error):
 </p>
-
-\[%align
-J(\Theta) = - \frac{1}{m} \left\{ \sum_{j=1}^m\sum_{i=1}^c (y_{ij}\cdot \log(h_\Theta(x_j)_i)) + [(1-y_{ij})\log(1-h_\Theta(x_j)_i)]\right\}
-\]
 
 <p>
-Donde \(\theta_{it}^{(k)}\) es el peso que conecta el nodo \(i\) de la capa \(k\) con el nodo \(t\) de la capa \((k-1)\), es decir, es el elemento en la fila \(i\) columna \(t\) de la matriz de pesos de la capa \(k\), \(\Theta^{(k)}\).
+Sea \(c\) el número de nodos en la última capa, \(\theta_{it}\) el peso \(t\) del nodo \(i\) de la última capa \(k\), \(a_{ij}^{(k)}\) la salida del nodo \(i\) para el ejemplo \(j\) en la capa \(k\):
 </p>
-
-
-<div id="Redes Neuronales-Retropropagación-Derivada de la función de coste"><h3 id="Derivada de la función de coste" class="header"><a href="#Redes Neuronales-Retropropagación-Derivada de la función de coste">Derivada de la función de coste</a></h3></div>
-
-<p>
-Por la regla de la cadena, separamos la derivada de la función del coste en función de los pesos en dos términos:
-</p>
-
-\begin{align}
-\frac{\delta J(\Theta)}{\delta \theta_{it}^{(k)}} = \sum_{j=1}^m \sum_{i=1}^c \frac{\delta E^{(k)}}{\delta a_{ij}^{(k)}} \frac{\delta a_{ij}^{(k)}}{\delta \theta_{it}^{(k)}}
-\end{align}
-
-
-<div id="Redes Neuronales-Retropropagación-Capa de salida"><h3 id="Capa de salida" class="header"><a href="#Redes Neuronales-Retropropagación-Capa de salida">Capa de salida</a></h3></div>
-
-<p>
-Procedemos a calcular la derivada:
-</p>
-
-\[%align
-\frac{\delta J(\Theta)}{\delta \theta_{it}^{(k)}} = \frac{\delta}{\delta \theta_{it}^{(k)}} \left(- \frac{1}{m}\right) \left\{ \sum_{j=1}^m\sum_{i=1}^c (y_{ij}\cdot \log(h_\Theta(x_j)_i)) + [(1-y_{ij})\log(1-h_\Theta(x_j)_i)]\right\}
-\]
-
-<p>
-Sacamos el término constante de la derivada y aplicamos la propiedad: "La derivada de una suma equivale a la suma de las derivadas"
-</p>
-
-\[%align
-\frac{\delta J(\Theta)}{\delta \theta_{it}^{(k)}} = \left(- \frac{1}{m}\right)  \sum_{j=1}^m\sum_{i=1}^c \frac{\delta}{\delta \theta_{it}^{(k)}} \left\{(y_{ij}\cdot \log(h_\Theta(x_j)_i)) + [(1-y_{ij})\log(1-h_\Theta(x_j)_i)]\right\}
-\]
-
-<p>
-Sea \(h_\Theta(x_j) = a^{(k)}_j\), es decir la salida de la última capa para el ejemplo \(j\).
-</p>
-
-\[%align
-\frac{\delta J(\Theta)}{\delta \theta_{it}^{(k)}} = \left(- \frac{1}{m}\right)  \sum_{j=1}^m\sum_{i=1}^c \frac{\delta}{\delta \theta_{it}^{(k)}} \left\{(y_{ij}\cdot \log(a^{(k)}_{ij})) + [(1-y_{ij})\log(1-a^{(k)}_{ij})]\right\}
-\]
-
-
-<p>
-Sacaremos el término \(y_{ij}\) de la derivada y juntemos todas las expresiones:
-</p>
-
-\[%align
-\frac{\delta J(\Theta)}{\delta \theta_{it}^{(k)}} = \left(- \frac{1}{m}\right)  \sum_{j=1}^m\sum_{i=1}^c  \left\{y_{ij} \left(\frac{\delta}{\delta \theta_{it}^{(k)}} \log(a^{(k)}_{ij}) \right) + (1-y_{ij}) \left(\frac{\delta}{\delta \theta_{it}^{(k)}} \log(1-a^{(k)}_{ij})\right)\right\}
-\]
-
-<p>
-Aplicamos la regla de la cadena sobre el logaritmo:
-</p>
-
-\[%align
-\frac{\delta J(\Theta)}{\delta \theta_{it}^{(k)}} = \left(- \frac{1}{m}\right)  \sum_{j=1}^m\sum_{i=1}^c  \left\{y_{ij} \left(\frac{\delta \log(a_{ij}^{(k)})}{\delta a_{ij}^{(k)}}  \frac{\delta a_{ij}^{(k)}}{\delta \theta_{it}^{(k)}} \right) + (1-y_{ij}) \left(\frac{\delta \log(1-a^{(k)}_{ij})}{\delta (1-a^{(k)}_{ij})} \frac{\delta (1-a^{(k)}_{ij})}{\delta \theta_{it}^{(k)}} \right)\right\}
-\]
-
-<p>
-Como sabemos:
-</p>
-
 <ol>
 <li>
-\(\frac{\delta (1)}{\delta \theta_{it}^{(k)}} = 0\), entonces
+Calculamos el gradiente de la última capa \(k\) como: \(\frac{\delta J(\Theta)}{\delta \theta_{it}^{(k)}} = \frac{\delta J(\Theta)}{\delta a_{1j}^{(k)}}\frac{\delta a_{1j}^{(k)}}{\delta \theta_{it}^{(k)}}\)
 
 <li>
-\(\frac{\delta(1-a_{ij}^{(k)})}{\delta \theta_{it}^{(k)}} = \frac{\delta (1)}{\delta \theta_{it}^{(k)}} - \frac{\delta a_{ij}^{(k)}}{\delta \theta_{it}^{(k)}} = 0 + (-1) \frac{\delta a_{ij}^{(k)}}{\delta \theta_{it}^{(k)}}\)
+Calculamos el gradiente en capas intermedias utilizando la regla de la cadena como: \(\frac{\delta J(\Theta)}{\delta \theta_{it}^{(q)}} = \sum_{i=1}^{S_{(q+1)}} \frac{\delta J(\Theta)}{\delta a_{ij}^{(q+1)}}\frac{\delta a_{ij}^{(q+1)}}{\delta a_{ij}^{(q)}}\frac{\delta a_{ij}^{(q)}}{\delta \theta_{it}^{(q)}}\)
 
 </ol>
 
 <p>
-Entonces
+Normalmente en las capas intermedias, \(q\), nos referimos al término \(\frac{\delta J(\Theta)}{\delta a_{ij}^{(q+1)}}\) como \(\Delta^{(q+1)}_{ij}\).
 </p>
-
-\[%align
-\frac{\delta J(\Theta)}{\delta \theta_{it}^{(k)}} = \left(- \frac{1}{m}\right)  \sum_{j=1}^m\sum_{i=1}^c  \left\{y_{ij} \left(\frac{\delta \log(a_{ij}^{(k)})}{\delta a_{ij}^{(k)}}  \frac{\delta a_{ij}^{(k)}}{\delta \theta_{it}^{(k)}} \right) + (1-y_{ij}) \left((-1)\frac{\delta \log(1-a^{(k)}_{ij})}{\delta (1-a^{(k)}_{ij})} \frac{\delta a^{(k)}_{ij}}{\delta \theta_{it}^{(k)}} \right)\right\}
-\]
-
-<p>
-Sacamos \(\frac{\delta a_{ij}^{(k)}}{\delta \theta_{it}^{(k)}}\) como factor común y aplicamos el \((-1)\):
-</p>
-
-
-\[%align
-\frac{\delta J(\Theta)}{\delta \theta_{it}^{(k)}} = \left(- \frac{1}{m}\right)  \sum_{j=1}^m\sum_{i=1}^c  \frac{\delta a_{ij}^{(k)}}{\delta \theta_{it}^{(k)}}\left\{y_{ij} \frac{\delta \log(a_{ij}^{(k)})}{\delta a_{ij}^{(k)}} -  \left((1-y_{ij})\frac{\delta \log(1-a^{(k)}_{ij})}{\delta (1-a^{(k)}_{ij})} \right)\right\}
-\]
-
-<p>
-Sustituimos \(\frac{\delta E^{(k)}}{\delta a_{ij}^{(k)}} = \left\{y_{ij} \frac{\delta \log(a_{ij}^{(k)})}{\delta a_{ij}^{(k)}} -  \left((1-y_{ij})\frac{\delta \log(1-a^{(k)}_{ij})}{\delta (1-a^{(k)}_{ij})} \right)\right\}\)
-</p>
-
-\[%align
-\frac{\delta J(\Theta)}{\delta \theta_{it}^{(k)}} = \left(- \frac{1}{m}\right)  \sum_{j=1}^m\sum_{i=1}^c \frac{\delta E^{(k)}}{\delta a_{ij}^{(k)}} \frac{\delta a_{ij}^{(k)}}{\delta \theta_{it}^{(k)}} 
-\]
-
-<p>
-Si resolvemos las derivadas de los logaritmos obtenemos:
-</p>
-
-\[%align
-\frac{\delta E^{(k)}}{\delta a_{ij}^{(k)}} = y_{ij} \frac{\delta \log(a_{ij}^{(k)})}{\delta a_{ij}^{(k)}} - (1-y_{ij})\frac{\delta \log(1-a_{ij}^{(k)})}{\delta (1-a_{ij}^{(k)})}
-\]
 
 <hr />
 
 <p>
-Nos centraremos ahora en la derivada que nos falta \(\frac{\delta a_{ij}^{(k)}}{\delta \theta_{it}^{(k)}}\):
+Por ejemplo, supongamos que tenemos una red con tres capas, entonces \(k=3\), dado un ejemplo \(x\). En este caso tenemos que 
 </p>
+<ol>
+<li>
+La derivada en la última capa, para el único vector de pesos \(\theta^{(3)}_1\) que tiene \(n\) elementos (<code>features</code> o características), es: \(\frac{\delta J(\Theta)}{\delta \theta_{1t}^{(3)}}\)
+
+<li>
+Como \(J(\Theta) = E^{(3)}(a_1^{(3)}) = E^{(3)}(g(z_1^{(3)})) = E^{(3)}(g(\Theta^{(3)}\cdot a^{(2)}))\), donde denotamos la función que calcula el error entre lo predicho y la salida real como \(E\), y \(g\) es la función de activación.
+
+<li>
+Entonces, aplicamos la regla de la cadena para cada elemento \(t\) en el vector de pesos \(\theta_1^{(3)}\): \(\frac{\delta J(\Theta)}{\delta \theta_{1t}^{(3)}} = \frac{\delta J(\Theta)}{\delta a_1^{(3)}}\frac{\delta a_1^{(3)}}{\delta z_1^{(3)}}\frac{\delta z_1^{(3)}}{\delta \theta_{it}^{(3)}}\)
+
+<li>
+Si ahora queremos obtener la derivada para uno de los vectores de pesos en la capa \(2\), por ejemplo \(\theta_1^{(2)}\), volvemos a aplicar la regla de la cadena.
+
+<li>
+Tenemos ahora que desestructurar la función de coste todavía más:
+
+</ol>
+
+\begin{align}
+J(\Theta) = E^{(3)}(a_1^{(3)}) = E^{(3)}(g(z_1^{(3)})) = E^{(3)}(g(\Theta^{(3)}\cdot a^{(2)})) = E^{(3)}(g(\Theta^{(3)}\cdot g(z^{(2)}))) = E^{(3)}(g(\Theta^{(3)}\cdot g(\Theta^{(2)} \cdot a^{(1)})))
+\end{align}
+
+<ol>
+<li>
+Entonces, aplicamos la regla de la cadena para cada elemento \(t\) en el vector de pesos \(\theta_1^{(2)}\): 
+
+</ol>
+
+\begin{align}
+\frac{\delta J(\Theta)}{\delta \theta_{1t}^{(2)}} = \frac{\delta J(\Theta)}{\delta a_1^{(3)}}\frac{\delta a_1^{(3)}}{\delta z_1^{(3)}}\frac{\delta z_1^{(3)}}{\delta a_{1}^{(2)}}\frac{\delta a_1^{(2)}}{\delta z_{1}^{(2)}}\frac{\delta z_1^{(2)}}{\delta \theta_{1t}^{(2)}}
+\end{align}
+
 
 <p>
-Sabemos que, vectorizando la operación, \(a^{(k)}_j = g(z^{(k)}_j)\), donde \(g\) es la función de activación (en este caso sigmoide).
-</p>
-
-<p>
-Además:
-</p>
-
-\[%align
-z^{(k)}_j = \Theta^{k} \cdot a^{(k-1)}_j
-\]
-
-<p>
-Por lo tanto, para cada nodo \(i\) en la última capa \(k\):
-</p>
-
-\[%align
-z^{(k)}_{ij} = \sum_{l=1}^{S_{(k-1)}} \theta^{(k)}_{il} \cdot a^{(k-1)}_{lj}
-\]
-
-<p>
-Donde \(S_{(k-1)}\) es el número de nodos en la capa \(k-1\). Entonces, aplicamos de nuevo la regla de la cadena:
-</p>
-
-\[%align
-\frac{\delta a_{ij}^{(k)}}{\delta \theta_{it}^{(k)}} =  \frac{\delta g(z_{ij}^{(k)})}{\delta z_{ij}^{(k)}} \frac{\delta z_{ij}^{(k)}}{\delta \theta_{it}^{(k)}}
-\]
-
-<p>
-Resolvemos la derivada para el segundo término:
-</p>
-
-\[%align
-\frac{\delta z_{ij}^{(k)}}{\delta \theta_{it}^{(k)}} = \sum_{l=1}^{S_{(k-1)}} \frac{\delta}{\delta \theta_{it}^{(k)}} \theta^{(k)}_{il} \cdot a^{(k-1)}_{lj}
-\]
-
-<p>
-Tal que:
-</p>
-
-\[%align
-\frac{\delta}{\delta \theta_{it}^{(k)}} \theta^{(k)}_{il} \cdot a^{(k-1)}_{lj} =
-\begin{cases}
-a_{lj}^{(k-1)}, &amp; t = l \\
-0, &amp; t \neq l \\
-\end{cases}
-\]
-
-<p>
-Por lo tanto, como sólo hay un \(l\) con \(l = t\) donde \(1 \leq l \leq S_{(k-1)}\), entonces:
-</p>
-
-\[%align
-\frac{\delta z_{ij}^{(k)}}{\delta \theta_{it}^{(k)}} = a_{lj}^{(k-1)} = a_{tj}^{(k-1)}
-\]
-
-<p>
-Juntamos ambos términos de la derivada inicial, con \(\frac{\delta g(z_{ij}^{(k)})}{\delta z_{ij}^{k}} = \sigma'(z_{ij}^{(k)})\)
-</p>
-
-\[%align
-\frac{\delta a_{ij}^{(k)}}{\delta \theta_{it}^{(k)}} =  \frac{\delta g(z_{ij}^{(k)})}{\delta z_{ij}^{(k)}} \frac{\delta z_{ij}^{(k)}}{\delta \theta_{it}^{(k)}} = \sigma'(z_{ij}^{(k)}) a_{tj}^{(k-1)}
-\]
-
-<hr />
-
-<p>
-Vamos a resumir lo que tenemos hasta ahora. Por la regla de la cadena, separamos la derivada de la función del coste en función de los pesos en dos términos:
+Si, en la última capa hubiese más de un sólo nodo, por ejemplo, si en la última capa hubiese un nodo \(a_1^{(3)}\) y un nodo \(a_2^{(3)}\):
 </p>
 
 \begin{align}
-\frac{\delta J(\Theta)}{\delta \theta_{it}^{(k)}} = \sum_{j=1}^m \sum_{i=1}^c \frac{\delta E^{(k)}}{\delta a_{ij}^{(k)}} \frac{\delta a_{ij}^{(k)}}{\delta \theta_{it}^{(k)}}
+J(\Theta) = \frac{1}{2} \left[E^{(3)}(a_1^{(3)}) + E^{(3)}(a_2^{(3)})\right]
 \end{align}
 
 <p>
-Si sustituimos ambos términos, para la capa de salida \(k\):
+Por lo tanto, la derivada en función a uno de los vectores de peso \(\theta_1^{(3)}\) (de entre los dos que hay) sería la derivada de la suma:
 </p>
 
-\[%align
-\frac{\delta J(\Theta)}{\delta \theta_{it}^{(k)}} = \left(- \frac{1}{m}\right)  \sum_{j=1}^m\sum_{i=1}^c  \sigma'(z_{ij}^{(k)}) a_{tj}^{(k-1)}\left\{ \frac{y_{ij}}{a_{ij}^{(k)}} -  \left(\frac{(1-y_{ij})}{(1-a^{(k)}_{ij})} \right)\right\}
-\]
+\begin{align}
+\frac{\delta J(\Theta)}{\delta \theta_1^{(3)}} = \frac{1}{2} \left[ \frac{\delta}{\delta \theta_1^{(3)}} E^{(3)}(a_1^{(3)}) + \frac{\delta}{\delta \theta_1^{(3)}} E^{(3)}(a_2^{(3)})\right]
+\end{align}
+
+<p>
+El procedimiento se ilustra en la siguiente figura:
+</p>
+
+<p>
+<img src="./assets/backprop.svg" alt="Retropropagación" style="width:1000px;height:600px;" />
+</p>
+
+<div id="Redes Neuronales-Retropropagación-Derivada de la función de coste"><h3 id="Derivada de la función de coste" class="header"><a href="#Redes Neuronales-Retropropagación-Derivada de la función de coste">Derivada de la función de coste</a></h3></div>
+
+<p>
+A continuación explicamos cómo derivar la función de coste (<span id="Redes Neuronales-Retropropagación-Derivada de la función de coste-Paso 1"></span><strong id="Paso 1">Paso 1</strong>).
+</p>
+
+<p>
+<a href="Derivada de la función de coste.html">Derivada de la función de coste</a>
+</p>
+
+
+<hr />
 
 <div id="Redes Neuronales-Retropropagación-Capas intermedias"><h3 id="Capas intermedias" class="header"><a href="#Redes Neuronales-Retropropagación-Capas intermedias">Capas intermedias</a></h3></div>
 
 <p>
-Pero, ¿cómo calculamos el gradiente (o lo que contribuye el peso \(it\) en el error) para los pesos de las capas intermedias?, es decir, cómo calculamos:
+Veamos, ahora, cómo llevar a cabo el <span id="Redes Neuronales-Retropropagación-Capas intermedias-Paso 2"></span><strong id="Paso 2">Paso 2</strong>: ¿cómo calculamos el gradiente (o lo que contribuye el peso \(it\) en el error) para los pesos de las capas intermedias?, es decir, cómo calculamos:
 </p>
 
 \[%align
@@ -593,41 +439,9 @@ Pero, ¿cómo calculamos el gradiente (o lo que contribuye el peso \(it\) en el 
 \]
 
 <p>
-Donde \(q\) denota la capa, con \(1 \leq q \leq (k-1)\). Pues lo que tenemos que hacer es, de nuevo, aplicar la regla de la cadena, entre el peso \(\theta_{it}^{(q)}\) (peso \(t\) del nodo \(i\) de la capa \(q\)) y todo nodo \(a_{lj}^{(q+1)}\)(es decir para el nodo \(l\) en la capa \(q+1\) para el ejemplo \(j\)).
+<a href="Derivadas capas intermedias.html">Derivadas capas intermedias</a>
 </p>
 
-
-\[%align
-\frac{\delta J(\Theta)}{\delta \theta_{it}^{(q)}} = \frac{J(\Theta)}{\delta a^{(q+1)}_{1j}}\frac{\delta a_{1j}^{(q+1)}}{\delta \theta_{it}^{(q)}} + \cdots + \frac{J(\Theta)}{\delta a^{(q+1)}_{(S_(q+1))j}}\frac{\delta a_{(S_(q+1))j}^{(q+1)}}{\delta \theta_{it}^{(q)}}
-\]
-
-<p>
-Donde \(S_{(q+1)}\) es el número de nodos en la capa \(q+1\). Es decir:
-</p>
-
-\[%align
-\frac{\delta J(\Theta)}{\delta \theta_{it}^{(q)}} = \sum_{l=1}^{S_{(q+1)}} \frac{J(\Theta)}{\delta a^{(q+1)}_{lj}}\frac{\delta a_{lj}^{(q+1)}}{\delta \theta_{it}^{(q)}}
-\]
-
-<p>
-Cabe destacar que \(\frac{\delta a_{lj}^{(q+1)}}{\delta \theta_{it}^{(q)}} = \frac{\delta g(z_{lj}^{(q+1)})}{\delta z_{lj}^{(q+1)}} \frac{\delta z_{lj}^{(q+1)}}{\delta \theta_{it}^{(q)}}\) (explicado en la sección anterior).
-</p>
-
-<p>
-Entonces, si generalizamos para todos los ejemplos, \(m\):
-</p>
-
-\[%align
-\frac{\delta J(\Theta)}{\delta \theta_{it}^{(q)}} = \sum_{j=1}^m\sum_{l=1}^{S_{(q+1)}} \frac{J(\Theta)}{\delta a^{(q+1)}_{lj}}\frac{\delta a_{lj}^{(q+1)}}{\delta \theta_{it}^{(q)}}
-\]
-
-<p>
-El proceso se ve más claro gŕaficamente:
-</p>
-
-<p>
-<img src="./assets/backprop.svg" alt="Retropropagación" style="width:1000px;height:600px;" />
-</p>
 
 <div id="Redes Neuronales-Algoritmo"><h2 id="Algoritmo" class="header"><a href="#Redes Neuronales-Algoritmo">Algoritmo</a></h2></div>
 </div>
