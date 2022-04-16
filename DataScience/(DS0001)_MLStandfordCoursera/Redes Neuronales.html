@@ -61,7 +61,7 @@ Tenemos que las entradas a la red neuronal con un capa se introducen como sigue:
 </p>
 
 <p>
-De tal manera que obtenemos una salida \(h_\Theta(x)\), esta función se denomina <span id="Redes Neuronales-Estructura-función de activación"></span><strong id="función de activación">función de activación</strong>
+De tal manera que obtenemos una salida \(h_\Theta(x)\).
 </p>
 
 <p>
@@ -72,6 +72,31 @@ Supongamos que utilizamos la función sigmoide (problema de clasificación con d
 h_\Theta(X) = \frac{1}{1+e^{-\Theta^TX}}
 \]
 
+<p>
+Donde:
+</p>
+
+
+\[%align
+\Theta^TX = \sum_{j=0}^m\sum_{i=0}^n \theta_{i} \cdot x_{ij}
+\]
+
+<p>
+Con \(x_{01} = 1\), para multiplicar con el término independiente de los pesos \(\theta_0\).
+</p>
+
+<p>
+Normalmente \(\Theta\) está dividido en:
+</p>
+
+<ul>
+<li>
+<span id="Redes Neuronales-Estructura-Término independiente/sesgo"></span><strong id="Término independiente/sesgo">Término independiente/sesgo</strong> (bias): \(\theta_0\), también denotado como \(b\).
+
+<li>
+<span id="Redes Neuronales-Estructura-Pesos"></span><strong id="Pesos">Pesos</strong> (bias): \(\theta_i\), con \(1 \leq i \leq n\), también denotados como \(w\).
+
+</ul>
 
 <div id="Redes Neuronales-Datos de entrada"><h2 id="Datos de entrada" class="header"><a href="#Redes Neuronales-Datos de entrada">Datos de entrada</a></h2></div>
 
@@ -151,14 +176,14 @@ Para cada capa \(j\), asumimos que la capa tiene \(q\) nodos.
 \(\Theta^{(j)}\): Matriz de pesos de la capa \(j\) a la capa \(j+1\)
 
 <li>
-La dimensión de cada \(\Theta^{(j)}\) es \(S_{j+1} \times (S_j + 1)\)
+La dimensión de cada \(\Theta^{(j)}\) es \(S_{j} \times (S_{j-1} + 1)\)
 
 <ul>
 <li>
-\(S_{j+1}\): número de características/nodos en la capa \(j+1\).
+\(S_{j}\): número de características/nodos en la capa \(j\).
 
 <li>
-\((S_j + 1)\): número de características en la capa \(j\) más 1 (término independiente en cada capa)
+\((S_{j-1} + 1)\): número de características en la capa \(j - 1\) más 1 (término independiente en cada capa)
 
 </ul>
 </ul>
@@ -166,11 +191,11 @@ La dimensión de cada \(\Theta^{(j)}\) es \(S_{j+1} \times (S_j + 1)\)
 <div id="Redes Neuronales-Propagación-Funcionamiento"><h4 id="Funcionamiento" class="header"><a href="#Redes Neuronales-Propagación-Funcionamiento">Funcionamiento</a></h4></div>
 
 <p>
-Sean \(k\) el número de capas de la red. Para cada capa \(j\), con \(0 \leq j \leq k\), supongamos que la capa tiene \(q\) nodos. Con \(a^0 = X_l\) (donde \(X_l\) es un ejemplo: un vector columna en \(X\)):
+Sean \(k\) el número de capas de la red. Para cada capa \(j\), on \(a^0 = X_l\) (donde \(X_l\) es un ejemplo: un vector columna en \(X\)):
 </p>
 
 <p>
-Primero se calcula el término intermedio \(z^{(j)}\), que es un vector columna \(q \times 1\):
+Primero se calcula el término intermedio \(z^{(j)}\), que es un vector columna \(S_{(j)} \times 1\):
 </p>
 
 \begin{align}
@@ -179,7 +204,7 @@ z^{(j)} = \Theta^{(j)} \cdot a^{(j-1)}
 
 
 <p>
-Donde, como ya hemos dicho, \(\Theta\) es la matriz \(q \times p\) de pesos de la capa \(j\), siendo \(p\) el número de nodos en la capa \((j-1)\) más uno (el término independiente).
+Donde, como ya hemos dicho, \(\Theta\) es la matriz \(S_{(j)} \times S_{(j-1)}\) de pesos de la capa \(j\), siendo \(p\) el número de nodos en la capa \((j-1)\) más uno (el término independiente).
 </p>
 
 <p>
@@ -286,20 +311,20 @@ Antes de nada, recordar que \(S_q\) denota el número de nodos en la capa \(q\).
 
 <ol>
 <li>
-Por cada capa \(q\), con \(1 \leq q \leq k\), sumamos todos los elementos de la matriz de pesos \(\Theta^{q}\), que como sabemos tiene dimensiones \(S_{q+1} \times S_q\) 
+Por cada capa \(q\), con \(1 \leq q \leq k\), sumamos todos los elementos de la matriz de pesos \(\Theta^{q}\), que como sabemos tiene dimensiones \(S_{q} \times S_{q-1}\) 
 
 <li>
 Dada la matriz \(\Theta^{(q)}\)
 
 <ol>
 <li>
-Recorremos cada columna \(i\), con \(1 \leq i \leq S_q\)
+Recorremos cada columna \(i\), con \(1 \leq i \leq S_{q-1}\)
 
 <li>
-Recorremos cada elemento \(j\) de la columna \(i\), con \(1 \leq j \leq S_{q+1}\)
+Recorremos cada elemento \(j\) de la columna \(i\), con \(1 \leq j \leq S_{q}\)
 
 <li>
-Sumamos al total cada elemento de la matriz \(\Theta^{(j)}_{ji}\)
+Sumamos al total cada elemento de la matriz \(\Theta^{(q)}_{ji}\)
 
 </ol>
 <li>
@@ -333,9 +358,6 @@ Si generalizamos esto a \(m\) ejemplos tenemos que la salida de cada capa es una
 Vamos, ahora a explicar cómo se aplica la retropropagación. Lo primero que debemos tener en cuenta es que este proceso se basa en la misma idea de optimización que la <a href="Regresión Lineal.html">Regresión Lineal</a> y la <a href="Regresión Logística.html">Regresión Logística</a>, es decir, lo que queremos hacer es minimizar el coste, \(J(\Theta)\)
 </p>
 
-<p>
-El problema es que debemos derivar \(\frac{\delta J(\Theta)}{\delta \Theta}\), donde \(\Theta\) ya no es una matriz, si no que es un tensor, es decir tenemos que calcular \(\frac{\delta J(\Theta)}{\delta \theta^{(k)}_{it}}\). Los pasos a seguir para calcular los gradientes (cuánto contribuye cada peso \(\theta\) al error):
-</p>
 
 <p>
 Sea \(c\) el número de nodos en la última capa, \(\theta_{it}\) el peso \(t\) del nodo \(i\) de la última capa \(k\), \(a_{ij}^{(k)}\) la salida del nodo \(i\) para el ejemplo \(j\) en la capa \(k\):
@@ -354,66 +376,6 @@ Normalmente en las capas intermedias, \(q\), nos referimos al término \(\frac{\
 </p>
 
 <hr />
-
-<p>
-Por ejemplo, supongamos que tenemos una red con tres capas, entonces \(k=3\), dado un ejemplo \(x\). En este caso tenemos que 
-</p>
-<ol>
-<li>
-La derivada en la última capa, para el único vector de pesos \(\theta^{(3)}_1\) que tiene \(n\) elementos (<code>features</code> o características), es: \(\frac{\delta J(\Theta)}{\delta \theta_{1t}^{(3)}}\)
-
-<li>
-Como \(J(\Theta) = E^{(3)}(a_1^{(3)}) = E^{(3)}(g(z_1^{(3)})) = E^{(3)}(g(\Theta^{(3)}\cdot a^{(2)}))\), donde denotamos la función que calcula el error entre lo predicho y la salida real como \(E\), y \(g\) es la función de activación.
-
-<li>
-Entonces, aplicamos la regla de la cadena para cada elemento \(t\) en el vector de pesos \(\theta_1^{(3)}\): \(\frac{\delta J(\Theta)}{\delta \theta_{1t}^{(3)}} = \frac{\delta J(\Theta)}{\delta a_1^{(3)}}\frac{\delta a_1^{(3)}}{\delta z_1^{(3)}}\frac{\delta z_1^{(3)}}{\delta \theta_{it}^{(3)}}\)
-
-<li>
-Si ahora queremos obtener la derivada para uno de los vectores de pesos en la capa \(2\), por ejemplo \(\theta_1^{(2)}\), volvemos a aplicar la regla de la cadena.
-
-<li>
-Tenemos ahora que desestructurar la función de coste todavía más:
-
-</ol>
-
-\begin{align}
-J(\Theta) = E^{(3)}(a_1^{(3)}) = E^{(3)}(g(z_1^{(3)})) = E^{(3)}(g(\Theta^{(3)}\cdot a^{(2)})) = E^{(3)}(g(\Theta^{(3)}\cdot g(z^{(2)}))) = E^{(3)}(g(\Theta^{(3)}\cdot g(\Theta^{(2)} \cdot a^{(1)})))
-\end{align}
-
-<ol>
-<li>
-Entonces, aplicamos la regla de la cadena para cada elemento \(t\) en el vector de pesos \(\theta_1^{(2)}\): 
-
-</ol>
-
-\begin{align}
-\frac{\delta J(\Theta)}{\delta \theta_{1t}^{(2)}} = \frac{\delta J(\Theta)}{\delta a_1^{(3)}}\frac{\delta a_1^{(3)}}{\delta z_1^{(3)}}\frac{\delta z_1^{(3)}}{\delta a_{1}^{(2)}}\frac{\delta a_1^{(2)}}{\delta z_{1}^{(2)}}\frac{\delta z_1^{(2)}}{\delta \theta_{1t}^{(2)}}
-\end{align}
-
-
-<p>
-Si, en la última capa hubiese más de un sólo nodo, por ejemplo, si en la última capa hubiese un nodo \(a_1^{(3)}\) y un nodo \(a_2^{(3)}\):
-</p>
-
-\begin{align}
-J(\Theta) = \frac{1}{2} \left[E^{(3)}(a_1^{(3)}) + E^{(3)}(a_2^{(3)})\right]
-\end{align}
-
-<p>
-Por lo tanto, la derivada en función a uno de los vectores de peso \(\theta_1^{(3)}\) (de entre los dos que hay) sería la derivada de la suma:
-</p>
-
-\begin{align}
-\frac{\delta J(\Theta)}{\delta \theta_1^{(3)}} = \frac{1}{2} \left[ \frac{\delta}{\delta \theta_1^{(3)}} E^{(3)}(a_1^{(3)}) + \frac{\delta}{\delta \theta_1^{(3)}} E^{(3)}(a_2^{(3)})\right]
-\end{align}
-
-<p>
-El procedimiento se ilustra en la siguiente figura:
-</p>
-
-<p>
-<img src="./assets/backprop.svg" alt="Retropropagación" style="width:1000px;height:600px;" />
-</p>
 
 <div id="Redes Neuronales-Retropropagación-Derivada de la función de coste"><h3 id="Derivada de la función de coste" class="header"><a href="#Redes Neuronales-Retropropagación-Derivada de la función de coste">Derivada de la función de coste</a></h3></div>
 
@@ -442,8 +404,137 @@ Veamos, ahora, cómo llevar a cabo el <span id="Redes Neuronales-Retropropagaci�
 <a href="Derivadas capas intermedias.html">Derivadas capas intermedias</a>
 </p>
 
+<hr />
+
+<p>
+Por ejemplo, supongamos que tenemos una red con tres capas, entonces \(k=3\), dado un ejemplo \(x_j\). En este caso tenemos que 
+</p>
+
+<div id="Redes Neuronales-Retropropagación-Capa 3"><h3 id="Capa 3" class="header"><a href="#Redes Neuronales-Retropropagación-Capa 3">Capa 3</a></h3></div>
+
+<p>
+La derivada en la última capa, para el único vector de pesos \(\theta^{(3)}_1\) que tiene \(n\) elementos (features o características), es: \(\frac{\delta J(\Theta)}{\delta \theta_{1t}^{(3)}}\), para cada \(t\), \(0 \leq t \leq n\)
+</p>
+
+<p>
+Como: 
+</p>
+
+\begin{align}
+J(\Theta) = E^{(3)}(a_1^{(3)}) = E^{(3)}(g(z_1^{(3)})) = E^{(3)}(g(\Theta^{(3)}\cdot a^{(2)}))
+\end{align}
+
+<p>
+Donde denotamos la función que calcula el error entre lo predicho y la salida real como \(E\), y \(g\) es la función de activación.
+</p>
+
+<p>
+Entonces, aplicamos la regla de la cadena para cada elemento \(t\) en el vector de pesos:
+</p>
+
+\begin{align}
+\frac{\delta J(\Theta)}{\delta \theta_{1t}^{(3)}} = \frac{\delta J(\Theta)}{\delta a_1^{(3)}}\frac{\delta a_1^{(3)}}{\delta z_1^{(3)}}\frac{\delta z_1^{(3)}}{\delta \theta_{1t}^{(3)}}
+\end{align}
+
+<p>
+Si vectorizamos:
+</p>
+
+\begin{align}
+\frac{\delta J(\Theta)}{\delta \theta_{1}^{(3)}} = \frac{\delta J(\Theta)}{\delta a_1^{(3)}}\frac{\delta a_1^{(3)}}{\delta z_1^{(3)}}\frac{\delta z_1^{(3)}}{\delta \theta_{1}^{(3)}}
+\end{align}
+
+<div id="Redes Neuronales-Retropropagación-Capa 2"><h3 id="Capa 2" class="header"><a href="#Redes Neuronales-Retropropagación-Capa 2">Capa 2</a></h3></div>
+
+<p>
+Si ahora queremos obtener la derivada para uno de los vectores de pesos en la capa \(2\), volvemos a aplicar la regla de la cadena. Tenemos ahora que desestructurar la función de coste todavía más, hasta obtener la expresión que incluye las salidas de la capa \(1\), \(a^{(1)}\).
+</p>
+
+\begin{align}
+J(\Theta) = E^{(3)}(g(\Theta^{(3)}\cdot a^{(2)})) = E^{(3)}(g(\Theta^{(3)}\cdot g(z^{(2)}))) = E^{(3)}(g(\Theta^{(3)}\cdot g(\Theta^{(2)} \cdot a^{(1)})))
+\end{align}
+
+<p>
+Sea \(\Delta^{(3)}_{1j}\):
+</p>
+
+\begin{align}
+\Delta^{(3)}_{1j} = \frac{\delta J(\Theta)}{\delta a_{1j}^{(3)}}\frac{\delta a_{1j}^{(3)}}{\delta z_{1j}^{(3)}}
+\end{align}
+
+<p>
+Entonces, aplicamos la regla de la cadena para cada nodo \(i\) de la capa \(2\) y para cada elemento \(t\): 
+</p>
+
+\begin{align}
+\frac{\delta J(\Theta)}{\delta \theta_{it}^{(2)}} = \sum_{l=1}^{S_{(3)}} \Delta_{lj}^{(3)}\frac{\delta z_{lj}^{(3)}}{\delta a_{lj}^{(2)}}\frac{\delta a_{lj}^{(2)}}{\delta z_{lj}^{(2)}}\frac{\delta z_{lj}^{(2)}}{\delta \theta_{it}^{(2)}} = \Delta_{1j}^{(3)}\frac{\delta z_{1j}^{(3)}}{\delta a_{1j}^{(2)}}\frac{\delta a_{1j}^{(2)}}{\delta z_{1j}^{(2)}}\frac{\delta z_{1j}^{(2)}}{\delta \theta_{it}^{(2)}}
+\end{align}
+
+<p>
+Si vectorizamos:
+</p>
+
+\begin{align}
+\frac{\delta J(\Theta)}{\delta \theta_{i}^{(2)}} = \Delta_{j}^{(3)}\frac{\delta z^{(3)}}{\delta a_{j}^{(2)}}\frac{\delta a_{j}^{(2)}}{\delta z_{j}^{(2)}}\frac{\delta z_{j}^{(2)}}{\delta \theta_{i}^{(2)}}
+\end{align}
+
+<div id="Redes Neuronales-Retropropagación-Capa 1"><h3 id="Capa 1" class="header"><a href="#Redes Neuronales-Retropropagación-Capa 1">Capa 1</a></h3></div>
+
+<p>
+Para la capa \(1\), volvemos a expandir la función de coste para ver cómo aplicar la regla de la cadena:
+</p>
+
+
+\begin{align}
+J(\Theta) = E^{(3)}(g(\Theta^{(3)}\cdot g(\Theta^{(2)} \cdot a^{(1)}))) = E^{(3)}(g(\Theta^{(3)}\cdot g(\Theta^{(2)} \cdot g(z^{(1)})))) =
+\end{align}
+
+\begin{align}
+= E^{(3)}(g(\Theta^{(3)}\cdot g(\Theta^{(2)} \cdot g(\Theta^{(1)} x_j))))
+\end{align}
+
+<p>
+Para simplificar la notación: sea, para cada nodo \(l\) de la capa \(2\)
+</p>
+
+\begin{align}
+\Delta^{(2)}_{lj} = \Delta_{1j}^{(3)}\frac{\delta z_1^{(3)}}{\delta a_{lj}^{(2)}}\frac{\delta a_{lj}^{(2)}}{\delta z_{lj}^{(2)}}
+\end{align}
+
+<hr />
+
+<p>
+Aplicamos la regla de la cadena, tal que para cada nodo \(l\) de la capa \(2\):
+</p>
+
+
+\begin{align}
+\frac{\delta J(\Theta)}{\delta \theta_{it}^{(1)}} = \sum_{l=1}^{S_{(2)}} \Delta_{lj}^{(2)}\frac{\delta z_{lj}^{(2)}}{\delta a_{lj}^{(1)}}\frac{\delta a_{lj}^{(1)}}{\delta z_{lj}^{(1)}}\frac{\delta z_{lj}^{(1)}}{\delta \theta_{it}^{(1)}}
+\end{align}
+
+<p>
+Si vectorizamos:
+</p>
+
+\begin{align}
+\frac{\delta J(\Theta)}{\delta \theta_{i}^{(1)}} = \Delta_{j}^{(2)}\frac{\delta z_{j}^{(2)}}{\delta a_{j}^{(1)}}\frac{\delta a_{j}^{(1)}}{\delta z_{j}^{(1)}}\frac{\delta z_{j}^{(1)}}{\delta \theta_{i}^{(1)}}
+\end{align}
+
+<p>
+El procedimiento se ilustra en la siguiente figura:
+</p>
+
+<p>
+<img src="./assets/backprop.svg" alt="Retropropagación" style="width:1000px;height:600px;" />
+</p>
+
+<hr />
 
 <div id="Redes Neuronales-Algoritmo"><h2 id="Algoritmo" class="header"><a href="#Redes Neuronales-Algoritmo">Algoritmo</a></h2></div>
+
+<p>
+<a href="Partes del algoritmo en python.html">Partes del algoritmo en python</a>
+</p>
 </div>
   </body>
   <script
