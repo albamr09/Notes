@@ -1,7 +1,7 @@
 <html>
   <head>
     <link rel="Stylesheet" type="text/css" href="https://albamr09.github.io/style.css" />
-    <title>index</title>
+    <title>useRef</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <!-- For LaTeX -->
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
@@ -34,75 +34,62 @@
     <hr />
     <div class="content">
 <p>
-<a href="../../index.html">Back</a>
+<a href="index.html">Back</a>
 </p>
 
-<div id="React"><h1 id="React" class="header"><a href="#React">React</a></h1></div>
+<div id="useRef"><h1 id="useRef" class="header"><a href="#useRef">useRef</a></h1></div>
 
 <hr />
 
-<div id="React-Basic React"><h3 id="Basic React" class="header"><a href="#React-Basic React">Basic React</a></h3></div>
-<ul>
-<li>
-<a href="npm.html">npm</a>
-
-<li>
-<a href="create-react-app.html">create-react-app</a>
-
-<li>
-<a href="Babel.html">Babel</a>
-
-<li>
-<a href="File Structure.html">File Structure</a>
-
-<li>
-<a href="Start in indexjs.html">Start in indexjs</a>
-
-<li>
-<a href="JSX Rules.html">JSX Rules</a>
-
-<li>
-<a href="CSS in JSX.html">CSS in JSX</a>
-
-<li>
-<a href="Props.html">Props</a>
-
-<li>
-<a href="Children in Props.html">Children in Props</a>
-
-<li>
-<a href="List of components.html">List of components</a>
-
-<li>
-<a href="Event Basics.html">Event Basics</a>
-
-</ul>
-
-<div id="React-Advanced React"><h3 id="Advanced React" class="header"><a href="#React-Advanced React">Advanced React</a></h3></div>
+<p>
+<code>useRef</code> returns a mutable ref object whose <code>.current</code> property is initialized to the passed argument. Some properties:
+</p>
 
 <ul>
 <li>
-<a href="Properties Hooks.html">Properties Hooks</a>
+Preserves the value of the object
 
 <li>
-<a href="useState.html">useState</a>
+Does not trigger re-render
 
 <li>
-<a href="useEffect.html">useEffect</a>
-
-<li>
-<a href="Conditional Rendering.html">Conditional Rendering</a>
-
-<li>
-<a href="Controlled Inputs.html">Controlled Inputs</a>
-
-<li>
-<a href="useRef.html">useRef</a>
-
-<li>
-<a href="useReducer.html">useReducer</a>
+Assigned to <code>DOM nodes/elements</code>
 
 </ul>
+
+<pre javascript>
+import React, { useEffect, useRef } from 'react';
+
+const UseRefBasics = () =&gt; {
+  // Create the container
+  const refContainer = useRef(null);
+
+  const handleSubmit = (e) =&gt; {
+    e.preventDefault();
+    // Print the value inside the input
+    console.log(refContainer.current.value);
+  };
+  
+  useEffect(() =&gt; {
+    // Focus on the input element whenever we render the application
+    refContainer.current.focus();
+  });
+
+  return (
+    &lt;&gt;
+      &lt;form className='form' onSubmit={handleSubmit}&gt;
+        &lt;div&gt;
+          {/*The refContainer points to the input element*/}
+          &lt;input type='text' ref={refContainer} /&gt;
+        &lt;/div&gt;
+        &lt;button type='submit'&gt;submit&lt;/button&gt;
+      &lt;/form&gt;
+    &lt;/&gt;
+  );
+};
+
+export default UseRefBasics;
+</pre>
 </div>
   </body>
   <script
