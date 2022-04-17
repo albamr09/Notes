@@ -41,6 +41,50 @@
 
 <hr />
 
+<ol>
+<li>
+<a href="Redes Neuronales.html#Redes Neuronales-Estructura">Estructura</a>
+
+<li>
+<a href="Redes Neuronales.html#Redes Neuronales-Datos de entrada">Datos de entrada</a>
+
+<li>
+<a href="Redes Neuronales.html#Redes Neuronales-Propagación">Propagación</a>
+
+<ol>
+<li>
+<a href="Redes Neuronales.html#Redes Neuronales-Propagación-Clasificación múltiple">Clasificación Múltiple</a>  
+
+</ol>
+<li>
+<a href="Redes Neuronales.html#Redes Neuronales-Función de coste">Función de coste</a>
+
+<ol>
+<li>
+<a href="Redes Neuronales.html#Redes Neuronales-Función de coste-Regularización">Regularización</a>
+
+</ol>
+<li>
+<a href="Redes Neuronales.html#Redes Neuronales-Retropropagación">Retropropagación</a>
+
+<ol>
+<li>
+<a href="Redes Neuronales.html#Redes Neuronales-Retropropagación-Derivada de la función de coste">Derivada de la Función de Coste</a>
+
+<li>
+<a href="Redes Neuronales.html#Redes Neuronales-Retropropagación-Capas intermedias">Capas Intermedias</a>
+
+<li>
+<a href="Redes Neuronales.html#Redes Neuronales-Retropropagación-Ejemplo de retropropagación">Ejemplo de Retropropagación</a>
+
+</ol>
+<li>
+<a href="Redes Neuronales.html#Redes Neuronales-Algoritmo">Algoritmo</a>
+
+</ol>
+
+<hr />
+
 <div id="Redes Neuronales-Estructura"><h2 id="Estructura" class="header"><a href="#Redes Neuronales-Estructura">Estructura</a></h2></div>
 
 <p>
@@ -406,11 +450,13 @@ Veamos, ahora, cómo llevar a cabo el <span id="Redes Neuronales-Retropropagaci�
 
 <hr />
 
+<div id="Redes Neuronales-Retropropagación-Ejemplo de retropropagación"><h3 id="Ejemplo de retropropagación" class="header"><a href="#Redes Neuronales-Retropropagación-Ejemplo de retropropagación">Ejemplo de retropropagación</a></h3></div>
+
 <p>
 Por ejemplo, supongamos que tenemos una red con tres capas, entonces \(k=3\), dado un ejemplo \(x_j\). En este caso tenemos que 
 </p>
 
-<div id="Redes Neuronales-Retropropagación-Capa 3"><h3 id="Capa 3" class="header"><a href="#Redes Neuronales-Retropropagación-Capa 3">Capa 3</a></h3></div>
+<div id="Redes Neuronales-Retropropagación-Ejemplo de retropropagación-Capa 3"><h4 id="Capa 3" class="header"><a href="#Redes Neuronales-Retropropagación-Ejemplo de retropropagación-Capa 3">Capa 3</a></h4></div>
 
 <p>
 La derivada en la última capa, para el único vector de pesos \(\theta^{(3)}_1\) que tiene \(n\) elementos (features o características), es: \(\frac{\delta J(\Theta)}{\delta \theta_{1t}^{(3)}}\), para cada \(t\), \(0 \leq t \leq n\)
@@ -444,7 +490,7 @@ Si vectorizamos:
 \frac{\delta J(\Theta)}{\delta \theta_{1}^{(3)}} = \frac{\delta J(\Theta)}{\delta a_1^{(3)}}\frac{\delta a_1^{(3)}}{\delta z_1^{(3)}}\frac{\delta z_1^{(3)}}{\delta \theta_{1}^{(3)}}
 \end{align}
 
-<div id="Redes Neuronales-Retropropagación-Capa 2"><h3 id="Capa 2" class="header"><a href="#Redes Neuronales-Retropropagación-Capa 2">Capa 2</a></h3></div>
+<div id="Redes Neuronales-Retropropagación-Ejemplo de retropropagación-Capa 2"><h4 id="Capa 2" class="header"><a href="#Redes Neuronales-Retropropagación-Ejemplo de retropropagación-Capa 2">Capa 2</a></h4></div>
 
 <p>
 Si ahora queremos obtener la derivada para uno de los vectores de pesos en la capa \(2\), volvemos a aplicar la regla de la cadena. Tenemos ahora que desestructurar la función de coste todavía más, hasta obtener la expresión que incluye las salidas de la capa \(1\), \(a^{(1)}\).
@@ -478,7 +524,7 @@ Si vectorizamos:
 \frac{\delta J(\Theta)}{\delta \theta_{i}^{(2)}} = \Delta_{j}^{(3)}\frac{\delta z^{(3)}}{\delta a_{j}^{(2)}}\frac{\delta a_{j}^{(2)}}{\delta z_{j}^{(2)}}\frac{\delta z_{j}^{(2)}}{\delta \theta_{i}^{(2)}}
 \end{align}
 
-<div id="Redes Neuronales-Retropropagación-Capa 1"><h3 id="Capa 1" class="header"><a href="#Redes Neuronales-Retropropagación-Capa 1">Capa 1</a></h3></div>
+<div id="Redes Neuronales-Retropropagación-Ejemplo de retropropagación-Capa 1"><h4 id="Capa 1" class="header"><a href="#Redes Neuronales-Retropropagación-Ejemplo de retropropagación-Capa 1">Capa 1</a></h4></div>
 
 <p>
 Para la capa \(1\), volvemos a expandir la función de coste para ver cómo aplicar la regla de la cadena:
