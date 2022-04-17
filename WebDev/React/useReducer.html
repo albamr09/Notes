@@ -142,27 +142,34 @@ Now, let's see the <code>reducer</code> function:
 </p>
 
 <pre javascript>
+/* Reducer function */
 export const reducer = (state, action) =&gt; {
   // Define logic for each type of action
   if (action.type === 'ADD_ITEM') {
+    // Add new person (action.payload) to existing people array (state.people)
     const newPeople = [...state.people, action.payload];
     return {
+      // Always copy the value from the previous state
       ...state,
+      // Update the people array
       people: newPeople,
       isModalOpen: true,
       modalContent: 'item added',
     };
   }
   if (action.type === 'NO_VALUE') {
+    // Always copy the value from the previous state
     return { ...state, isModalOpen: true, modalContent: 'please enter value' };
   }
   if (action.type === 'CLOSE_MODAL') {
     return { ...state, isModalOpen: false };
   }
   if (action.type === 'REMOVE_ITEM') {
+    // Filter people array, by removing the person
     const newPeople = state.people.filter(
       (person) =&gt; person.id !== action.payload
     );
+    // Copy the previous state (...state) and update the people the array (newPeople)
     return { ...state, people: newPeople };
   }
   throw new Error('no matching action type');
