@@ -1,0 +1,112 @@
+<html>
+  <head>
+    <link rel="Stylesheet" type="text/css" href="https://albamr09.github.io/style.css" />
+    <title>Index</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <!-- For LaTeX -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script
+      id="MathJax-script"
+      async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+    ></script>
+    <!-- Code Highlight -->
+    <link
+      rel="Stylesheet"
+      type="text/css"
+      href="https://albamr09.github.io/atom-one-light.min.css"
+    />
+  </head>
+  <body>
+    <a
+      href="https://albamr09.github.io/"
+      style="
+        color: white;
+        font-weight: bold;
+        text-decoration: none;
+        padding: 3px 6px;
+        border-radius: 3px;
+        background-color: #1e90ff;
+        text-transform: uppercase;
+      "
+      >Index</a
+    >
+    <hr />
+    <div class="content">
+<p>
+<a href="index.html">Back</a>
+</p>
+
+<div id="Index file"><h1 id="Index file" class="header"><a href="#Index file">Index file</a></h1></div>
+
+<hr />
+
+<p>
+In the following piece of code we create our store object, where we are going to save the state of our application. As you may note, in this store there are three slices defined. That is because we differentiate three different states (slices). So our store is defined as:
+</p>
+
+<pre json>
+{
+  user: {...}
+  theme: {...}
+}
+</pre>
+
+
+<pre javascript>
+import { configureStore } from "@reduxjs/toolkit";
+// Different slices
+import userSlice from "./features/userSlice.js";
+import themeSlice from "./features/themeSlice.js";
+
+// Create store
+const store = configureStore({
+  reducer: {
+    // In each case obtain the reducer
+    user: userSlice.reducer,
+    theme: themeSlice.reducer,
+  },
+});
+export default store;
+</pre>
+
+<p>
+Now, we have to wrap our application with our store:
+</p>
+
+<pre javascript>
+import React from "react";
+import ReactDOM from "react-dom";
+
+import App from "./App";
+
+// Import our store as a provider
+import { Provider } from "react-redux";
+import store from "./store";
+
+ReactDOM.render(
+  &lt;React.StrictMode&gt;
+    &lt;Provider store={store}&gt;
+      &lt;App /&gt;
+    &lt;/Provider&gt;
+  &lt;/React.StrictMode&gt;,
+  document.getElementById("root")
+);
+</pre>
+</div>
+  </body>
+  <script
+    type="text/javascript"
+    src="https://albamr09.github.io/highlight.min.js"
+  ></script>
+  <script
+    type="text/javascript"
+    src="https://albamr09.github.io/zepto.min.js"
+  ></script>
+  <script type="text/javascript">
+    $("pre").each(function (index, item) {
+      $(item).html("<code>" + $(item).html() + "</code>");
+    });
+    hljs.initHighlightingOnLoad();
+  </script>
+</html>

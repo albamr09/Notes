@@ -419,6 +419,11 @@ Calculamos el gradiente en capas intermedias utilizando la regla de la cadena co
 Normalmente en las capas intermedias, \(q\), nos referimos al término \(\frac{\delta J(\Theta)}{\delta a_{ij}^{(q+1)}}\) como \(\Delta^{(q+1)}_{ij}\).
 </p>
 
+<p>
+<a href="Explicación de la retropropagación.html">Explicación de la retropropagación</a>
+</p>
+
+
 <hr />
 
 <div id="Redes Neuronales-Retropropagación-Derivada de la función de coste"><h3 id="Derivada de la función de coste" class="header"><a href="#Redes Neuronales-Retropropagación-Derivada de la función de coste">Derivada de la función de coste</a></h3></div>
@@ -453,126 +458,9 @@ Veamos, ahora, cómo llevar a cabo el <span id="Redes Neuronales-Retropropagaci�
 <div id="Redes Neuronales-Retropropagación-Ejemplo de retropropagación"><h3 id="Ejemplo de retropropagación" class="header"><a href="#Redes Neuronales-Retropropagación-Ejemplo de retropropagación">Ejemplo de retropropagación</a></h3></div>
 
 <p>
-Por ejemplo, supongamos que tenemos una red con tres capas, entonces \(k=3\), dado un ejemplo \(x_j\). En este caso tenemos que 
+<a href="Ejemplo de retropropagación.html">Ejemplo de retropropagación</a>
 </p>
 
-<div id="Redes Neuronales-Retropropagación-Ejemplo de retropropagación-Capa 3"><h4 id="Capa 3" class="header"><a href="#Redes Neuronales-Retropropagación-Ejemplo de retropropagación-Capa 3">Capa 3</a></h4></div>
-
-<p>
-La derivada en la última capa, para el único vector de pesos \(\theta^{(3)}_1\) que tiene \(n\) elementos (features o características), es: \(\frac{\delta J(\Theta)}{\delta \theta_{1t}^{(3)}}\), para cada \(t\), \(0 \leq t \leq n\)
-</p>
-
-<p>
-Como: 
-</p>
-
-\begin{align}
-J(\Theta) = E^{(3)}(a_1^{(3)}) = E^{(3)}(g(z_1^{(3)})) = E^{(3)}(g(\Theta^{(3)}\cdot a^{(2)}))
-\end{align}
-
-<p>
-Donde denotamos la función que calcula el error entre lo predicho y la salida real como \(E\), y \(g\) es la función de activación.
-</p>
-
-<p>
-Entonces, aplicamos la regla de la cadena para cada elemento \(t\) en el vector de pesos:
-</p>
-
-\begin{align}
-\frac{\delta J(\Theta)}{\delta \theta_{1t}^{(3)}} = \frac{\delta J(\Theta)}{\delta a_1^{(3)}}\frac{\delta a_1^{(3)}}{\delta z_1^{(3)}}\frac{\delta z_1^{(3)}}{\delta \theta_{1t}^{(3)}}
-\end{align}
-
-<p>
-Si vectorizamos:
-</p>
-
-\begin{align}
-\frac{\delta J(\Theta)}{\delta \theta_{1}^{(3)}} = \frac{\delta J(\Theta)}{\delta a_1^{(3)}}\frac{\delta a_1^{(3)}}{\delta z_1^{(3)}}\frac{\delta z_1^{(3)}}{\delta \theta_{1}^{(3)}}
-\end{align}
-
-<div id="Redes Neuronales-Retropropagación-Ejemplo de retropropagación-Capa 2"><h4 id="Capa 2" class="header"><a href="#Redes Neuronales-Retropropagación-Ejemplo de retropropagación-Capa 2">Capa 2</a></h4></div>
-
-<p>
-Si ahora queremos obtener la derivada para uno de los vectores de pesos en la capa \(2\), volvemos a aplicar la regla de la cadena. Tenemos ahora que desestructurar la función de coste todavía más, hasta obtener la expresión que incluye las salidas de la capa \(1\), \(a^{(1)}\).
-</p>
-
-\begin{align}
-J(\Theta) = E^{(3)}(g(\Theta^{(3)}\cdot a^{(2)})) = E^{(3)}(g(\Theta^{(3)}\cdot g(z^{(2)}))) = E^{(3)}(g(\Theta^{(3)}\cdot g(\Theta^{(2)} \cdot a^{(1)})))
-\end{align}
-
-<p>
-Sea \(\Delta^{(3)}_{1j}\):
-</p>
-
-\begin{align}
-\Delta^{(3)}_{1j} = \frac{\delta J(\Theta)}{\delta a_{1j}^{(3)}}\frac{\delta a_{1j}^{(3)}}{\delta z_{1j}^{(3)}}
-\end{align}
-
-<p>
-Entonces, aplicamos la regla de la cadena para cada nodo \(i\) de la capa \(2\) y para cada elemento \(t\): 
-</p>
-
-\begin{align}
-\frac{\delta J(\Theta)}{\delta \theta_{it}^{(2)}} = \sum_{l=1}^{S_{(3)}} \Delta_{lj}^{(3)}\frac{\delta z_{lj}^{(3)}}{\delta a_{lj}^{(2)}}\frac{\delta a_{lj}^{(2)}}{\delta z_{lj}^{(2)}}\frac{\delta z_{lj}^{(2)}}{\delta \theta_{it}^{(2)}} = \Delta_{1j}^{(3)}\frac{\delta z_{1j}^{(3)}}{\delta a_{1j}^{(2)}}\frac{\delta a_{1j}^{(2)}}{\delta z_{1j}^{(2)}}\frac{\delta z_{1j}^{(2)}}{\delta \theta_{it}^{(2)}}
-\end{align}
-
-<p>
-Si vectorizamos:
-</p>
-
-\begin{align}
-\frac{\delta J(\Theta)}{\delta \theta_{i}^{(2)}} = \Delta_{j}^{(3)}\frac{\delta z^{(3)}}{\delta a_{j}^{(2)}}\frac{\delta a_{j}^{(2)}}{\delta z_{j}^{(2)}}\frac{\delta z_{j}^{(2)}}{\delta \theta_{i}^{(2)}}
-\end{align}
-
-<div id="Redes Neuronales-Retropropagación-Ejemplo de retropropagación-Capa 1"><h4 id="Capa 1" class="header"><a href="#Redes Neuronales-Retropropagación-Ejemplo de retropropagación-Capa 1">Capa 1</a></h4></div>
-
-<p>
-Para la capa \(1\), volvemos a expandir la función de coste para ver cómo aplicar la regla de la cadena:
-</p>
-
-
-\begin{align}
-J(\Theta) = E^{(3)}(g(\Theta^{(3)}\cdot g(\Theta^{(2)} \cdot a^{(1)}))) = E^{(3)}(g(\Theta^{(3)}\cdot g(\Theta^{(2)} \cdot g(z^{(1)})))) =
-\end{align}
-
-\begin{align}
-= E^{(3)}(g(\Theta^{(3)}\cdot g(\Theta^{(2)} \cdot g(\Theta^{(1)} x_j))))
-\end{align}
-
-<p>
-Para simplificar la notación: sea, para cada nodo \(l\) de la capa \(2\)
-</p>
-
-\begin{align}
-\Delta^{(2)}_{lj} = \Delta_{1j}^{(3)}\frac{\delta z_1^{(3)}}{\delta a_{lj}^{(2)}}\frac{\delta a_{lj}^{(2)}}{\delta z_{lj}^{(2)}}
-\end{align}
-
-<hr />
-
-<p>
-Aplicamos la regla de la cadena, tal que para cada nodo \(l\) de la capa \(2\):
-</p>
-
-
-\begin{align}
-\frac{\delta J(\Theta)}{\delta \theta_{it}^{(1)}} = \sum_{l=1}^{S_{(2)}} \Delta_{lj}^{(2)}\frac{\delta z_{lj}^{(2)}}{\delta a_{lj}^{(1)}}\frac{\delta a_{lj}^{(1)}}{\delta z_{lj}^{(1)}}\frac{\delta z_{lj}^{(1)}}{\delta \theta_{it}^{(1)}}
-\end{align}
-
-<p>
-Si vectorizamos:
-</p>
-
-\begin{align}
-\frac{\delta J(\Theta)}{\delta \theta_{i}^{(1)}} = \Delta_{j}^{(2)}\frac{\delta z_{j}^{(2)}}{\delta a_{j}^{(1)}}\frac{\delta a_{j}^{(1)}}{\delta z_{j}^{(1)}}\frac{\delta z_{j}^{(1)}}{\delta \theta_{i}^{(1)}}
-\end{align}
-
-<p>
-El procedimiento se ilustra en la siguiente figura:
-</p>
-
-<p>
-<img src="./assets/backprop.svg" alt="Retropropagación" style="width:1000px;height:600px;" />
-</p>
 
 <hr />
 
@@ -580,6 +468,46 @@ El procedimiento se ilustra en la siguiente figura:
 
 <p>
 <a href="Partes del algoritmo en python.html">Partes del algoritmo en python</a>
+</p>
+
+<div id="Redes Neuronales-Algoritmo-Notación"><h3 id="Notación" class="header"><a href="#Redes Neuronales-Algoritmo-Notación">Notación</a></h3></div>
+
+<ul>
+<li>
+Época: iteración en el entrenamiento
+
+<li>
+Pesos (\(w_j^k, b_j^k\)): se inicializan de forma aletoria (evitar simetría) y con valores bajos.
+
+<li>
+Criterios de finalización
+
+<ul>
+<li>
+\(J\) o gradiente de \(J\) inferior a un umbral
+
+<li>
+Número máximo de épocas
+
+</ul>
+<li>
+Velocidad de apredizaje \(\mu\) intermedia: evita lentitud en las oscilaciones
+
+<li>
+Caída en mínimos locales que pueden tener \(J\) elevado. Es por ello que se ejecuta varias veces el entrenamiento y se selecciona aquel que obtenga mejor resultado.
+
+<li>
+Actualización de pesos patrón a patrón en lugar de tras computar el error sobre todo el dataset. Puede evitar mínimos locales y converge antes.
+
+<li>
+Función de activación sigmoide para clasificación o linear para regresión
+
+</ul>
+
+<div id="Redes Neuronales-Algoritmo-Pseudocódigo"><h3 id="Pseudocódigo" class="header"><a href="#Redes Neuronales-Algoritmo-Pseudocódigo">Pseudocódigo</a></h3></div>
+
+<p>
+<img src="./assets/nn_pseudocodigo.png" alt="Pseudocódigo Red Neuronal" />
 </p>
 </div>
   </body>

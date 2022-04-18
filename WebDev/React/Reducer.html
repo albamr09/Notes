@@ -1,0 +1,98 @@
+<html>
+  <head>
+    <link rel="Stylesheet" type="text/css" href="https://albamr09.github.io/style.css" />
+    <title>Reducer</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <!-- For LaTeX -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script
+      id="MathJax-script"
+      async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+    ></script>
+    <!-- Code Highlight -->
+    <link
+      rel="Stylesheet"
+      type="text/css"
+      href="https://albamr09.github.io/atom-one-light.min.css"
+    />
+  </head>
+  <body>
+    <a
+      href="https://albamr09.github.io/"
+      style="
+        color: white;
+        font-weight: bold;
+        text-decoration: none;
+        padding: 3px 6px;
+        border-radius: 3px;
+        background-color: #1e90ff;
+        text-transform: uppercase;
+      "
+      >Index</a
+    >
+    <hr />
+    <div class="content">
+<p>
+<a href="index.html">Back</a>
+</p>
+
+<div id="Reducers and Actions"><h1 id="Reducers and Actions" class="header"><a href="#Reducers and Actions">Reducers and Actions</a></h1></div>
+
+<hr />
+
+<p>
+Let's now see an example of a <code>reducer</code>, more concretely the <code>reducer</code> of the <code>user</code> slice we defined <a href="Index.html">previously</a>:
+</p>
+
+<pre javascript>
+// Use create slice to define the slice
+import { createSlice } from "@reduxjs/toolkit";
+
+// Define initial state
+const initialStateValue = { name: "", age: 0, email: "" };
+
+export const userSlice = createSlice({
+  // Name of slice
+  name: "user",
+  // Initial state of reducer
+  initialState: { value: initialStateValue },
+  // Possible reducers
+  reducers: {
+    login: (state, action) =&gt; {
+      state.value = action.payload;
+    },
+
+    logout: (state) =&gt; {
+      state.value = initialStateValue;
+    },
+  },
+});
+
+// De-structure actions
+export const { login, logout } = userSlice.actions;
+
+// Export reducer
+export default userSlice.reducer;
+</pre>
+
+<p>
+We now 
+</p>
+</div>
+  </body>
+  <script
+    type="text/javascript"
+    src="https://albamr09.github.io/highlight.min.js"
+  ></script>
+  <script
+    type="text/javascript"
+    src="https://albamr09.github.io/zepto.min.js"
+  ></script>
+  <script type="text/javascript">
+    $("pre").each(function (index, item) {
+      $(item).html("<code>" + $(item).html() + "</code>");
+    });
+    hljs.initHighlightingOnLoad();
+  </script>
+</html>

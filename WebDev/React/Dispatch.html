@@ -1,0 +1,100 @@
+<html>
+  <head>
+    <link rel="Stylesheet" type="text/css" href="https://albamr09.github.io/style.css" />
+    <title>Dispatch</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <!-- For LaTeX -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script
+      id="MathJax-script"
+      async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+    ></script>
+    <!-- Code Highlight -->
+    <link
+      rel="Stylesheet"
+      type="text/css"
+      href="https://albamr09.github.io/atom-one-light.min.css"
+    />
+  </head>
+  <body>
+    <a
+      href="https://albamr09.github.io/"
+      style="
+        color: white;
+        font-weight: bold;
+        text-decoration: none;
+        padding: 3px 6px;
+        border-radius: 3px;
+        background-color: #1e90ff;
+        text-transform: uppercase;
+      "
+      >Index</a
+    >
+    <hr />
+    <div class="content">
+<p>
+<a href="index.html">Back</a>
+</p>
+
+<div id="Dispatch"><h1 id="Dispatch" class="header"><a href="#Dispatch">Dispatch</a></h1></div>
+
+<hr />
+
+<p>
+In order to dispatch actions in our reducers we do as follows:
+</p>
+
+<pre javascript>
+import React from "react";
+// Get dispatch hook
+import { useDispatch } from "react-redux";
+// Get actions
+import { login, logout } from "../features/user";
+
+function Login() {
+  // Initialize dispatch hook
+  const dispatch = useDispatch();
+
+  return (
+    &lt;div&gt;
+      &lt;button
+        onClick={() =&gt; {
+          // Dispatch login action
+          dispatch(login({ name: "Pedro", age: 20, email: "pedro@gmail.com" }));
+        }}
+      &gt;
+        Login
+      &lt;/button&gt;
+
+      &lt;button
+        onClick={() =&gt; {
+          // Dispatch logout action
+          dispatch(logout());
+        }}
+      &gt;
+        LOGOUT
+      &lt;/button&gt;
+    &lt;/div&gt;
+  );
+}
+
+export default Login;
+</pre>
+</div>
+  </body>
+  <script
+    type="text/javascript"
+    src="https://albamr09.github.io/highlight.min.js"
+  ></script>
+  <script
+    type="text/javascript"
+    src="https://albamr09.github.io/zepto.min.js"
+  ></script>
+  <script type="text/javascript">
+    $("pre").each(function (index, item) {
+      $(item).html("<code>" + $(item).html() + "</code>");
+    });
+    hljs.initHighlightingOnLoad();
+  </script>
+</html>

@@ -1,0 +1,85 @@
+<html>
+  <head>
+    <link rel="Stylesheet" type="text/css" href="https://albamr09.github.io/style.css" />
+    <title>Get State</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <!-- For LaTeX -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script
+      id="MathJax-script"
+      async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+    ></script>
+    <!-- Code Highlight -->
+    <link
+      rel="Stylesheet"
+      type="text/css"
+      href="https://albamr09.github.io/atom-one-light.min.css"
+    />
+  </head>
+  <body>
+    <a
+      href="https://albamr09.github.io/"
+      style="
+        color: white;
+        font-weight: bold;
+        text-decoration: none;
+        padding: 3px 6px;
+        border-radius: 3px;
+        background-color: #1e90ff;
+        text-transform: uppercase;
+      "
+      >Index</a
+    >
+    <hr />
+    <div class="content">
+<p>
+<a href="index.html">Back</a>
+</p>
+
+<div id="Get State"><h1 id="Get State" class="header"><a href="#Get State">Get State</a></h1></div>
+
+<hr />
+
+<p>
+In order to access the state saved in our state, we do the following:
+</p>
+
+<pre javascript>
+import React from "react";
+import { useSelector } from "react-redux";
+
+function Profile() {
+  // Use the useSelector hook
+  const user = useSelector((state) =&gt; state.user.value);
+
+  return (
+    &lt;div style={{ color: themeColor }}&gt;
+      &lt;h1&gt; Profile Page&lt;/h1&gt;
+      &lt;!--Obtain the user state--&gt;
+      &lt;p&gt; Name: {user.name} &lt;/p&gt;
+      &lt;p&gt; Age: {user.age}&lt;/p&gt;
+      &lt;p&gt; Email: {user.email}&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}
+
+export default Profile;
+</pre>
+</div>
+  </body>
+  <script
+    type="text/javascript"
+    src="https://albamr09.github.io/highlight.min.js"
+  ></script>
+  <script
+    type="text/javascript"
+    src="https://albamr09.github.io/zepto.min.js"
+  ></script>
+  <script type="text/javascript">
+    $("pre").each(function (index, item) {
+      $(item).html("<code>" + $(item).html() + "</code>");
+    });
+    hljs.initHighlightingOnLoad();
+  </script>
+</html>
