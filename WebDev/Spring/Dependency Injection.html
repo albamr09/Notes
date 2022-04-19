@@ -1,0 +1,177 @@
+<html>
+  <head>
+    <link rel="Stylesheet" type="text/css" href="https://albamr09.github.io/style.css" />
+    <title>Dependency Injection</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <!-- For LaTeX -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script
+      id="MathJax-script"
+      async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+    ></script>
+    <!-- Code Highlight -->
+    <link
+      rel="Stylesheet"
+      type="text/css"
+      href="https://albamr09.github.io/atom-one-light.min.css"
+    />
+  </head>
+  <body>
+    <a
+      href="https://albamr09.github.io/"
+      style="
+        color: white;
+        font-weight: bold;
+        text-decoration: none;
+        padding: 3px 6px;
+        border-radius: 3px;
+        background-color: #1e90ff;
+        text-transform: uppercase;
+      "
+      >Index</a
+    >
+    <hr />
+    <div class="content">
+<p>
+<a href="index.html">Back</a>
+</p>
+
+<div id="Dependency Injection"><h1 id="Dependency Injection" class="header"><a href="#Dependency Injection">Dependency Injection</a></h1></div>
+
+<hr />
+
+<p>
+The dependencies of the objects are managed by the Spring container object factory:
+</p>
+
+<p>
+<img src="./assets/dependency_injection.png" alt="Dependency Injection" style="width:700px;height:400px;" />
+</p>
+
+<p>
+So instead of having to build the object and all of its dependencies, the spring factory will do this work for you.
+</p>
+
+<div id="Dependency Injection-Injection Types"><h2 id="Injection Types" class="header"><a href="#Dependency Injection-Injection Types">Injection Types</a></h2></div>
+
+<p>
+There are several injection types in Spring. The more common are:
+</p>
+
+<ul>
+<li>
+Constructor Injection
+
+<li>
+Setter Injection
+
+</ul>
+
+<hr />
+
+<p>
+Now we will show an example where the <code>BaseballCoach</code> has <code>FortuneService</code> as a dependency. So, first we create the dependency interface as follows:
+</p>
+
+<pre java>
+package com.springdemo;
+
+public interface FortuneService {
+
+	public String getFortune();
+	
+}
+</pre>
+
+<p>
+Next we create the dependency class than implements the interface:
+</p>
+
+
+<pre java>
+package com.springdemo;
+
+public class HappyFortuneService implements FortuneService {
+
+	@Override
+	public String getFortune() {
+		return "Today is your lucky day!";
+	}
+
+}
+</pre>
+
+<p>
+Now create a constructor for the dependency in the class that has the dependency
+</p>
+
+<pre java>
+package com.luv2code.springdemo;
+
+public class BaseballCoach implements Coach {
+
+	// define a private field for the dependency
+	private FortuneService fortuneService;
+	
+	// define a constructor for dependency injection
+	public BaseballCoach(FortuneService theFortuneService) {
+		fortuneService = theFortuneService;
+	}
+	
+	@Override
+	public String getDailyWorkout() {
+		return "Spend 30 minutes on batting practice";
+	}
+
+	@Override
+	public String getDailyFortune() {		
+		// use my fortuneService to get a fortune		
+		return fortuneService.getFortune();
+	}
+}
+</pre>
+
+<p>
+Finally define the dependency in the configuration file:
+</p>
+
+<pre xml>
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd"&gt;
+    &lt;!-- Define your beans here --&gt;
+    &lt;!-- define the dependency --&gt;
+    &lt;bean id="myFortuneService"
+      class="com.luv2code.springdemo.HappyFortuneService"&gt;
+    &lt;/bean&gt;
+    &lt;!-- Bean with the dependency --&gt;
+    &lt;bean id="myCoach"
+      class="com.luv2code.springdemo.TrackCoach"&gt;	
+      &lt;!-- Set up constructor injection, note ref=id of bean --&gt;
+      &lt;constructor-arg ref="myFortuneService" /&gt;
+    &lt;/bean&gt;
+&lt;/beans&gt;
+</pre>
+</div>
+  </body>
+  <script
+    type="text/javascript"
+    src="https://albamr09.github.io/highlight.min.js"
+  ></script>
+  <script
+    type="text/javascript"
+    src="https://albamr09.github.io/zepto.min.js"
+  ></script>
+  <script type="text/javascript">
+    $("pre").each(function (index, item) {
+      $(item).html("<code>" + $(item).html() + "</code>");
+    });
+    hljs.initHighlightingOnLoad();
+  </script>
+</html>
