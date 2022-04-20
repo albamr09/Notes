@@ -240,11 +240,22 @@ That is, we evaluate how well we are doing in the worst example.
 <div id="SVM-Functional Margin-Normalizing the Functional Margin"><h3 id="Normalizing the Functional Margin" class="header"><a href="#SVM-Functional Margin-Normalizing the Functional Margin">Normalizing the Functional Margin</a></h3></div>
 
 <p>
-Note that the functional margin is very easy to cheat (to increase its value with any meaningful change to the decision boundary). 
+Note that the functional margin is very easy to cheat (to increase its value with any meaningful change to the decision boundary). Given our definition for \(g\):
+</p>
+
+\begin{align}
+g = \begin{cases}
+1, &amp; \text{ if } z \geq 0 \\
+-1, &amp; \text{ otherwise }
+\end{cases}
+\end{align}
+
+<p>
+It follows that  \(h_{w,b}(x^{(i)}) = g(2w^Tx^{(i)} + 2b) = g(w^Tx^{(i)} + b)\), because what matters is the sign, not the magnitude.
 </p>
 
 <p>
-For example if you scale \(w\) and \(b\) by a factor of \(n\) where \(n\) is a positive number then \(\gamma \) increases because:
+However, if you scale \(w\) and \(b\) by a factor of \(n\) where \(n\) is a positive number then \(\gamma \) increases because:
 </p>
 
 \begin{align}
@@ -320,6 +331,59 @@ every example \(x\) that lies to the right of the line satisfies \(w^Tx + b &gt;
 <p>
 Furthermore the geometric margin with respect to a single example \((x^{(i)}, y^{(i)})\) is the euclidean distance between the point \((x^{(i)}, y^{(i)})\) and the line we have defined as \(w^Tx + b = 0\).
 </p>
+
+<div id="SVM-Geometric Margin-Euclidean distance to the decision boundary"><h3 id="Euclidean distance to the decision boundary" class="header"><a href="#SVM-Geometric Margin-Euclidean distance to the decision boundary">Euclidean distance to the decision boundary</a></h3></div>
+
+<p>
+The decision boundary corresponding to (w, b) is shown, along with the vector w. Note that w is orthogonal (at 90º) to the separating hyperplane.
+</p>
+
+<p>
+<img src="./assets/distance_geometric_margin.png" alt="Euclidean distance to the Decision Boundary" style="transform:translate(22vw, 0);" />
+</p>
+
+<p>
+Consider the point at \(A\), which represents the example \(x^{(i)}\) with \(y^{(i)} = 1\). Its distance to the decision boundary, denoted by \(\gamma^{(i)}\), is given by the line segment \(AB\).
+</p>
+
+<p>
+How do we find \(\gamma^{(i)}\):
+</p>
+
+<ul>
+<li>
+We know \(\frac{w}{||w||}\) is a unit length vector pointing to the same direction as \(w\).
+
+<li>
+Also \(A = x^{(i)}\)
+
+</ul>
+
+<p>
+We also know that the vector between points \(A\) and \(B\) is defined like \(A - B\), in this scenario, \(A - B = \gamma^{(i)}\frac{w}{||w||}\), where \(\gamma^{(i)}\) is the length of the vector and \(\frac{w}{||w||}\) is the direction of the vector.
+</p>
+
+<ul>
+<li>
+Thus if we solve for \(B\), \(B = x^{(i)} - \gamma^{(i)}\frac{w}{||w||}\)
+
+<li>
+Furthermore, \(B\) lies on the decision boundary, therefore:
+
+</ul>
+
+\begin{align}
+w^T(B) + b = 0 \rightarrow w^T\left(x^{(i)} - \gamma^{(i)}\frac{w}{||w||}\right) + b = 0
+\end{align}
+
+<p>
+Solving for \(y^{(i)}\) yields:
+</p>
+
+\begin{align}
+\gamma^{(i)} = \frac{w^Tx^{(i)} + b}{||w||} = \left(\frac{w}{||w||}\right)^Tx(i) + \frac{b}{||w||}
+\end{align}
+
 
 <div id="SVM-Geometric Margin-Formal definition"><h3 id="Formal definition" class="header"><a href="#SVM-Geometric Margin-Formal definition">Formal definition</a></h3></div>
 
@@ -397,8 +461,38 @@ subject to
 This will cause the maximization of the geometric margin with respect to the training set. The restriction means that we want to maximize \(\gamma\) while having every example have a geometric margin of at least \(\gamma\).
 </p>
 
+<hr />
+
 <p>
-Because this is a non-convex problem, we re-write it as follows:
+Because this is a non-convex problem, we will transform it. Given \(\gamma = \frac{\hat{\gamma}}{||w||}\), then \(\gamma \cdot ||w|| = \hat{\gamma}\), and so if we multiply in the subject both sides by \(||w||\):
+</p>
+
+\begin{align}
+\frac{y^{(i)}(w^Tx + b)}{||w||} \cdot ||w|| \geq \gamma \cdot ||w|| \Leftrightarrow y^{(i)}(w^Tx + b) \geq \hat{\gamma}
+\end{align}
+
+<p>
+and the optimization problem can be re-written as:
+</p>
+
+\begin{align}
+\underset{\hat{\gamma}, w, b}{\max} \frac{\hat{\gamma}}{||w||}
+\end{align}
+
+<p>
+subject to
+</p>
+
+\begin{align}
+y^{(i)}(w^Tx + b) \geq \hat{\gamma}
+\end{align}
+
+<p>
+However, we are still stuck with a non-convex objective \(\frac{\hat{\gamma}}{||w||}\). Because, as we've said <a href="SVM.html#SVM-Functional Margin-Normalizing the Functional Margin">previously</a> scaling the functional margin (changing the magnitude of \(w^Tx + b\)) does not change the decision boundary itself, we will add an scaling constraint that the functional margin of \(w, b\) with respect to the training set must be 1: \(\hat{\gamma} = 1\) 
+</p>
+
+<p>
+Observe, now, that maximizing \(\frac{\hat{\gamma}}{||w||} = \frac{1}{||w||}\) is like minimizing \(||w||^2\), we re-write the optimization problem as follows:
 </p>
 
 \begin{align}
