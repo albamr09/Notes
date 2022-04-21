@@ -57,6 +57,14 @@
 <li>
 <a href="SVM.html#SVM-Optimal Margin Classifier">Optimal Margin Classifier</a>
 
+<li>
+<a href="SVM.html#SVM-SVM">SVM</a>
+
+<ol>
+<li>
+<a href="SVM.html#SVM-SVM-Kernels">Kernels</a>
+
+</ol>
 </ol>
 
 <hr />
@@ -133,293 +141,17 @@ Also now the hypothesis function is defined as: \(h_{w,b}(x) = g(w^Tx + b) = g((
 
 <div id="SVM-Functional Margin"><h2 id="Functional Margin" class="header"><a href="#SVM-Functional Margin">Functional Margin</a></h2></div>
 
-<div id="SVM-Functional Margin-Intuition"><h3 id="Intuition" class="header"><a href="#SVM-Functional Margin-Intuition">Intuition</a></h3></div>
-
 <p>
-The <span id="SVM-Functional Margin-Intuition-Functional Margin"></span><strong id="Functional Margin">Functional Margin</strong> describes how accurately do we classify an example. For example, for binary classification, given an example x:
+<a href="Functional Margin.html">Functional Margin</a>
 </p>
 
-\begin{align}
-h_\Theta(x) = g(\Theta x) =
-\begin{cases}
-\text{ predict } 1 &amp; \text{ if } \Theta^T x \geq 0, \text{ that is } h_\Theta(x)=g(\Theta x) \geq 0.5\\
-\text{ predict } 0 &amp; \text{ otherwise } \\
-\end{cases}
-\end{align}
-
-<p>
-Let's distinguish between the two cases when classifying an example \(x^{(i)}\):
-</p>
-
-<ul>
-<li>
-(1) If \(y^{(i)} = 1\), then we want \(h_\Theta(x) = g(\Theta x) \approx 1\), which means we want \(\Theta \cdot x &gt;&gt; 0\). 
-
-<li>
-(2) If \(y^{(i)} = 0\), then we want \(h_\Theta(x) = g(\Theta x) \approx 0\), which means we want \(\Theta \cdot x &lt;&lt; 0\). 
-
-</ul>
-
-<p>
-As we can see in the following graph, the bigger \(z = \Theta x\) the closer \(g(z)\) is to one and vice versa. 
-</p>
-
-<p>
-<img src="./assets/sigmoid_function_graph.png" alt="Sigmoid Function Graph" style="transform: translate(20vw, 0%)" />
-</p>
-
-<div id="SVM-Functional Margin-Formal Definition"><h3 id="Formal Definition" class="header"><a href="#SVM-Functional Margin-Formal Definition">Formal Definition</a></h3></div>
-
-<p>
-The functional margin of the hyperplane defined by \((w, b)\) with respect to the example \((x^{(i)}, y^{(i)})\) is defined as:
-</p>
-
-\begin{align}
-\hat{\gamma}^{(i)} = y^{(i)}(w^Tx^{(i)}+b)
-\end{align}
-
-<p>
-So, if we modify slightly the two statements above and use the new notation for SVMs:
-</p>
-
-<ul>
-<li>
-If \(y^{(i)} = 1\), then we want \(w^T \cdot x + b &gt;&gt; 0\). 
-
-<li>
-If \(y^{(i)} = 0\), then we want \(w^T \cdot x + b &lt;&lt; 0\). 
-
-</ul>
-
-<p>
-The combination of these two declarations yields the definition of the functional margin. Why?, well:
-</p>
-
-<ul>
-<li>
-When \(y^{(i)}\) is positive, we want to have \(w^Tx^{(i)} + b &gt;&gt; 0\) by (1), so \(\hat{\gamma}^{(i)}\) will be large, because both values are positive
-
-<li>
-When \(y^{(i)}\) is negative, we want to have \(w^Tx^{(i)} + b &lt;&lt; 0\) by (2), so \(\hat{\gamma}^{(i)}\) will be large, because both values are negative
-
-</ul>
-
-<hr />
-
-<p>
-So, given an example \(x^{(i)}\), if \(\hat{\gamma}^{(i)} &gt; 0\) that means either
-</p>
-
-<ul>
-<li>
-\(y^{(i)} = 1\) and \(w^Tx + b &gt; 0\) or 
-
-<li>
-\(y^{(i)} = -1\) and \(w^Tx + b &lt; 0\)
-
-</ul>
-
-<p>
-which shows that the classification is correct.
-</p>
-
-<div id="SVM-Functional Margin-Evaluation"><h3 id="Evaluation" class="header"><a href="#SVM-Functional Margin-Evaluation">Evaluation</a></h3></div>
-
-<p>
-To evaluate the functional margin with respect to the training set we make use of the worst case notion:
-</p>
-
-\begin{align}
-\hat{\gamma} = \underset{i}{\min} \hat{\gamma}^{(i)} 
-\end{align}
-
-<p>
-That is, we evaluate how well we are doing in the worst example.
-</p>
-
-<div id="SVM-Functional Margin-Normalizing the Functional Margin"><h3 id="Normalizing the Functional Margin" class="header"><a href="#SVM-Functional Margin-Normalizing the Functional Margin">Normalizing the Functional Margin</a></h3></div>
-
-<p>
-Note that the functional margin is very easy to cheat (to increase its value with any meaningful change to the decision boundary). Given our definition for \(g\):
-</p>
-
-\begin{align}
-g = \begin{cases}
-1, &amp; \text{ if } z \geq 0 \\
--1, &amp; \text{ otherwise }
-\end{cases}
-\end{align}
-
-<p>
-It follows that  \(h_{w,b}(x^{(i)}) = g(2w^Tx^{(i)} + 2b) = g(w^Tx^{(i)} + b)\), because what matters is the sign, not the magnitude.
-</p>
-
-<p>
-However, if you scale \(w\) and \(b\) by a factor of \(n\) where \(n\) is a positive number then \(\gamma \) increases because:
-</p>
-
-\begin{align}
-\hat{\gamma}^{(i)} = (w^Tx + b) 
-\end{align}
-
-<p>
-so,
-</p>
-
-\begin{align}
-n \cdot \hat{\gamma}^{(i)} = n \cdot (w^Tx + b) 
-\end{align}
-
-<p>
-where,
-</p>
-
-\begin{align}
-\hat{\gamma}^{(i)} &lt; n \cdot \hat{\gamma}^{(i)} 
-\end{align}
-
-<p>
-One way to avoid this is to normalize the length of the parameters, that is either:
-</p>
-
-<ul>
-<li>
-Add a constraint where \(||w|| = 1\) or
-
-<li>
-Set \((w, b)\) to be \((\frac{w}{||w||}, \frac{b}{||b||})\)
-
-</ul>
-
-<p>
-In both cases we are re-scaling the parameters.
-</p>
 
 <div id="SVM-Geometric Margin"><h2 id="Geometric Margin" class="header"><a href="#SVM-Geometric Margin">Geometric Margin</a></h2></div>
 
-<div id="SVM-Geometric Margin-Intuition"><h3 id="Intuition" class="header"><a href="#SVM-Geometric Margin-Intuition">Intuition</a></h3></div>
-
 <p>
-First of all, let's assume we have a dataset that is linearly separable like:
+<a href="Geometric Margin.html">Geometric Margin</a>
 </p>
 
-<p>
-<img src="./assets/geometric_margin.png" alt="Geometric Margin" style="width:400px;height:300px;transform: translate(22vw,0%)" />
-</p>
-
-<p>
-Here we have two examples of two decision boundaries that do classify correctly all of the samples. However the red one looks worse than the green one. 
-</p>
-
-<p>
-That is because for the red one there are some examples that are very close to the boundary compared to the rest. Whereas for the green one there is a bigger separation.
-</p>
-
-<p>
-So, first we define a line by the equation \(w^Tx + b = 0\), therefore:
-</p>
-
-<ul>
-<li>
-every example \(x\) that lies to the left of the line satisfies \(w^Tx + b &lt; 0\) and
-
-<li>
-every example \(x\) that lies to the right of the line satisfies \(w^Tx + b &gt; 0\)
-
-</ul>
-
-<p>
-Furthermore the geometric margin with respect to a single example \((x^{(i)}, y^{(i)})\) is the euclidean distance between the point \((x^{(i)}, y^{(i)})\) and the line we have defined as \(w^Tx + b = 0\).
-</p>
-
-<div id="SVM-Geometric Margin-Euclidean distance to the decision boundary"><h3 id="Euclidean distance to the decision boundary" class="header"><a href="#SVM-Geometric Margin-Euclidean distance to the decision boundary">Euclidean distance to the decision boundary</a></h3></div>
-
-<p>
-The decision boundary corresponding to (w, b) is shown, along with the vector w. Note that w is orthogonal (at 90º) to the separating hyperplane.
-</p>
-
-<p>
-<img src="./assets/distance_geometric_margin.png" alt="Euclidean distance to the Decision Boundary" style="transform:translate(22vw, 0);" />
-</p>
-
-<p>
-Consider the point at \(A\), which represents the example \(x^{(i)}\) with \(y^{(i)} = 1\). Its distance to the decision boundary, denoted by \(\gamma^{(i)}\), is given by the line segment \(AB\).
-</p>
-
-<p>
-How do we find \(\gamma^{(i)}\):
-</p>
-
-<ul>
-<li>
-We know \(\frac{w}{||w||}\) is a unit length vector pointing to the same direction as \(w\).
-
-<li>
-Also \(A = x^{(i)}\)
-
-</ul>
-
-<p>
-We also know that the vector between points \(A\) and \(B\) is defined like \(A - B\), in this scenario, \(A - B = \gamma^{(i)}\frac{w}{||w||}\), where \(\gamma^{(i)}\) is the length of the vector and \(\frac{w}{||w||}\) is the direction of the vector.
-</p>
-
-<ul>
-<li>
-Thus if we solve for \(B\), \(B = x^{(i)} - \gamma^{(i)}\frac{w}{||w||}\)
-
-<li>
-Furthermore, \(B\) lies on the decision boundary, therefore:
-
-</ul>
-
-\begin{align}
-w^T(B) + b = 0 \rightarrow w^T\left(x^{(i)} - \gamma^{(i)}\frac{w}{||w||}\right) + b = 0
-\end{align}
-
-<p>
-Solving for \(y^{(i)}\) yields:
-</p>
-
-\begin{align}
-\gamma^{(i)} = \frac{w^Tx^{(i)} + b}{||w||} = \left(\frac{w}{||w||}\right)^Tx(i) + \frac{b}{||w||}
-\end{align}
-
-
-<div id="SVM-Geometric Margin-Formal definition"><h3 id="Formal definition" class="header"><a href="#SVM-Geometric Margin-Formal definition">Formal definition</a></h3></div>
-
-<p>
-The geometric margin of the hyperplane \((w, b)\) with respect to \((x^{(i)}, y^{(i)})\) is defined as:
-</p>
-
-\begin{align}
-\gamma^{(i)} = \frac{w^T x^{(i)} + b}{||w||}
-\end{align}
-
-<p>
-This is the definition for a positive example (\(y^{(i)} = 1\)), and measures the euclidean distance from the decision boundary to the example \((x^{(i)}, y^{(i)})\). 
-</p>
-
-<p>
-If we generalize, as to compute the geometric margin for both positive and negative examples:
-</p>
-
-\begin{align}
-\gamma^{(i)} = \frac{y^{(i)} (w^T x^{(i)} + b)}{||w||}
-\end{align}
-
-<div id="SVM-Geometric Margin-Evaluation"><h3 id="Evaluation" class="header"><a href="#SVM-Geometric Margin-Evaluation">Evaluation</a></h3></div>
-
-<p>
-To evaluate the geometric margin with respect to the training set we make use of the worst case notion:
-</p>
-
-\begin{align}
-\gamma = \underset{i}{\min} \gamma^{(i)} 
-\end{align}
-
-<p>
-That is, we evaluate how well we are doing in the worst example.
-</p>
 
 <div id="SVM-Relationship between Functional Margin and Geometric Margin"><h2 id="Relationship between Functional Margin and Geometric Margin" class="header"><a href="#SVM-Relationship between Functional Margin and Geometric Margin">Relationship between Functional Margin and Geometric Margin</a></h2></div>
 
@@ -434,78 +166,139 @@ As you may have picked up we can stablish an equality between both margins:
 <div id="SVM-Optimal Margin Classifier"><h2 id="Optimal Margin Classifier" class="header"><a href="#SVM-Optimal Margin Classifier">Optimal Margin Classifier</a></h2></div>
 
 <p>
-We use this classifier to categorize datasets that are perfectly separable, that is to say, we use it over data that is linearly separable. This classifier will help us find the green line we saw in the geometric margin.
+<a href="Optimal Margin Classifier.html">Optimal Margin Classifier</a>
 </p>
 
-<p>
-What the optimal margin classifier does is choose the parameters \(w, b\) that maximize \(\gamma\)
-</p>
+<div id="SVM-SVM"><h2 id="SVM" class="header"><a href="#SVM-SVM">SVM</a></h2></div>
+
+<div id="SVM-SVM-Kernels"><h3 id="Kernels" class="header"><a href="#SVM-SVM-Kernels">Kernels</a></h3></div>
 
 <p>
-One way to solve this optimization problem is:
+To apply kernels first we will lay out the kernel trick:
 </p>
+
+<ul>
+<li>
+Write the algorithm in terms of the inner products of the training examples \(\langle x^{(i)}, x^{(j)} \rangle=(\langle x, z \rangle)\) 
+
+<li>
+Let there be a mapping \(x \rightarrow \phi(x)\), where \(\phi(x)\) is a high dimensional feature vector.
+
+<li>
+Find a way to compute \(K(x, z) = \phi(x)^T\phi(z)\), even if \(x, z\) are very high dimensional features vectors (which would be very computationally expensive). Where \(K(x, z)\) is denoted as the kernel function
+
+<li>
+Replace \(\langle x, z \rangle\) with \(K(x, z)\)
+
+</ul>
+
+<div id="SVM-SVM-Kernels-Kernel Examples"><h4 id="Kernel Examples" class="header"><a href="#SVM-SVM-Kernels-Kernel Examples">Kernel Examples</a></h4></div>
+
+<ul>
+<li>
+Given \(x, z \in \mathbb{R}^n\), where:
+
+</ul>
 
 \begin{align}
-\underset{\gamma, w, b}{\max} \gamma
+x = \begin{bmatrix}
+x_1 \\
+\vdots \\ 
+x_n \\
+\end{bmatrix}
 \end{align}
 
 <p>
-subject to
+We define the mapping \(\phi(x) \in \mathbb{R}^{n^2}\) as follows:
 </p>
 
 \begin{align}
-\frac{y^{(i)}(w^Tx + b)}{||w||} \geq \gamma
+\phi(x) = \begin{bmatrix}
+x_ix_i \\
+\end{bmatrix}
 \end{align}
 
 <p>
-This will cause the maximization of the geometric margin with respect to the training set. The restriction means that we want to maximize \(\gamma\) while having every example have a geometric margin of at least \(\gamma\).
+\(\forall i, j\) with \(1 \leq i,j \leq n\)
+</p>
+
+<p>
+So we have 
+</p>
+
+\begin{align}
+K(x, z) = \phi(x)^T \phi(z) = \sum_{i=1}^{n^2} \phi(x)_i \phi(z)_i = \sum_{i=1}^n \sum_{j=1}^n (x_ix_j) (z_iz_j)
+\end{align}
+
+<p>
+Which would take \(O(n^2)\) time to compute. But, observe that:
+</p>
+
+\begin{align}
+(x^Tz)^2 = (x^Tz)^T(x^Tz) = \sum_{i=1}^n\sum_{j=1}^n (x_iz_i)(x_jz_j) = \sum_{i=1}^n\sum_{j=1}^n (x_ix_j)(z_iz_j)
+\end{align}
+
+<p>
+whick takes \(O(n)\) time to compute.
+</p>
+
+<p>
+So we conclude that the kernel can be defined as \(K(x, z) = (x^Tz)^n\)
 </p>
 
 <hr />
 
-<p>
-Because this is a non-convex problem, we will transform it. Given \(\gamma = \frac{\hat{\gamma}}{||w||}\), then \(\gamma \cdot ||w|| = \hat{\gamma}\), and so if we multiply in the subject both sides by \(||w||\):
-</p>
+<ul>
+<li>
+Given \(x, z \in \mathbb{R}^n\)
 
+<ul>
+<li>
+\(K(x, z) = (x^Tz + c)^2\)
+
+<li>
+Where the mapping function \(\phi\) is defined as: given
+
+</ul>
+</ul>
+  
 \begin{align}
-\frac{y^{(i)}(w^Tx + b)}{||w||} \cdot ||w|| \geq \gamma \cdot ||w|| \Leftrightarrow y^{(i)}(w^Tx + b) \geq \hat{\gamma}
+x = \begin{bmatrix}
+x_1 \\
+x_2 \\
+\end{bmatrix}
 \end{align}
 
 <p>
-and the optimization problem can be re-written as:
+Then:
 </p>
 
 \begin{align}
-\underset{\hat{\gamma}, w, b}{\max} \frac{\hat{\gamma}}{||w||}
+\phi(x) = \begin{bmatrix}
+x_1x_1 \\
+x_1x_2 \\
+x_2x_1 \\
+x_2x_2 \\
+\sqrt{2c}x_1 \\
+\sqrt{2c}x_2 \\
+\end{bmatrix}
 \end{align}
 
-<p>
-subject to
-</p>
+<hr />
 
-\begin{align}
-y^{(i)}(w^Tx + b) \geq \hat{\gamma}
-\end{align}
+<ul>
+<li>
+Given \(x, z \in \mathbb{R}^n\)
 
-<p>
-However, we are still stuck with a non-convex objective \(\frac{\hat{\gamma}}{||w||}\). Because, as we've said <a href="SVM.html#SVM-Functional Margin-Normalizing the Functional Margin">previously</a> scaling the functional margin (changing the magnitude of \(w^Tx + b\)) does not change the decision boundary itself, we will add an scaling constraint that the functional margin of \(w, b\) with respect to the training set must be 1: \(\hat{\gamma} = 1\) 
-</p>
+<ul>
+<li>
+\(K(x, z) = (x^Tz+ c)^d\)
 
-<p>
-Observe, now, that maximizing \(\frac{\hat{\gamma}}{||w||} = \frac{1}{||w||}\) is like minimizing \(||w||^2\), we re-write the optimization problem as follows:
-</p>
+<li>
+Where \(\phi(x)\) contains the \(\binom{n+d}{d}\) combinations of monomials of degree d. (Note: a monomial of degree 3 could be \(x_1x_2x_3\) or \(x_1x_2^2\), etc)
 
-\begin{align}
-\underset{w, b}{\min} ||w||^2
-\end{align}
-
-<p>
-subject to
-</p>
-
-\begin{align}
-y^{(i)}(w^Tx + b) \geq 1
-\end{align}
+</ul>
+</ul>
 </div>
   </body>
   <script
