@@ -34,42 +34,46 @@
     <hr />
     <div class="content">
 <p>
-<a href="../../index.html">Back</a>
+<a href="../index.html">Back</a>
 </p>
 
-<div id="Spring"><h1 id="Spring" class="header"><a href="#Spring">Spring</a></h1></div>
+<div id="Java Annotations"><h1 id="Java Annotations" class="header"><a href="#Java Annotations">Java Annotations</a></h1></div>
 
 <hr />
 
 <p>
-<a href="https://www.spring.io/guides">Spring Docs</a>
+Java Annotations are special labels added to classes. They provide metadata about the class, and can be processed at compile time or run-time for special processing.
 </p>
 
-<div id="Spring-Getting Ready"><h3 id="Getting Ready" class="header"><a href="#Spring-Getting Ready">Getting Ready</a></h3></div>
+<p>
+We use annotations to minimize the <code>XML</code> configuration.
+</p>
+
+<p>
+Spring scans the classes to find <code>Beans</code> and configure them internally (as we have done with the <code>XML</code> configuration).
+</p>
+
+<p>
+In order to use this approach we need to:
+</p>
+
+<ol>
+<li>
+Enable component scanning in our Spring configuration file and
+
+<li>
+Add the <code>@Component</code> annotation to our class
+
+</ol>
+
+<hr />
 
 <ul>
 <li>
-<a href="Spring Framework.html">Spring Framework</a>
+<a href="Inversion of Control.html">Inversion of Control</a>
 
 <li>
-<a href="Set Up.html">Set Up</a>
-
-</ul>
-
-<div id="Spring-First Steps"><h3 id="First Steps" class="header"><a href="#Spring-First Steps">First Steps</a></h3></div>
-
-<ul>
-<li>
-<a href="IoC/Inversion of Control.html">Inversion of Control</a>
-
-<li>
-<a href="Dependency Injection/Dependency Injection.html">Dependency Injection</a>
-
-<li>
-<a href="Bean Scopes/Bean Scopes and Life cycle.html">Bean Scopes and Life cycle</a>
-
-<li>
-<a href="Java Annotations/index.html">Java Annotations</a>
+<a href="Dependency Injection.html">Dependency Injection</a>
 
 </ul>
 </div>
