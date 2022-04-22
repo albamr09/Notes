@@ -1,7 +1,7 @@
 <html>
   <head>
     <link rel="Stylesheet" type="text/css" href="https://albamr09.github.io/style.css" />
-    <title>Setter Injection</title>
+    <title>Method Injection</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <!-- For LaTeX -->
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
@@ -37,11 +37,15 @@
 <a href="Dependency Injection.html">Back</a>
 </p>
 
-<div id="Setter Injection"><h1 id="Setter Injection" class="header"><a href="#Setter Injection">Setter Injection</a></h1></div>
+<div id="Method Injection"><h1 id="Method Injection" class="header"><a href="#Method Injection">Method Injection</a></h1></div>
 
 <hr />
 
-<div id="Setter Injection-Define Dependency as Component"><h2 id="Define Dependency as Component" class="header"><a href="#Setter Injection-Define Dependency as Component">Define Dependency as Component</a></h2></div>
+<p>
+One thing to note is that you can add dependency injection on any method you want, does not have to be a setter method:
+</p>
+
+<div id="Method Injection-Define Dependency as Component"><h2 id="Define Dependency as Component" class="header"><a href="#Method Injection-Define Dependency as Component">Define Dependency as Component</a></h2></div>
 
 <pre java>
 package com.springdemo;
@@ -60,7 +64,7 @@ public class HappyFortuneService implements FortuneService {
 }
 </pre>
 
-<div id="Setter Injection-Specify Dependency"><h2 id="Specify Dependency" class="header"><a href="#Setter Injection-Specify Dependency">Specify Dependency</a></h2></div>
+<div id="Method Injection-Specify Dependency"><h2 id="Specify Dependency" class="header"><a href="#Method Injection-Specify Dependency">Specify Dependency</a></h2></div>
 
 <p>
 We now create a setter method in our class for the injection:
@@ -82,7 +86,7 @@ public class TennisCoach implements Coach {
   // We tell spring to search for beans (classes with @Component annotation) 
   // that implement the FortuneService interface
 	@Autowired
-  public setFortuneService(FortuneService fortuneService){
+  public anyMethod(FortuneService fortuneService){
     this.fortuneService = fortuneService;
   }
 

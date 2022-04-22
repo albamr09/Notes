@@ -1,7 +1,7 @@
 <html>
   <head>
     <link rel="Stylesheet" type="text/css" href="https://albamr09.github.io/style.css" />
-    <title>Dependency Injection</title>
+    <title>index</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <!-- For LaTeX -->
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
@@ -34,26 +34,35 @@
     <hr />
     <div class="content">
 <p>
-<a href="index.html">Back</a>
+<a href="../index.html">Back</a>
 </p>
 
-<div id="Dependency Injection"><h1 id="Dependency Injection" class="header"><a href="#Dependency Injection">Dependency Injection</a></h1></div>
+<div id="Spring Configuration with Java"><h1 id="Spring Configuration with Java" class="header"><a href="#Spring Configuration with Java">Spring Configuration with Java</a></h1></div>
 
 <hr />
 
 <p>
-We will introduce dependency injection with annotation using autowiring:
+We are now going to use <code>Java</code> to configure our application instead of using <code>XML</code>, to do that we follow the next steps:
 </p>
 
 <ul>
 <li>
-Spring looks for a class that matches the attribute type (call or interface) (i.e. FortuneService)
+Create a Java class and annotate as <code>@Configuration</code>
 
 <li>
-Spring will inject it automatically
+Add Component scanning support with <code>@ComponentScan</code> (optional), which is <code>XML</code> we did as:
+<pre xml>
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;beans xmlns="http://www.springframework.org/schema/beans"
+    ....&gt;
+	&lt;!-- add entry to enable component scanning --&gt;
+	&lt;context:component-scan base-package="com.springdemo" /&gt;
+
+&lt;/beans&gt;
+</pre>
 
 <li>
-If there are multiple implementations: tell Spring which specific bean to use with the <code>Qualifier</code> annotation
+In the main app read the Spring Java configuration class
 
 </ul>
 
@@ -61,37 +70,23 @@ If there are multiple implementations: tell Spring which specific bean to use wi
 
 <ul>
 <li>
-<a href="Constructor Injection.html">Constructor Injection</a>
-
-<li>
-<a href="Setter Injection.html">Setter Injection</a>
-
-<li>
-<a href="Method Injection.html">Method Injection</a>
-
-<li>
-<a href="Field Injection.html">Field Injection</a>
-
-<li>
-<a href="Inject using Properties File.html">Inject using Properties File</a>
+<a href="Configuration With Java.html">Configuration With Java</a>
 
 </ul>
 
 <hr />
-
+ 
 <ul>
 <li>
-<a href="Qualifier Annotation.html">Qualifier Annotation</a>
+<a href="Inversion of Control.html">Inversion of Control</a>
+
+<li>
+<a href="Load Properties from File.html">Load Properties from File</a>
+
+<li>
+<a href="Dependency Injection.html">Dependency Injection</a>
 
 </ul>
-
-<hr />
-
-<div id="Dependency Injection-Which dependency to use"><h3 id="Which dependency to use" class="header"><a href="#Dependency Injection-Which dependency to use">Which dependency to use</a></h3></div>
-
-<p>
-Choose a style and stay consistent in your project. You get the same functionality regardless of the type of dependency injection you use.
-</p>
 </div>
   </body>
   <script
