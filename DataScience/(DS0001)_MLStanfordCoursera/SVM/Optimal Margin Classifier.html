@@ -203,6 +203,16 @@ Applying convex optimization theory you can simplify this optimization problem f
 \underset{\alpha}{max} \sum_{i=1}^m \alpha_i - \frac{1}{2} \sum_{i=1}^m\sum_{j=1}^m y^{(i)}y^{(j)}\alpha_i\alpha_j\langle x^{(i)}, x^{(j)}\rangle
 \end{align}
 
+<p>
+subject to
+</p>
+
+\begin{align}
+\alpha_i \geq 0
+\end{align}
+\begin{align}
+\sum_{i=1} y^{(i)}\alpha_i = 0, i=1, \cdots,m
+\end{align}
 <div id="Optimal Margin Classifier-Train the Classifier"><h3 id="Train the Classifier" class="header"><a href="#Optimal Margin Classifier-Train the Classifier">Train the Classifier</a></h3></div>
 
 <p>

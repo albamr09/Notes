@@ -82,6 +82,17 @@
 <li>
 <a href="SVM.html#SVM-L1-Norm Soft Margin SVM">L1-Norm Soft Margin SVM</a>
 
+<ol>
+<li>
+<a href="SVM.html#SVM-L1-Norm Soft Margin SVM-Outliers">Outliers</a>
+
+<li>
+<a href="SVM.html#SVM-L1-Norm Soft Margin SVM-Optimization">Optimization</a>
+
+</ol>
+<li>
+<a href="SVM.html#SVM-Kernel Examples">Kernel Examples</a>
+
 </ol>
 
 <hr />
@@ -380,7 +391,7 @@ Which means that \(K \geq 0\), hence \(K\) is a positive, semi-definite matrix
 <div id="SVM-SVM-Generality of the Kernel Trick"><h3 id="Generality of the Kernel Trick" class="header"><a href="#SVM-SVM-Generality of the Kernel Trick">Generality of the Kernel Trick</a></h3></div>
 
 <p>
-The kernel trick is more algorithms, not only in <code>SVM</code>. Because, if you have any algorithm written in terms of \(\langle x^{(i)}, x^{(j)} \rangle\), you can apply the kernel trick to it. 
+The kernel trick can be applied to more algorithms, not only in <code>SVM</code>. Because, if you have any algorithm written in terms of \(\langle x^{(i)}, x^{(j)} \rangle\), you can apply the kernel trick to it. 
 </p>
 
 <p>
@@ -412,7 +423,7 @@ It may be the case where you map your data to a very high dimensional space, but
 </p>
 
 <p>
-<img src="../../../../../VimWiki/file" />
+<img src="./assets/complex_decision_boundary_svm.png" alt="Complex Desicion Boundary" style="transform:translate(22vw, 0)" />
 </p>
 
 <p>
@@ -453,8 +464,61 @@ With the addition of \(\xi_i\) we are allowing some examples to have a functiona
 </p>
 
 <p>
-<img src="../../../../../VimWiki/file" />
+<img src="./assets/soft_margin.svg" alt="Soft Margin Graphical Representation" style="witdth:500px; height:400px; transform: translate(22vw, 0)" />
 </p>
+
+<div id="SVM-L1-Norm Soft Margin SVM-Outliers"><h3 id="Outliers" class="header"><a href="#SVM-L1-Norm Soft Margin SVM-Outliers">Outliers</a></h3></div>
+
+<p>
+This relaxation on the restriction upong the geometric margin also avoids the following problem. If you have a lot of data that is linearly separable, but you have one outlier the optimal margin classifier allows for the decision boundary to be drastically changed because its optimization is based on the word performing example (which would be the outlier in this case). Thus:
+</p>
+
+<p>
+<img src="./assets/outlier_svm.svg" alt="Outlier SVM" style="width:500px;height:400px;transform:translate(22vw,0)" />
+</p>
+
+<p>
+However, the <code>L1-Norm Soft Margin SVM</code> allows for this example to be classified incorrectly of be close to the decision boundary without changing the boundary which makes it more robuts to outliers.
+</p>
+
+<div id="SVM-L1-Norm Soft Margin SVM-Optimization"><h3 id="Optimization" class="header"><a href="#SVM-L1-Norm Soft Margin SVM-Optimization">Optimization</a></h3></div>
+
+<p>
+<a href="Optimal Margin Classifier.html">Picking up the Optimal Margin Classifier optimization problem</a>, after applying the insight derived from the representer theorem, we have that the only addition needed to implement this algorithm is:
+</p>
+
+\begin{align}
+\underset{\alpha}{max} \sum_{i=1}^m \alpha_i - \frac{1}{2} \sum_{i=1}^m\sum_{j=1}^m y^{(i)}y^{(j)}\alpha_i\alpha_j\langle x^{(i)}, x^{(j)}\rangle
+\end{align}
+
+<p>
+subject to
+</p>
+
+\begin{align}
+\sum_{i=1} y^{(i)}\alpha_i = 0
+\end{align}
+\begin{align}
+0 \leq \alpha_i \leq C, i = 1, \cdots , m
+\end{align}
+
+<p>
+The parameter \(C\) is a parameter your choose and it determines the level of strictness you want your model to have about some examples being misclassified.
+</p>
+
+<div id="SVM-Kernel Examples"><h2 id="Kernel Examples" class="header"><a href="#SVM-Kernel Examples">Kernel Examples</a></h2></div>
+
+<ul>
+<li>
+The Gaussian Kernel: \(K(x, z) = \exp\left(\frac{||x-z||^2}{2\sigma}\right)\)
+
+<li>
+Linear Kernel: \(K(x, z) = \phi(x)^T\phi(z)\), where \(\phi(x) = x\)
+
+<li>
+Polynomial Kernel: \(K(x, z) = (x^Tz)^d\)
+
+</ul>
 </div>
   </body>
   <script
