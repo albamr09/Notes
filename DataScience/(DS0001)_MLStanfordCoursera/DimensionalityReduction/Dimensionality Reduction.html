@@ -1,0 +1,277 @@
+<html>
+  <head>
+    <link rel="Stylesheet" type="text/css" href="https://albamr09.github.io/style.css" />
+    <title>Dimensionality Reduction</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <!-- For LaTeX -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script
+      id="MathJax-script"
+      async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+    ></script>
+    <!-- Code Highlight -->
+    <link
+      rel="Stylesheet"
+      type="text/css"
+      href="https://albamr09.github.io/atom-one-light.min.css"
+    />
+  </head>
+  <body>
+    <a
+      href="https://albamr09.github.io/"
+      style="
+        color: white;
+        font-weight: bold;
+        text-decoration: none;
+        padding: 3px 6px;
+        border-radius: 3px;
+        background-color: #1e90ff;
+        text-transform: uppercase;
+      "
+      >Index</a
+    >
+    <hr />
+    <div class="content">
+<p>
+<a href="../index.html">Back</a>
+</p>
+
+<div id="Dimensionality Reduction"><h1 id="Dimensionality Reduction" class="header"><a href="#Dimensionality Reduction">Dimensionality Reduction</a></h1></div>
+
+<hr />
+
+<p>
+Given examples \(\{x^{(i)}\}_{i=1}^n\) where \(x^{(i)} \in \mathbb{R}^d\), we want to find out if our data lives is a low dimensional space. Look at the next example:
+</p>
+
+<p>
+<img src="./assets/dimensionality_reduction.png" alt="Dimensionality Reduction" style="transform:translate(22vw, 0)" />
+</p>
+
+<p>
+We can see that the two features are correlated, and we can project the points onto a line, reducing the space from two dimensions to one.
+</p>
+
+<p>
+So it might be the case that some features are highly correlated, and so de d-dimensional space can be as a k-dimensional space where \(0 &lt; k &lt; d\):
+</p>
+
+\begin{align}
+\begin{bmatrix}
+x_{11} &amp; \cdots &amp; x_{1d} \\
+\vdots &amp; \ddots &amp; \vdots \\
+x_{n1} &amp; \cdots &amp; x_{nd} \\
+\end{bmatrix} \rightarrow
+\begin{bmatrix}
+x_{11} &amp; \cdots &amp; x_{1k} \\
+\vdots &amp; \ddots &amp; \vdots \\
+x_{n1} &amp; \cdots &amp; x_{nk} \\
+\end{bmatrix}
+\end{align}
+
+<div id="Dimensionality Reduction-Standardize Data"><h2 id="Standardize Data" class="header"><a href="#Dimensionality Reduction-Standardize Data">Standardize Data</a></h2></div>
+
+<p>
+A lot of the times the units of each feature in the data make the values in one column (feature) be much bigger than the values in another column. Thus, the first step is to standardize your data:
+</p>
+
+<ul>
+<li>
+Center data
+
+<li>
+Have it have variance equal to one 
+
+</ul>
+  
+<p>
+So we transform our data as follows:
+</p>
+
+\begin{align}
+x_j^{(i)} = \frac{x_j^{(i)} - \mu_j}{\sigma_j}
+\end{align}
+
+<p>
+Where:
+</p>
+
+<ul>
+<li>
+\(u_j\) is the mean of the feature \(j\) over the \(n\) examples, such that \(u_j = \frac{1}{n}\sum_{i=1}^nx^{(i)}_j\)
+
+<li>
+\(\sigma_j\) is the standard deviation of the feature \(j\) over the \(n\) examples, where \(\sigma_j^2 = \frac{1}{n}\sum_{i=1}^n(x^{(i)}_j - \mu_j)^2\)
+
+</ul>
+
+<div id="Dimensionality Reduction-PCA"><h2 id="PCA" class="header"><a href="#Dimensionality Reduction-PCA">PCA</a></h2></div>
+
+<div id="Dimensionality Reduction-PCA-Find Underlying Space"><h3 id="Find Underlying Space" class="header"><a href="#Dimensionality Reduction-PCA-Find Underlying Space">Find Underlying Space</a></h3></div>
+
+<p>
+To reduce the dimensionality of our data we first define a subspace and then we project each point onto the subspace. 
+</p>
+
+<p>
+This projection is the closes point in the subspace to the point we are trying to project, this has as a consequence that the "line" connecting the point to its projection is always perpendicular to the subspace:
+</p>
+
+<p>
+<img src="./assets/pca_projection.png" alt="Projection Onto Subspace" style="transform:translate(22vw, 0)" />
+</p>
+
+<p>
+The goal is to choose the subspace that maximizes the variance of the projected points, to retain the maximum possible variance of the data. As you can see if we choose the blue line as the subspace the variance 
+is much bigger that if we choose the red line:
+</p>
+
+<p>
+<img src="./assets/larger_variance_projection.svg" alt="Larger Variance Projection" style="transform:translate(22vw,0)" />
+</p>
+
+<p>
+<img src="./assets/smaller_variance_projection.svg" alt="Smaller Variance Projection" style="transform:translate(22vw,0)" />
+</p>
+
+<div id="Dimensionality Reduction-PCA-Represent the Subspace"><h3 id="Represent the Subspace" class="header"><a href="#Dimensionality Reduction-PCA-Represent the Subspace">Represent the Subspace</a></h3></div>
+
+<p>
+Let us suppose the subspace is define by a basis vector \(u \in \mathbb{R}^d\) where \(u\) is a unit vector, then the projection of \(x\) on to the space spanned by \(u\) will be:
+</p>
+
+\begin{align}
+Proj(u)x
+\end{align}
+
+<p>
+Where \(Proj(u)\) is the projection matrix and \(x \in \mathbb{R}^d\). So, because \(Proj(u) = \frac{uu^T}{u^Tu}\), then the projected point is defined as:
+</p>
+
+\begin{align}
+Proj(u)\overrightarrow{x} = \frac{uu^T}{u^Tu} \overrightarrow{x} = ((x^{(i)})^Tu)u
+\end{align}
+
+<p>
+Where \(((x^{(i)})^Tu)\) is an scalar. 
+</p>
+
+<p>
+So, now our goal is to find a \(u\) that maximizes the variance across the \(n\) examples. That is, we want to maximize the sum of the square of the norms of the projected points:
+</p>
+
+<p>
+<img src="./assets/projection_norm.svg" alt="Norm of the Projection" style="transform:translate(22vw, 0)" />
+</p>
+
+<p>
+More formally:
+</p>
+
+\begin{align}
+u = \underset{u}{\arg \max} \frac{1}{n}\sum_{i=1}^n ||Proj(u)x^{(i)}||^2 = \frac{1}{n}\sum_{i=1}^n ||((x^{(i)})^Tu)u||^2
+\end{align}
+
+<p>
+Because the norm of a unit vector multiplied by a scalar is just the square of the scalar (for \(3 \cdot \begin{pmatrix} 1 &amp; 0 &amp; 0 \end{pmatrix}\): \(||\begin{pmatrix} 3 &amp; 0 &amp; 0 \end{pmatrix}|| = (\sqrt{3^2 + 0^2 + 0^2})^2 = 3^2\)):
+</p>
+
+\begin{align}
+u = \underset{u}{\arg \max} \frac{1}{n}\sum_{i=1}^n ((x^{(i)})^Tu)^2 = \frac{1}{n}\sum_{i=1}^n ((x^{(i)})^Tu)^T((x^{(i)})^Tu) = \frac{1}{n}\sum_{i=1}^n u^T x^{(i)} (x^{(i)})^T u
+\end{align}
+
+<p>
+Because \(u, u^T\) are a common factor in the sum:
+</p>
+
+\begin{align}
+u = \underset{u}{\arg \max} \left[u^T \left(\frac{1}{n}\sum_{i=1}^n x^{(i)} (x^{(i)})^T \right) u\right]
+\end{align}
+
+<hr />
+
+<p>
+Now, we know that given the optimization problem of the form \(\underset{u}{\arg \max} \left[u^T A u\right]\), the solution \(u\) is the eigenvector corresponding to the largest eigenvalue of \(A\).
+</p>
+
+<p>
+In this scenario, \(A = \left(\frac{1}{n}\sum_{i=1}^n x^{(i)} (x^{(i)})^T \right)\), which equals the sample covariance matrix, which is defined as:
+</p>
+
+\begin{align}
+\frac{1}{n} \sum_{i=1}^n (x^{(i)} - \mu)^T (x^{(i)} - \mu) = \frac{1}{n} \sum_{i=1}^n (x^{(i)} - 0)^T (x^{(i)} - 0) = \frac{1}{n} \sum_{i=1}^n (x^{(i)})^T x^{(i)}
+\end{align}
+
+<p>
+Note that, because our data is now centered after standardizing it, the mean \(\mu\) equals zero.
+</p>
+
+<p>
+Hence, we want to calculate the eigenvectors of the sample covariance matrix of x.
+</p>
+
+<p>
+Mind you, we have derived this solution for a space defined by only one vector \(u\). However given basis vectors \((u_1, \cdots, u_k)\) the optimization problem holds and the solution are the \(k\) eigenvectors corresponding to the \(k\) largest eigenvalues of \(A\).
+</p>
+
+<div id="Dimensionality Reduction-PCA-Algorithm Layout"><h3 id="Algorithm Layout" class="header"><a href="#Dimensionality Reduction-PCA-Algorithm Layout">Algorithm Layout</a></h3></div>
+
+<p>
+The steps of <code>PCA</code> are the following:
+</p>
+
+<ul>
+<li>
+Calculate the sample covariance matrix as \(x^Tx\)
+
+<li>
+Calculate the eigenvector and eigenvalues of \(x^Tx\), such that:
+
+</ul>
+
+\begin{align}
+\begin{matrix}
+(\lambda_1, u_1) \\
+(\lambda_2, u_2) \\
+\vdots \\
+(\lambda_d, u_d) \\
+\end{matrix}
+\end{align}
+
+<p>
+Are the \(d\) eigenvectors (\(u_i\)) and eigenvalues (\(\lambda_i\)). We assume the tuples are ordered in decreasing order with respect to the eigenvalues, such that if \(i &gt; j\) then \(\lambda_i &gt; \lambda_j\).
+</p>
+
+<ul>
+<li>
+Find \(k\) such that we satisfy a confidence level with respect to the variance, i.e. suppose you want to preserve 95% of the variance of the original data then:
+
+</ul>
+
+\begin{align}
+\frac{\sum_{i=1}^k \lambda_i}{\sum_{j=1}^d \lambda_j} = 95\%
+\end{align}
+
+<ul>
+<li>
+Choose the \(k\) eigenvectors with the largest corresponding eigenvalues.
+
+</ul>
+</div>
+  </body>
+  <script
+    type="text/javascript"
+    src="https://albamr09.github.io/highlight.min.js"
+  ></script>
+  <script
+    type="text/javascript"
+    src="https://albamr09.github.io/zepto.min.js"
+  ></script>
+  <script type="text/javascript">
+    $("pre").each(function (index, item) {
+      $(item).html("<code>" + $(item).html() + "</code>");
+    });
+    hljs.initHighlightingOnLoad();
+  </script>
+</html>
