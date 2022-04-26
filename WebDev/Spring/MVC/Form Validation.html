@@ -1,7 +1,7 @@
 <html>
   <head>
     <link rel="Stylesheet" type="text/css" href="https://albamr09.github.io/style.css" />
-    <title>Form Tags</title>
+    <title>Form Validation</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <!-- For LaTeX -->
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
@@ -37,62 +37,56 @@
 <a href="../index.html">Back</a>
 </p>
 
-<div id="Form Tags"><h1 id="Form Tags" class="header"><a href="#Form Tags">Form Tags</a></h1></div>
+<div id="Form Validation"><h2 id="Form Validation" class="header"><a href="#Form Validation">Form Validation</a></h2></div>
 
 <hr />
 
 <p>
-Form Tags are configurable an reusable:
+Java has a standard <code>Bean Validation API</code> that defines a metadata model and an <code>API</code> for entity validation.
+</p>
+
+<p>
+Here is a list of bean validation features you can check:
 </p>
 
 <ul>
 <li>
-They can make use of data binding (you can automatically set and retrieve data from a Java object)
+<code>required</code>
 
 <li>
-You can mix them in with you HTML web page
+<code>validate length</code>
+
+<li>
+<code>validate numbers</code>
+
+<li>
+<code>validate with regular expressions</code>
+
+<li>
+<code>custom validation</code>
 
 </ul>
 
 <p>
-Some examples are:
+Some <code>Annotations</code> to perform the validation are the following:
 </p>
 
 <p>
-<img src="./assets/list_form_tags.png" alt="List of Form Tags" />
+<img src="./assets/validation_annotations.png" alt="Validation Annotations" />
 </p>
 
-<div id="Form Tags-Reference Spring MVC Form Tags"><h2 id="Reference Spring MVC Form Tags" class="header"><a href="#Form Tags-Reference Spring MVC Form Tags">Reference Spring MVC Form Tags</a></h2></div>
+
+<div id="Set up"><h2 id="Set up" class="header"><a href="#Set up">Set up</a></h2></div>
 
 <p>
-To use these tags in your web page you have to specify the spring namespace at the beginning of the <code>JSP</code> file:
+Add <code>Hibernate's</code> library (<a href="https://sourceforge.net/projects/hibernate/files/hibernate-validator/7.0.4.Final/hibernate-validator-7.0.4.Final-dist.zip/download">Hibernate Validator</a>)for <code>Bean Validation</code> which is fully compliant with <code>Java's</code> <code>Bean Validation API</code>.
 </p>
-
-<pre>
-&lt;!-- Reference to the namespace --&gt;
-&lt;%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %&gt;
-&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-&lt;head&gt;&lt;/head&gt;
-&lt;body&gt;
-&lt;/body&gt;
-&lt;/html&gt;
-</pre>
 
 <hr />
 
 <ul>
 <li>
-<a href="Text Fields.html">Text Fields</a>
-
-<li>
-<a href="Drop Down Lists.html">Drop Down Lists</a>
-
-<li>
-<a href="Radio Buttons.html">Radio Buttons</a>
-
-<li>
-<a href="CheckBox.html">CheckBox</a>
+<a href="Required Validation.html">Required Validation</a>
 
 </ul>
 </div>
