@@ -1,0 +1,97 @@
+<html>
+  <head>
+    <link rel="Stylesheet" type="text/css" href="https://albamr09.github.io/style.css" />
+    <title>Form Tags</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <!-- For LaTeX -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script
+      id="MathJax-script"
+      async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+    ></script>
+    <!-- Code Highlight -->
+    <link
+      rel="Stylesheet"
+      type="text/css"
+      href="https://albamr09.github.io/atom-one-light.min.css"
+    />
+  </head>
+  <body>
+    <a
+      href="https://albamr09.github.io/"
+      style="
+        color: white;
+        font-weight: bold;
+        text-decoration: none;
+        padding: 3px 6px;
+        border-radius: 3px;
+        background-color: #1e90ff;
+        text-transform: uppercase;
+      "
+      >Index</a
+    >
+    <hr />
+    <div class="content">
+<p>
+<a href="../index.html">Back</a>
+</p>
+
+<div id="Form Tags"><h1 id="Form Tags" class="header"><a href="#Form Tags">Form Tags</a></h1></div>
+
+<hr />
+
+<p>
+Form Tags are configurable an reusable:
+</p>
+
+<ul>
+<li>
+They can make use of data binding (you can automatically set and retrieve data from a Java object)
+
+<li>
+You can mix them in with you HTML web page
+
+</ul>
+
+<p>
+Some examples are:
+</p>
+
+<p>
+<img src="./assets/list_form_tags.png" alt="List of Form Tags" />
+</p>
+
+<div id="Form Tags-Reference Spring MVC Form Tags"><h2 id="Reference Spring MVC Form Tags" class="header"><a href="#Form Tags-Reference Spring MVC Form Tags">Reference Spring MVC Form Tags</a></h2></div>
+
+<p>
+To use these tags in your web page you have to specify the spring namespace at the beginning of the <code>JSP</code> file:
+</p>
+
+<pre>
+&lt;!-- Reference to the namespace --&gt;
+&lt;%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;&lt;/head&gt;
+&lt;body&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+</div>
+  </body>
+  <script
+    type="text/javascript"
+    src="https://albamr09.github.io/highlight.min.js"
+  ></script>
+  <script
+    type="text/javascript"
+    src="https://albamr09.github.io/zepto.min.js"
+  ></script>
+  <script type="text/javascript">
+    $("pre").each(function (index, item) {
+      $(item).html("<code>" + $(item).html() + "</code>");
+    });
+    hljs.initHighlightingOnLoad();
+  </script>
+</html>
