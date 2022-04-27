@@ -342,6 +342,38 @@ Imagine there are \(d\) speakers and \(d\) microphones randomly distributed in a
 
 </ul>
 
+<p>
+For example, given two speaker, what they say is represented as follows:
+</p>
+
+<p>
+<img src="./assets/intuition_speaker.svg" alt="Speaker wavepenghts" />
+</p>
+
+<p>
+Meanwhile the recordings of the microphones are the following:
+</p>
+
+<p>
+<img src="./assets/intuition_microphone.svg" alt="Microphone wavepenghts" />
+</p>
+
+<p>
+We are only given \(X\), and the goal is to recover the original speech signal spoken by each speaker. We assume that \(X\) is a linear combination of what each speaker says, thus \(X = AS\), where \(A\) is a quare matrix \(d \times d\) and is called the mixing matrix. 
+</p>
+
+<p>
+What we want to do is to compute the inverse of \(A\), \(W\) such that \(W = A^{-1}\), where \(W\) is called the unmixing matrix.
+</p>
+
+<p>
+Then:
+</p>
+
+\begin{align}
+A^{-1}X = A^{-1}AS \rightarrow A^{-1}X = S \rightarrow WX = S \rightarrow S = WX
+\end{align}
+
 <div id="Dimensionality Reduction-ICA-Solution"><h3 id="Solution" class="header"><a href="#Dimensionality Reduction-ICA-Solution">Solution</a></h3></div>
 
 <p>
@@ -362,6 +394,100 @@ The number of sources \(S\) are equal to the number of "examples" in the mixed d
 Each \(S_j\) is not Gaussian.
 
 </ol>
+
+<hr />
+
+<div id="Dimensionality Reduction-ICA-Solution-Intuition"><h4 id="Intuition" class="header"><a href="#Dimensionality Reduction-ICA-Solution-Intuition">Intuition</a></h4></div>
+
+<p>
+Suppose we are given a random variable \(X\) such that \(X ~ Unif [0,1]\), then the probability density function is:
+</p>
+
+<p>
+<img src="./assets/pdf_uniform.svg" alt="Probability Density Function for Unirform Distribution" />
+</p>
+
+<p>
+Let us define a new distribution as follows \(y=2x\), then the probability density function is:
+</p>
+
+<p>
+<img src="./assets/half_pdf_uniform.svg" alt="Probability Density Function for Scaled Unirform Distribution" />
+</p>
+
+<p>
+Note, that the function is "stretched" as to always satisfy the condition that the integral of \(PDF\) must equal 1, which is the same as saying the area under the function is 1. So now, \(P_y (y) = P_x(x) \cdot \frac{1}{2} = P_x(\frac{y}{2})\cdot\frac{1}{2}\), because \(x = \frac{y}{2}\).
+</p>
+
+<p>
+But what happens in a higher dimension? That is, what happens when we multiply \(x \in \mathbb{R}^d\) by a mixing matrix \(W \in \mathbb{R}^{d \times d}\). Well, given \(y \in \mathbb{R}^{d \times d}\), such that \(y=WX\), then to perform a change of random variable we use the Jacobian:
+</p>
+
+\begin{align}
+P_y(y) = P_x(X)\frac{1}{|W|} = P_x(W^{-1}Y)\frac{1}{|W|}
+\end{align}
+
+<p>
+Where \(|W|\) is the determinant of \(W\).
+</p>
+
+<hr />
+
+<p>
+First of all we define the distribution of the mixed dataset as follows:
+</p>
+
+\begin{align}
+P_X(x) = \prod_{j=1}^d P_S (S_j) |W| = \prod_{j=1}^d P_S (W_j^TX) |W|
+\end{align}
+
+<p>
+Note that \(S_j=(W_j)^TX\). 
+</p>
+
+<p>
+We also assume that \(P_S\) is distributed according to a logistic distribution, thus:
+</p>
+
+<ul>
+<li>
+Cumulative Distribution Function (CDF): \(\frac{1}{1+e^{-x}} = \sigma(x)\)
+
+<li>
+Probability Density Function (pdf): \(\sigma(x)\sigma(1-x)\)
+
+</ul>
+
+<p>
+So, we obtain the likelihood of \(W\) as follows:
+</p>
+
+\begin{align}
+l(W) = \sum_{i=1}^n \left[\left(\sum_{j=1}^d \log[\sigma(x^{(i)})(1-\sigma(x^{(i)}))]\right) + \log{|W|}\right]
+\end{align}
+
+<p>
+Where \(W\) is the parameter we are trying to obtain. So, to solve the optimization problem:
+</p>
+
+<ul>
+<li>
+We define the maximization of the likelihood as the objective
+
+<li>
+We compute the derivative of \(l(W)\) and perform gradient descent, such that the update step is as follows:
+
+</ul>
+
+\begin{align}
+W = W - \alpha \left\{\begin{bmatrix}
+(1- 2\sigma(W_1^Tx^{(i)})) \\
+(1- 2\sigma(W_2^Tx^{(i)})) \\
+\vdots \\
+(1- 2\sigma(W_d^Tx^{(i)})) \\
+\end{bmatrix} (x^{(i)})^T + (W^T)^{-1}
+\right\}
+\end{align}
 </div>
   </body>
   <script
