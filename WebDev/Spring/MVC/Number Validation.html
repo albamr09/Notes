@@ -1,7 +1,7 @@
 <html>
   <head>
     <link rel="Stylesheet" type="text/css" href="https://albamr09.github.io/style.css" />
-    <title>Required Validation</title>
+    <title>Number Validation</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <!-- For LaTeX -->
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
@@ -37,59 +37,40 @@
 <a href="Form Validation.html">Back</a>
 </p>
 
-<div id="Required Validation"><h1 id="Required Validation" class="header"><a href="#Required Validation">Required Validation</a></h1></div>
+<div id="Number Range Validation"><h1 id="Number Range Validation" class="header"><a href="#Number Range Validation">Number Range Validation</a></h1></div>
 
 <hr />
 
 <p>
-In this section we will show how to perform a <code>required</code> validation.
+In this section we will show how to perform a <code>number range</code> validation.
 </p>
 
-<div id="Required Validation-Add Validation Rule to Bean"><h2 id="Add Validation Rule to Bean" class="header"><a href="#Required Validation-Add Validation Rule to Bean">Add Validation Rule to Bean</a></h2></div>
+<div id="Number Range Validation-Add Validation Rule to Bean"><h2 id="Add Validation Rule to Bean" class="header"><a href="#Number Range Validation-Add Validation Rule to Bean">Add Validation Rule to Bean</a></h2></div>
 
 <p>
-We create a <code>Customer</code> class, whose <code>lastName</code> attribute must be non-null, that is, <code>lastName</code> is a required attribute:
+We create a <code>Customer</code> class, whose <code>freePasses</code> variable must be a number between 0 and 10.
 </p>
 
 <pre java>
-package com.springdemo.mvc;
-
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
 public class Customer {
 
 	private String firstName;
 	
-  // Validation annotation
 	@NotNull(message="is required")
 	@Size(min=1, message="is required")
 	private String lastName;
 
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-}
+	// Minimum value we will expect
+	@Min(value=0, message="must be greater than or equal to zero")
+	// Maximum value we will expect
+	@Max(value=10, message="must be less than or equal to 10")
+	private int freePasses;
+	
+	...
 </pre>
 
-<p>
-Note that if we wanted to make an integer required, we must use the wrapper java classes (i.e. Integer), that will be able to handle empty strings as inputs and nulls. The primitive types will throw an exception.
-</p>
 
-
-<div id="Required Validation-Perform Validation in the Controller"><h2 id="Perform Validation in the Controller" class="header"><a href="#Required Validation-Perform Validation in the Controller">Perform Validation in the Controller</a></h2></div>
+<div id="Number Range Validation-Perform Validation in the Controller"><h2 id="Perform Validation in the Controller" class="header"><a href="#Number Range Validation-Perform Validation in the Controller">Perform Validation in the Controller</a></h2></div>
 
 <p>
 We also 
@@ -164,7 +145,7 @@ public class CustomerController {
 When performing Spring MVC validation, the location of the BindingResult parameter is very important. In the method signature, the BindingResult parameter must appear immediately after the model attribute. 
 </p>
 
-<div id="Required Validation-Display error on HTML"><h2 id="Display error on HTML" class="header"><a href="#Required Validation-Display error on HTML">Display error on HTML</a></h2></div>
+<div id="Number Range Validation-Display error on HTML"><h2 id="Display error on HTML" class="header"><a href="#Number Range Validation-Display error on HTML">Display error on HTML</a></h2></div>
 
 <pre jsp>
 &lt;%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %&gt;
@@ -184,10 +165,14 @@ When performing Spring MVC validation, the location of the BindingResult paramet
 		First name: &lt;form:input path="firstName" /&gt;
 		&lt;br&gt;&lt;br&gt;
 		Last name (*): &lt;form:input path="lastName" /&gt;
-    &lt;!-- We use the error form tag to display an error when the input is not valid --&gt;
     &lt;!-- The message shown equals the messages from both of the validation annotations defined 
     for the lastName attribute in the Customer class --&gt;
 		&lt;form:errors path="lastName" cssClass="error" /&gt;
+		&lt;br&gt;&lt;br&gt;
+		Free passes: &lt;form:input path="freePasses" /&gt;
+    &lt;!-- The message shown equals the messages from both of the validation annotations defined 
+    for the freePasses attribute in the Customer class --&gt;
+		&lt;form:errors path="freePasses" cssClass="error" /&gt;
 		&lt;br&gt;&lt;br&gt;
 		&lt;input type="submit" value="Submit" /&gt;
 	&lt;/form:form&gt;
