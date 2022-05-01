@@ -1,0 +1,113 @@
+<html>
+  <head>
+    <link rel="Stylesheet" type="text/css" href="https://albamr09.github.io/style.css" />
+    <title>Concepts</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <!-- For LaTeX -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script
+      id="MathJax-script"
+      async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+    ></script>
+    <!-- Code Highlight -->
+    <link
+      rel="Stylesheet"
+      type="text/css"
+      href="https://albamr09.github.io/atom-one-light.min.css"
+    />
+  </head>
+  <body>
+    <a
+      href="https://albamr09.github.io/"
+      style="
+        color: white;
+        font-weight: bold;
+        text-decoration: none;
+        padding: 3px 6px;
+        border-radius: 3px;
+        background-color: #1e90ff;
+        text-transform: uppercase;
+      "
+      >Index</a
+    >
+    <hr />
+    <div class="content">
+<p>
+<a href="../index.html">Back</a>
+</p>
+
+<div id="Database Concepts"><h1 id="Database Concepts" class="header"><a href="#Database Concepts">Database Concepts</a></h1></div>
+
+<hr />
+
+<ul>
+<li>
+Cascade: perform an operations on related entities
+
+<ul>
+<li>
+On save: if we save an object, if it is related to another object, we need to also save that other object
+
+<li>
+On delete: if we delete an object that is related to another object, we might need to delete that other object (depends on the use case)
+
+</ul>
+<li>
+Fetch types: when we fetch data, should we retrieve everything?
+
+<ul>
+<li>
+Eager: will retrieve everything
+
+<li>
+Lazy: will retrieve on request
+
+</ul>
+</ul>
+
+<hr />
+
+<div id="Database Concepts-Cascade Types"><h2 id="Cascade Types" class="header"><a href="#Database Concepts-Cascade Types">Cascade Types</a></h2></div>
+
+<ul>
+<li>
+<code>PERSIST</code>: if entity is persisted/saved, the related entity will also be persisted
+
+<li>
+<code>REMOVE</code>: if entity is removed/deleted, the related entity will also be deleted
+
+<li>
+<code>REFRESH</code>: if entity is refreshed, the related entity will also be refreshed
+
+<li>
+<code>DETACH</code>: if entity is detached (not associated with session), the related entity will also be detached
+
+<li>
+<code>MERGE</code>: if entity is merged, the related entity will also be merged
+
+<li>
+<code>ALL</code>: all of the above cascade types
+
+</ul>
+
+<p>
+By default, no operations are cascaded.
+</p>
+</div>
+  </body>
+  <script
+    type="text/javascript"
+    src="https://albamr09.github.io/highlight.min.js"
+  ></script>
+  <script
+    type="text/javascript"
+    src="https://albamr09.github.io/zepto.min.js"
+  ></script>
+  <script type="text/javascript">
+    $("pre").each(function (index, item) {
+      $(item).html("<code>" + $(item).html() + "</code>");
+    });
+    hljs.initHighlightingOnLoad();
+  </script>
+</html>
