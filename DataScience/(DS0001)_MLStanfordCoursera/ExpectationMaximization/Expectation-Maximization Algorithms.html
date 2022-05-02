@@ -388,13 +388,250 @@ Thus, when the parameters \(\theta\) are optimized, we can compute \(P(x) = \sum
 
 <div id="Expectation Maximization-Generalized EM Algorithm-Jensen's Inequality"><h3 id="Jensen's Inequality" class="header"><a href="#Expectation Maximization-Generalized EM Algorithm-Jensen's Inequality">Jensen's Inequality</a></h3></div>
 
+<div id="Expectation Maximization-Generalized EM Algorithm-Jensen's Inequality-Convex function"><h4 id="Convex function" class="header"><a href="#Expectation Maximization-Generalized EM Algorithm-Jensen's Inequality-Convex function">Convex function</a></h4></div>
+
+<p>
+We are going to show what Jensen's Inequality is about. So:
+</p>
+
+<ul>
+<li>
+Let \(f\) be a convex function (e.g. \(f''(x) &gt; 0\)) and
+
+<li>
+Let \(x\) be a random variable, then
+
+</ul>
+
+\begin{align}
+f(E[x]) \leq E[f(x)]
+\end{align}
+
+<p>
+where \(E\) is the expected value.
+</p>
+
+<p>
+Further, if \(f''(x) &gt; 0\) (we say f is strictly convex, that is f is not a straight line), then:
+</p>
+
+\begin{align}
+E[f(x)] = f(E[x]) \leftrightarrow \text{ x is a constant, more formally } X = E[X] \text{ with probabily 1}
+\end{align}
+
+<div id="Expectation Maximization-Generalized EM Algorithm-Jensen's Inequality-Concave function"><h4 id="Concave function" class="header"><a href="#Expectation Maximization-Generalized EM Algorithm-Jensen's Inequality-Concave function">Concave function</a></h4></div>
+
+<p>
+We are going to apply the same arguments with a concave function. Note that a concave function equals the negative of a convex function, thus:
+</p>
+
+<ul>
+<li>
+Let \(f\) be a concave function (e.g. \(f''(x) &lt; 0\)) and
+
+<li>
+Let \(x\) be a random variable, then
+
+</ul>
+
+\begin{align}
+f(E[x]) \geq E[f(x)]
+\end{align}
+
+<p>
+where \(E\) is the expected value.
+</p>
+
+<p>
+Further, if \(f''(x) &lt; 0\) (we say f is strictly concave), then:
+</p>
+
+\begin{align}
+E[f(x)] = f(E[x]) \leftrightarrow \text{ x is a constant, more formally } X = E[X] \text{ with probabily 1}
+\end{align}
+
+<div id="Expectation Maximization-Generalized EM Algorithm-Jensen's Inequality-Some Intuition"><h4 id="Some Intuition" class="header"><a href="#Expectation Maximization-Generalized EM Algorithm-Jensen's Inequality-Some Intuition">Some Intuition</a></h4></div>
+
+<p>
+Given any convex function (the inverse also applies to concave functions), if we draw a chord between any two points, its middle point (that is the expected value of the function or \(E[f(x)]\)) is always above that the value of the expected value under the function (that is \(f(E[x])\)). Graphically:
+</p>
+
+<p>
+<img src="./assets/jensen_inequality.svg" alt="Jensen's Inequality" style="transform:translate(22vw, 0)" />
+</p>
+
 <div id="Expectation Maximization-Generalized EM Algorithm-Motivation"><h3 id="Motivation" class="header"><a href="#Expectation Maximization-Generalized EM Algorithm-Motivation">Motivation</a></h3></div>
+
+<p>
+Given a model for \(P(x, z , \theta)\) where \(\theta\) are the parameters of the model. We only observe \(X = \{x^{(1)}, \cdots, x^{(m)}\}\).
+</p>
+
+<p>
+The goal is to obtain by the <span id="Expectation Maximization-Generalized EM Algorithm-Motivation-Maximum Likelihood Estimation"></span><strong id="Maximum Likelihood Estimation">Maximum Likelihood Estimation</strong> the value of \(\theta\) that maximizes the log likelihood, defined as:
+</p>
+
+\begin{align}
+\theta = \underset{\theta}{\arg \max{l(\theta)} }  = \sum_{i=1}^m \log (P(x^{(i)}; \theta))
+\end{align}
+
+<p>
+If we marginalize \(z^{(i)}\):
+</p>
+
+\begin{align}
+\theta = \underset{\theta}{\arg \max{l(\theta)} } = \sum_{i=1}^m \log \sum_{z^{(i)}} (P(x^{(i)}, z^{(i)}; \theta))
+\end{align}
 
 <div id="Expectation Maximization-Generalized EM Algorithm-E-Step"><h3 id="E-Step" class="header"><a href="#Expectation Maximization-Generalized EM Algorithm-E-Step">E-Step</a></h3></div>
 
+<p>
+In the <code>E-Step</code> we construct a lower bound from a given <code>theta</code>: so, let's say \(l(\theta)\) is the log likelihood.
+</p>
+
+<p>
+On the first iteration, the graph would be as follows:
+</p>
+
+<p>
+<img src="./assets/e_step_1.svg" alt="First iteration E-Step" />
+</p>
+
+<p>
+And on the second iteration:
+</p>
+
+<p>
+<img src="./assets/e_step_2.svg" alt="Second iteration E-Step" style="transform: translate(12vw, 0)" />
+</p>
+
+<p>
+We iterate until there are no significant changes in the lower bound, that is the algorithm converges to a local optimum (it should be noted the optimum is local not absolute, and it depends on the initialization of the distributions' parameters).
+</p>
+
 <div id="Expectation Maximization-Generalized EM Algorithm-M-Step"><h3 id="M-Step" class="header"><a href="#Expectation Maximization-Generalized EM Algorithm-M-Step">M-Step</a></h3></div>
 
+<p>
+Now, in the M-Step we maximize the log likelihood as follows:
+</p>
+
+\begin{align}
+\underset{\theta}{\max{ }} \sum_{i=1}^m \log P(x^{(i)}; \theta)
+\end{align}
+
+<p>
+By marginalizing \(z^{(i)}\):
+</p>
+
+\begin{align}
+\underset{\theta}{\max{ }} \sum_{i=1}^m \log \sum_{z^{(i)}} P(x^{(i)}, z^{(i)}; \theta)
+\end{align}
+
+<p>
+We now introduce a probability distribution over \(z^{(i)}\) (thus \(\sum_{z^{(i)}}Q(z^{(i)}) = 1\)), and we multiply by \(\frac{Q(z^{(i)})}{Q(z^{(i)})}\):
+</p>
+
+\begin{align}
+\underset{\theta}{\max{ }} \sum_{i=1}^m \log \sum_{z^{(i)}} Q(z^{(i)}) \frac{P(x^{(i)}, z^{(i)}; \theta)}{Q(z^{(i)})}
+\end{align}
+
+<p>
+Now, by the definition of expected value (Given a sequence of real values \(a_1, \cdots, a_n\) with probabilities \(p_1, \cdots, p_n\), the expected value is defined as: \(e = \sum_{i=1}^n p_i a_i\)), if \(p_i = Q(z^{(i)})\) and \(a_i = \frac{P(x^{(i)}, z^{(i)}; \theta)}{Q(z^{(i)})}\)
+</p>
+
+\begin{align}
+\underset{\theta}{\max{ }} \sum_{i=1}^m \log E_{z^{(i)}\sim Q} \left[\frac{P(x^{(i)}, z^{(i)}; \theta)}{Q(z^{(i)})}\right]
+\end{align}
+
+<p>
+If we apply the concave version of Jensen's Inequality we obtain a lower bound of the form:
+</p>
+
+\begin{align}
+\sum_{i=1}^m \log E_{z^{(i)}\sim Q} \left[\frac{P(x^{(i)}, z^{(i)}; \theta)}{Q(z^{(i)})}\right] \geq \sum_{i=1}^m E_{z^{(i)} \sim Q} \left[\log \frac{P(x^{(i)}, z^{(i)}; \theta)}{Q(z^{(i)})}  \right]
+\end{align}
+
+<p>
+If \(\log (x) = f(x)\), then this equation can be mapped to the inequality:
+</p>
+
+\begin{align}
+f(E[x]) \geq E[f(x)]
+\end{align}
+
+<p>
+Note that \(log\) is a concave function. If we "unpack" the expected value:
+</p>
+
+\begin{align}
+\sum_{i=1}^m E_{z^{(i)} \sim Q} \left[\log \frac{P(x^{(i)}, z^{(i)}; \theta)}{Q(z^{(i)})}  \right] = \sum_{i=1}^m \sum_{z^{(i)}} \log Q(z^{(i)}) \left[\frac{P(x^{(i)}, z^{(i)}; \theta)}{Q(z^{(i)})}\right]
+\end{align}
+
+<div id="Expectation Maximization-Generalized EM Algorithm-Make Log Likelihood and Lower Bound Equal on Theta"><h3 id="Make Log Likelihood and Lower Bound Equal on Theta" class="header"><a href="#Expectation Maximization-Generalized EM Algorithm-Make Log Likelihood and Lower Bound Equal on Theta">Make Log Likelihood and Lower Bound Equal on Theta</a></h3></div>
+
+<p>
+For each \(\theta\) on the E-Step you wan the value of \(\theta\) under the lower bound function to be equal to \(l(\theta)\), which is what guarantees that when you optimize the lower bound you optimize \(l(\theta)\).
+</p>
+
+<p>
+So, for a given iteration the current value of \(\theta\), denoted by \(\hat{\theta}\), we want:
+</p>
+
+\begin{align}
+\sum_{i=1}^m \log E_{z^{(i)}\sim Q} \left[\frac{P(x^{(i)}, z^{(i)}; \hat{\theta})}{Q(z^{(i)})}\right] = \sum_{i=1}^m E_{z^{(i)} \sim Q} \left[\log \frac{P(x^{(i)}, z^{(i)}; \hat{\theta})}{Q(z^{(i)})}  \right]
+\end{align}
+
+<p>
+Remember, by the extension on Jensen's Inequality we know that \(E[f(x)] = f(E[x])\) if and only if \(x\) is a constant. In this case 
+</p>
+
+\begin{align}
+x = \frac{P(x^{(i)}, z^{(i)}; \hat{\theta})}{Q(z^{(i)})} = constant
+\end{align}
+
+<p>
+For this to hold, we need \(Q(z^{(i)})\) to be directly proportional to \(P(x^{(i)}, z^{(i)}; \hat{\theta})\) (so when one is bigger the other is bigger and vice versa, so the ratio between the two remains constant). So:
+</p>
+
+\begin{align}
+Q(z^{(i)}) \propto P(x^{(i)}, z^{(i)}; \hat{\theta})
+\end{align}
+
+<p>
+Because \(\sum_{z^{(i)}}Q(z^{(i)}) = 1\), a way to ensure this is to set each \(Q^{(i)} = P(x^{(i)}, z^{(i)}; \hat{\theta})\) and then normalize it to make sure the sum of \(Q\) over \(z^{(i)}\) equals one. Hence:
+</p>
+
+\begin{align}
+Q(z^{(i)}) = \frac{P(x^{(i)}, z^{(i)}; \hat{\theta})}{\sum_{z^{(i)}} P(x^{(i)}, z^{(i)}; \hat{\theta})}
+\end{align}
+
+<p>
+It turns out you can further derive this equation to be:
+</p>
+
+\begin{align}
+Q(z^{(i)}) = P(z^{(i)}|x^{(i)}; \hat{\theta})
+\end{align}
+
 <div id="Expectation Maximization-Generalized EM Algorithm-Putting Everything Together"><h3 id="Putting Everything Together" class="header"><a href="#Expectation Maximization-Generalized EM Algorithm-Putting Everything Together">Putting Everything Together</a></h3></div>
+
+<p>
+So, after everything we have seen, we can summarize the EM generalized algorithm as follows: If \(\theta\) is the value of the parameters in the current iteration:
+</p>
+
+<ul>
+<li>
+<em>E-Step</em>: set 
+\begin{align}
+Q_i(z^{(i)}) = P(z^{(i)}|x^{(i)}; \theta)
+\end{align}
+
+<li>
+<em>M-Step</em>: set 
+\begin{align}
+\theta := \underset{\theta}{\arg \max} \sum_{i=1}^m \sum_{z^{(i)}} Q_i(z^{(i)}) \log \left[\frac{P(x^{(i)}, z^{(i)};\theta)}{Q_i(z^{(i)})}\right]
+\end{align}
+
+</ul>
 </div>
   </body>
   <script
