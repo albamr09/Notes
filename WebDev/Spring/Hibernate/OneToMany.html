@@ -59,7 +59,7 @@ Here we demonstrate how to implement a unidirectional one to many relationship b
 </p>
 
 <p>
-<img src="./assets/uni_one_to_one.png" alt="Unidirectional One To One Relationship" />
+<img src="./assets/one_to_many_uni.png" alt="Unidirectional One To Many Relationship" />
 </p>
 
 <p>
@@ -74,78 +74,74 @@ We now code the two entities:
 
 <pre java>
 package com.hibernate.demo.entity;
-/* annotate the class as an entity and map to db table */
+// annotate the class as an entity and map to db table
 @Entity
-@Table(name="instructor")
-public class Instructor {
-  // define the fields and annotate the fields 
-  // with db column names
+@Table(name="course")
+public class Course {
+  // define the fields
+  // annotate the fields with db column names
   @Id
   @GeneratedValue(strategy=GenerationType.IDENTITY)
   @Column(name="id")
   private int id;
   
-  @Column(name="first_name")
-  private String firstName;
+  @Column(name="title")
+  private String title;
   
-  @Column(name="last_name")
-  private String lastName;
+  // Set up one to many relationship
+  @ManyToOne(cascade= 
+              // On delete course, do not delete instructor
+              {CascadeType.PERSIST, 
+              CascadeType.MERGE,
+              CascadeType.DETACH, 
+              CascadeType.REFRESH})
+  @JoinColumn(name="instructor_id")
+  private Instructor instructor;
   
-  @Column(name="email")
-  private String email;
+  // Set up unidirectional one to many relationship
+  @OneToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+	@JoinColumn(name="course_id")
+	private List&lt;Review&gt; reviews;
   
-  // Set up mapping to InstructorDetail entity
-  // Note the cascade type
-  @OneToOne(cascade=CascadeType.ALL)
-  // Define the foreign key
-  @JoinColumn(name="instructor_detail_id")
-  private InstructorDetail instructorDetail;
-  
-  public Instructor() {
-  	
-  }
-  ...
-  // Setters and getters 
-}
-</pre>
-
-<p>
-Note the specification of the <a href="Concepts.html">Cascade Type</a>. And now the <code>InstructorDetail</code>:
-</p>
-
-<pre java>
-package com.hibernate.demo.entity;
-// annotate the class as an entity and map to db table
-@Entity
-@Table(name="instructor_detail")
-public class InstructorDetail {
-	// define the fields
-	// annotate the fields with db column names
-	
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id")
-	private int id;
-	
-	@Column(name="youtube_channel")
-	private String youtubeChannel;
-	
-	@Column(name="hobby")
-	private String hobby;
-	
-	public InstructorDetail() {
+  public Course() {
   }		
   
   ...
   // Setters and getters
 }
-
 </pre>
+
+<p>
+And now the <code>Review</code>:
+</p>
+
+<pre java>
+package com.hibernate.demo.entity;
+@Entity
+@Table(name="review")
+public class Review {
+
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="id")
+	private int id;
+	
+	@Column(name="comment")
+	private String comment;
+	
+	public Review() {
+		
+	}
+</pre>
+
+<p>
+Note that there is no reference in the <code>Review</code> to the <code>Course</code>.
+</p>
 
 <div id="One To Many Relationship-Unidirectional-Main App"><h3 id="Main App" class="header"><a href="#One To Many Relationship-Unidirectional-Main App">Main App</a></h3></div>
 
 <p>
-To test our code, we are going to create an <code>Instructor</code> object and an <code>InstructorDetail</code> object and save them. The test main app is the following:
+To test our code, we are going to get a <code>Course</code> and the list of <code>Review</code> objects associated. The test main app is the following:
 </p>
 
 <pre java>
@@ -159,34 +155,22 @@ public class CreateDemo {
     // create session
     Session session = factory.getCurrentSession();
     
-    try {			
-    
-      // create the objects
-      Instructor tempInstructor = 
-      		new Instructor("Madhu", "Patel", "madhu@mail.com");
-      
-      InstructorDetail tempInstructorDetail =
-      		new InstructorDetail(
-      				"http://www.youtube.com",
-      				"Guitar");		
-      
-      // associate the objects
-      tempInstructor.setInstructorDetail(tempInstructorDetail);
-      
+    try {		    
       // start a transaction
       session.beginTransaction();
       
-      // save the instructor
-      //
-      // Note: this will ALSO save the details object
-      // because of CascadeType.ALL
-      //
-      session.save(tempInstructor);					
+      // get the course
+      int theId = 10;
+      Course tempCourse = session.get(Course.class, theId);
+      
+      // Get reviews
+      tempCourse.getReviews();
       
       // commit transaction
       session.getTransaction().commit();
     }
     finally {
+      session.close();
     	factory.close();
     }
   }
@@ -243,6 +227,7 @@ public class Instructor {
   // the mapping information is in the instructor
   // property in the Course class
   @OneToMany(mappedBy="instructor",
+              // On delete instructor, do not delete courses
               cascade= 
               {CascadeType.PERSIST, 
               CascadeType.MERGE,
@@ -280,6 +265,7 @@ public class Course {
   
   // Set up one to many relationship
   @ManyToOne(cascade= 
+              // On delete course, do not delete instructor
               {CascadeType.PERSIST, 
               CascadeType.MERGE,
               CascadeType.DETACH, 
