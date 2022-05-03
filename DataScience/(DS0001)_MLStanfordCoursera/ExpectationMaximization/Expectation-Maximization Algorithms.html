@@ -90,6 +90,17 @@
 <a href="Expectation-Maximization Algorithms.html#Expectation Maximization-Generalized EM Algorithm-Putting Everything Together">Putting Everything Together</a>
 
 </ol>
+<li>
+<a href="Expectation-Maximization Algorithms.html#Expectation Maximization-Derive EM for GMM from the Generalized Algorithm">Derive EM for GMM</a>
+
+<ol>
+<li>
+<a href="Expectation-Maximization Algorithms.html#Expectation Maximization-Derive EM for GMM from the Generalized Algorithm-E-Step">E-Step</a>
+
+<li>
+<a href="Expectation-Maximization Algorithms.html#Expectation Maximization-Derive EM for GMM from the Generalized Algorithm-M-Step">M-Step</a>
+
+</ol>
 </ol>
 
 <hr />
@@ -632,6 +643,94 @@ Q_i(z^{(i)}) = P(z^{(i)}|x^{(i)}; \theta)
 \end{align}
 
 </ul>
+
+<div id="Expectation Maximization-Derive EM for GMM from the Generalized Algorithm"><h2 id="Derive EM for GMM from the Generalized Algorithm" class="header"><a href="#Expectation Maximization-Derive EM for GMM from the Generalized Algorithm">Derive EM for GMM from the Generalized Algorithm</a></h2></div>
+
+<p>
+Given a model described by:
+</p>
+
+<ul>
+<li>
+\(P(x^{(i)}, z^{(i)}) = P(x^{(i)}|z^{(i)}) P(z^{(i)})\)
+
+<li>
+where \(z^{(i)} \sim Multinomial(\phi)\) (which means \(P(z^{(i)} = j) = \phi_j\))
+
+<li>
+and \(x^{(i)} | z^{(i)} \sim \mathcal{N}(\mu_j, \Sigma_j)\)
+
+</ul>
+
+<div id="Expectation Maximization-Derive EM for GMM from the Generalized Algorithm-E-Step"><h3 id="E-Step" class="header"><a href="#Expectation Maximization-Derive EM for GMM from the Generalized Algorithm-E-Step">E-Step</a></h3></div>
+
+<p>
+On the <code>E-Step</code> we compute:
+</p>
+
+<p>
+\(Q_i(z^{(i)}) P(z^{(i)} = j | x^{(i)}; \phi, \mu, \Sigma)\)
+</p>
+
+<p>
+If we look at <a href="Expectation-Maximization Algorithms.html#Expectation Maximization-EM Algorithm with GMM's-E-Step">E-Step from GMM's</a> we can see that the expression above equals \(w^{(i)}_j\).
+</p>
+
+<div id="Expectation Maximization-Derive EM for GMM from the Generalized Algorithm-M-Step"><h3 id="M-Step" class="header"><a href="#Expectation Maximization-Derive EM for GMM from the Generalized Algorithm-M-Step">M-Step</a></h3></div>
+
+<p>
+Now on the <code>M-Step</code> what we do is maximize the lower bound we have constructed in the <code>E-Step</code>. For that we need to compute the value of the parameters \(\phi, \mu, \Sigma\) that maximize this function, that is:
+</p>
+
+\begin{align}
+\underset{\phi, \mu, \Sigma}{\max} \sum_{i=1}^m \sum_{z^{(i)}} Q_i(z^{(i)}) \log \left( \frac{P(x^{(i)}, z^{(i)}; \phi, \mu, \Sigma)}{Q_i(z^{(i)})} \right) =
+\end{align}
+
+<p>
+As we know \(Q_i(z^{(i)}) = w^{(i)}_j\) and \(P(x^{(i)}, z^{(i)}) = P(x^{(i)}|z^{(i)}) P(z^{(i)})\), thus:
+</p>
+
+\begin{align}
+= \sum_{i=1}^m \sum_{j}^K w^{(i)}_j \log \left( \frac{P(x^{(i)}|z^{(i)} = j, \mu_j, \Sigma_j) P(z^{(i)} = j)}{w^{(i)}_j} \right)
+\end{align}
+
+<p>
+We also know that \(P(z^{(i)} = j) = \phi_j\) and \(x^{(i)} | z^{(i)} \sim \mathcal{N}(\mu_j, \Sigma_j)\), therefore:
+</p>
+
+\begin{align}
+= \sum_{i=1}^m \sum_{j}^K w^{(i)}_j \log \left( \frac{\mathcal{N}(x^{(i)}; \mu_j, \Sigma_j) \phi_j}{w^{(i)}_j} \right)
+\end{align}
+
+<p>
+Where:
+</p>
+
+\begin{align}
+\mathcal{N}(x^{(i)}; \mu_j, \Sigma_j) = \frac{1}{(2\pi)^{1/2}|\Sigma_j|^{1/2}} \exp \left( -\frac{1}{2}(x^{(i)} - \mu_j)^T \Sigma_j^{-1}(x^{(i)} - \mu_j)\right)
+\end{align}
+
+<hr />
+
+<p>
+From now on we denote \(\sum_{i=1}^m \sum_{j}^K w^{(i)}_j \log \left( \frac{\mathcal{N}(x^{(i)}; \mu_j, \Sigma_j) \phi_j}{w^{(i)}_j} \right)\) as \(\mathcal{L}(\phi, \mu, \Sigma)\):
+</p>
+
+<p>
+To maximize this formula over \(\phi, \mu\) and \(\Sigma\) you have to compute the derivatie of the function with respect to each parameter, such that:
+</p>
+
+<ol>
+<li>
+\(\Delta_{\mu_j} (\mathcal{L}(\phi, \mu, \Sigma)) = 0\), then: \(\mu_j = \sum_{i}^m \frac{w^{(i)}_j x^{(i)}_j}{w^{(i)}_j}\) (same as in <a href="Expectation-Maximization Algorithms.html#Expectation Maximization-EM Algorithm with GMM's-M-Step">M-Step in GMM's</a>)
+
+<li>
+\(\Delta_{\Sigma_j} (\mathcal{L}(\phi, \mu, \Sigma)) = 0\) and
+
+<li>
+\(\Delta_{\phi_j} (\mathcal{L}(\phi, \mu, \Sigma)) = 0\)
+
+</ol>
 </div>
   </body>
   <script

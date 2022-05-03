@@ -1,0 +1,164 @@
+<html>
+  <head>
+    <link rel="Stylesheet" type="text/css" href="https://albamr09.github.io/style.css" />
+    <title>Sistemas de Recomendación</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <!-- For LaTeX -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script
+      id="MathJax-script"
+      async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+    ></script>
+    <!-- Code Highlight -->
+    <link
+      rel="Stylesheet"
+      type="text/css"
+      href="https://albamr09.github.io/atom-one-light.min.css"
+    />
+  </head>
+  <body>
+    <a
+      href="https://albamr09.github.io/"
+      style="
+        color: white;
+        font-weight: bold;
+        text-decoration: none;
+        padding: 3px 6px;
+        border-radius: 3px;
+        background-color: #1e90ff;
+        text-transform: uppercase;
+      "
+      >Index</a
+    >
+    <hr />
+    <div class="content">
+<p>
+<a href="index.html">Back</a>
+</p>
+
+<div id="Sistemas de Recomendación"><h1 id="Sistemas de Recomendación" class="header"><a href="#Sistemas de Recomendación">Sistemas de Recomendación</a></h1></div>
+
+<hr />
+
+<p>
+Dados los parámetros:
+</p>
+
+<ul>
+<li>
+\(n_\mu\): número de usuarios
+
+<li>
+\(n_m\): número de ítems valorables
+
+<li>
+\(r(i,j)\): marcador de si el ítem ha sido valorado, tal que:
+
+</ul>
+
+\begin{align}
+r(i, j) = \begin{cases} 
+1, &amp; \text{ si el usuario j ha valorado el ítem i} \\
+0, &amp; \text{ en cualquier otro caso}
+\end{cases}
+\end{align}
+
+<ul>
+<li>
+\(y^{(i, j)}\): valoración del usuario \(j\) al ítem \(i\).
+
+</ul>
+
+<p>
+El objetivo de un sistema de recomendación es predecir los valores de las valoraciones donde \(r(i, j) \neq 1\) (es decir predecir las valoraciones de usuarios hacia ítems que no han valorado con anteioridad)
+</p>
+
+
+<div id="Sistemas de Recomendación-Content Based Recommendations"><h2 id="Content Based Recommendations" class="header"><a href="#Sistemas de Recomendación-Content Based Recommendations">Content Based Recommendations</a></h2></div>
+
+<ol>
+<li>
+Cada ítem está definido por \(n\) características.
+
+<li>
+Para cada usuario \(j\), debemos obtener \(\theta^{(j)} \in \mathbb{R}^{n+1}\), de tal manera que para predecir la valoración de \(x^{(i)} \rightarrow h_\theta(x^{(i)}) = (\theta^{(j)})^T x^{(i)}\)
+
+</ol>
+
+<div id="Sistemas de Recomendación-Content Based Recommendations-Función de coste"><h3 id="Función de coste" class="header"><a href="#Sistemas de Recomendación-Content Based Recommendations-Función de coste">Función de coste</a></h3></div>
+
+<p>
+Sea \(m^{(j)}\) el número de ítems valorados por el usuario \(j\), entonces la función de coste se define como:
+</p>
+
+\begin{align}
+J(\Theta) = \frac{1}{2m^{(j)}}\sum_{j=1}^{n_\mu} \sum_{i; r(i, j) = 1} ((\theta^{(j)})^T x^{(i)} - y^{(i, j)})^2 + \frac{\lambda}{2m^{(j)}} \sum_{k=1}^{n_\mu} \theta^{(j)}_k
+\end{align}
+
+<p>
+donde \(\Theta = \{\theta_1, \cdots, \theta_{n_\mu}\}\)
+</p>
+
+<div id="Sistemas de Recomendación-Content Based Recommendations-Descenso Gradiente"><h3 id="Descenso Gradiente" class="header"><a href="#Sistemas de Recomendación-Content Based Recommendations-Descenso Gradiente">Descenso Gradiente</a></h3></div>
+
+<p>
+Lo que queremos es minimizar el coste, por lo tanto, calculamos \(\frac{\delta J(\Theta)}{\delta \theta_j}\) para obtener el vector en dirección al mayor incremento en la función, seguidamente, utilizar su opuesto, obtenemos el vector que apunta a la dirección de menor incremento. Es decir, aplicamos descenso gradiente como sigue:
+</p>
+
+<p>
+Para \(k = 0\):
+</p>
+
+\begin{align}
+\theta_k^{(j)} = \theta_k^{(j)} - \alpha \left(\sum_{i; r(i,j)=1} (\theta^{(j)})^Tx^{(i)} - y^{(i,j)}x^{(i)}_k \right)
+\end{align}
+
+<p>
+Para \(k \neq 0\):
+</p>
+
+\begin{align}
+\theta_k^{(j)} = \theta_k^{(j)} - \alpha \left(\sum_{i; r(i,j)=1} (\theta^{(j)})^Tx^{(i)} - y^{(i,j)}x^{(i)}_k + \lambda \theta_k^{(j)} \right)
+\end{align}
+
+<div id="Sistemas de Recomendación-Collaborative Filtering"><h2 id="Collaborative Filtering" class="header"><a href="#Sistemas de Recomendación-Collaborative Filtering">Collaborative Filtering</a></h2></div>
+
+<p>
+Collaborative filtering consiste en calcular las características de cada usuario (ejemplo \(x^{(i)}\)) en función de los pesos \(\theta^{(j)}\). Una vez hecho esto se calculan los pesos óptimos que que minimizan la función de coste y volvemos a obtener las características de cada usuario en función de estes nuevos pesos.
+</p>
+
+<p>
+Este proceso se describe más formalmente a continuación:
+</p>
+
+<div id="Sistemas de Recomendación-Collaborative Filtering-Problema de Optimización"><h3 id="Problema de Optimización" class="header"><a href="#Sistemas de Recomendación-Collaborative Filtering-Problema de Optimización">Problema de Optimización</a></h3></div>
+
+<p>
+El problema de optimización se describe como sigue:
+</p>
+
+<p>
+Dados \(\theta^{(1)}, \cdots, \theta^{n_\mu}\):
+</p>
+
+\begin{align}
+\underset{x^{(i)}}{\min{\frac{1}{2}}} \sum
+\end{align}
+</div>
+  </body>
+  <script
+    type="text/javascript"
+    src="https://albamr09.github.io/highlight.min.js"
+  ></script>
+  <script
+    type="text/javascript"
+    src="https://albamr09.github.io/zepto.min.js"
+  ></script>
+  <script type="text/javascript">
+    $("pre").each(function (index, item) {
+      $(item).html("<code>" + $(item).html() + "</code>");
+    });
+    hljs.initHighlightingOnLoad();
+  </script>
+</html>

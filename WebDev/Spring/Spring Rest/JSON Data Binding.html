@@ -1,0 +1,79 @@
+<html>
+  <head>
+    <link rel="Stylesheet" type="text/css" href="https://albamr09.github.io/style.css" />
+    <title>JSON Data Binding</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <!-- For LaTeX -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script
+      id="MathJax-script"
+      async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+    ></script>
+    <!-- Code Highlight -->
+    <link
+      rel="Stylesheet"
+      type="text/css"
+      href="https://albamr09.github.io/atom-one-light.min.css"
+    />
+  </head>
+  <body>
+    <a
+      href="https://albamr09.github.io/"
+      style="
+        color: white;
+        font-weight: bold;
+        text-decoration: none;
+        padding: 3px 6px;
+        border-radius: 3px;
+        background-color: #1e90ff;
+        text-transform: uppercase;
+      "
+      >Index</a
+    >
+    <hr />
+    <div class="content">
+<p>
+<a href="../index.html">Back</a>
+</p>
+
+<div id="Java JSON Data Binding"><h1 id="Java JSON Data Binding" class="header"><a href="#Java JSON Data Binding">Java JSON Data Binding</a></h1></div>
+
+<hr />
+
+<p>
+Data binding is the process of converting JSON data to a Java POJO (the conversion goes both ways)
+</p>
+
+<p>
+<img src="./assets/json_data_binding.png" alt="JSON Data Binding" />
+</p>
+
+<p>
+Data binding is the same as Serialization/Deserialization and Marshalling/Unmarshalling.
+</p>
+
+<p>
+Spring uses the Jackson Project behind the scenes which handles data binding between JSON and Java POJOs.
+</p>
+
+<p>
+By default Jackson will call appropiate getter and setter methods to populate a POJO from a JSON or to create a JSON object from a POJO.
+</p>
+</div>
+  </body>
+  <script
+    type="text/javascript"
+    src="https://albamr09.github.io/highlight.min.js"
+  ></script>
+  <script
+    type="text/javascript"
+    src="https://albamr09.github.io/zepto.min.js"
+  ></script>
+  <script type="text/javascript">
+    $("pre").each(function (index, item) {
+      $(item).html("<code>" + $(item).html() + "</code>");
+    });
+    hljs.initHighlightingOnLoad();
+  </script>
+</html>
