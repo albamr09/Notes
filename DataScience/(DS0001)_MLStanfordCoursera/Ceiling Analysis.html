@@ -1,0 +1,129 @@
+<html>
+  <head>
+    <link rel="Stylesheet" type="text/css" href="https://albamr09.github.io/style.css" />
+    <title>Ceiling Analysis</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <!-- For LaTeX -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script
+      id="MathJax-script"
+      async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+    ></script>
+    <!-- Code Highlight -->
+    <link
+      rel="Stylesheet"
+      type="text/css"
+      href="https://albamr09.github.io/atom-one-light.min.css"
+    />
+  </head>
+  <body>
+    <a
+      href="https://albamr09.github.io/"
+      style="
+        color: white;
+        font-weight: bold;
+        text-decoration: none;
+        padding: 3px 6px;
+        border-radius: 3px;
+        background-color: #1e90ff;
+        text-transform: uppercase;
+      "
+      >Index</a
+    >
+    <hr />
+    <div class="content">
+<p>
+<a href="index.html">Back</a>
+</p>
+
+<div id="Ceiling Analysis"><h1 id="Ceiling Analysis" class="header"><a href="#Ceiling Analysis">Ceiling Analysis</a></h1></div>
+
+<hr />
+
+<p>
+Supongamos que tenemos un pipeline que conforma todo nuestro sistema de aprendizaje automático y está formado por:
+</p>
+
+<ul>
+<li>
+Obtención de la imagen
+
+<li>
+Detección de texto
+
+<li>
+Segmentación de caracteres
+
+<li>
+Reconocimiento de caracteres
+
+</ul>
+
+<p>
+Lo que hacemos es determinar una o varias métricas de evaluación, por ejemplo nosotros utilizaremos la precisión. Entonces, ahora creamos una tabla indicando el valor de métrica para cada parte del sistema así como para el sitema completo:
+</p>
+
+<table>
+<tr>
+<th>
+Componente
+</th>
+<th>
+Precisión
+</th>
+</tr>
+<tr>
+<td>
+Detección del texto
+</td>
+<td>
+82%
+</td>
+</tr>
+<tr>
+<td>
+Segmentación de caracteres
+</td>
+<td>
+90%
+</td>
+</tr>
+<tr>
+<td>
+Reconocimiento de caracteres
+</td>
+<td>
+100%
+</td>
+</tr>
+<tr>
+<td>
+Total
+</td>
+<td>
+72%
+</td>
+</tr>
+</table>
+
+<p>
+A partir de esta tabla podemos comprobar que mejorar la Detección en el texto y la Segmentación de caracteres mejora el rendimiento del modelo.
+</p>
+</div>
+  </body>
+  <script
+    type="text/javascript"
+    src="https://albamr09.github.io/highlight.min.js"
+  ></script>
+  <script
+    type="text/javascript"
+    src="https://albamr09.github.io/zepto.min.js"
+  ></script>
+  <script type="text/javascript">
+    $("pre").each(function (index, item) {
+      $(item).html("<code>" + $(item).html() + "</code>");
+    });
+    hljs.initHighlightingOnLoad();
+  </script>
+</html>

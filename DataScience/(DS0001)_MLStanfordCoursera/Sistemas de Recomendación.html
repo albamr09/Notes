@@ -100,6 +100,10 @@ J(\Theta) = \frac{1}{2m^{(j)}}\sum_{j=1}^{n_\mu} \sum_{i; r(i, j) = 1} ((\theta^
 donde \(\Theta = \{\theta_1, \cdots, \theta_{n_\mu}\}\)
 </p>
 
+<p>
+Es decir queremos minimizar la "distancia" entre lo predicho \((\theta^{(j)})^T x^{(i)}\) para el ítem (que ha sido valorado, por lo tanto \(r(i, j) = 1\)) y el usuario \(i\) y la valoración real \(y^{(i, j)}\).
+</p>
+
 <div id="Sistemas de Recomendación-Content Based Recommendations-Descenso Gradiente"><h3 id="Descenso Gradiente" class="header"><a href="#Sistemas de Recomendación-Content Based Recommendations-Descenso Gradiente">Descenso Gradiente</a></h3></div>
 
 <p>
@@ -142,9 +146,83 @@ El problema de optimización se describe como sigue:
 Dados \(\theta^{(1)}, \cdots, \theta^{n_\mu}\):
 </p>
 
+<p>
+Para un ejemplo \(x^{(i)}\)
+</p>
 \begin{align}
-\underset{x^{(i)}}{\min{\frac{1}{2}}} \sum
+\underset{x^{(i)}}{\min{}} \frac{1}{2} \sum_{j:r(i,j)=1} ((\theta^{(j)})^Tx^{(i)} - y^{(i,j)})^2 + \frac{\lambda}{2} \sum_{k=1}^n (x_k^{(i)})^2
 \end{align}
+
+<p>
+Para todos los ejemplos del conjunto \(x^{0}, \cdots, x^{(n_m)}\):
+</p>
+\begin{align}
+\underset{x^{(1)}, \cdots, x^{(n_m)}}{\min{}} \frac{1}{2} \sum_{i=1}^{n_m} \sum_{j:r(i,j)=1} ((\theta^{(j)})^Tx^{(i)} - y^{(i,j)})^2 + \frac{\lambda}{2} \sum_{i=1}^{n_m}\sum_{k=1}^n (x_k^{(i)})^2
+\end{align}
+
+<p>
+Es decir queremos minimizar la "distancia" entre lo predicho \((\theta^{(j)})^T x^{(i)}\) para el ítem (que ha sido valorado, por lo tanto \(r(i, j) = 1\)) y el usuario \(i\) y la valoración real \(y^{(i, j)}\). Además como queremos obtener los valores de \(x\) que minimizan el coste, los añadimos como coste a problema de optimización para evitar overfitting.
+</p>
+
+<div id="Sistemas de Recomendación-Collaborative Filtering-Algoritmo"><h3 id="Algoritmo" class="header"><a href="#Sistemas de Recomendación-Collaborative Filtering-Algoritmo">Algoritmo</a></h3></div>
+
+<p>
+El algoritmo consta de los siguientes pasos:
+</p>
+
+<ol>
+<li>
+Inicializar \(x^{(1)}, \cdots, x^{(m)}\) y \(\theta^{(1)}, \cdots, \theta^{(n_\mu)}\) de forma aleatoria.
+
+<li>
+Calcular \(X\) a partir de \(\Theta\)
+
+<li>
+Calcular \(\Theta\) a partir de \(X\)
+
+<li>
+Volvemos al paso 2.
+
+</ol>
+
+<p>
+Es decir, queremos obtener \(X\) y \(\Theta\) que optimice el siguiente problema:
+</p>
+
+\begin{align}
+\underset{x^{(1)}, \cdots, x^{(n_m)}, \theta^{(1)}, \cdots, \theta^{(n_\mu)}}{\min{}} \frac{1}{2} \sum_{i=1}^{n_m} \sum_{j:r(i,j)=1} ((\theta^{(j)})^Tx^{(i)} - y^{(i,j)})^2 + \frac{\lambda}{2} \sum_{i=1}^{n_m}\sum_{k=1}^n (x_k^{(i)})^2 + \frac{\lambda}{2} \sum_{i=1}^{n_\mu}\sum_{k=1}^n (\theta_k^{(i)})^2
+\end{align}
+
+<p>
+Observa que, como estamos optimizando tanto \(\theta\) como \(x\), entonces los añadimos como coste a la función de optimización para evitar overfitting:
+</p>
+
+<ul>
+<li>
+\(\frac{\lambda}{2} \sum_{i=1}^{n_m}\sum_{k=1}^n (x_k^{(i)})^2\)
+
+<li>
+\(\frac{\lambda}{2} \sum_{i=1}^{n_\mu}\sum_{k=1}^n (\theta_k^{(i)})^2\)
+
+</ul>
+
+<p>
+Para aplicar la optimización utilizamos descenso gradiente: primero en función de \(x\) y después en función de \(\theta\):
+</p>
+
+\begin{align}
+x^{(i)}_k = x^{(i)}_k - \alpha \left( \sum_{j:r(i, j)=1} ((\theta^{(j)})^T x^{(i)} - y^{(i, j)}) \theta_k^{(j)} + \lambda x^{(i)}_k\right)
+\end{align}
+
+\begin{align}
+\theta^{(j)}_k = \theta^{(j)}_k - \alpha \left( \sum_{i:r(i, j)=1} ((\theta^{(j)})^T x^{(i)} - y^{(i, j)}) x_k^{(i)} + \lambda \theta^{(j)}_k\right)
+\end{align}
+
+<div id="Sistemas de Recomendación-Collaborative Filtering-Buscar ítems Relacionados"><h3 id="Buscar ítems Relacionados" class="header"><a href="#Sistemas de Recomendación-Collaborative Filtering-Buscar ítems Relacionados">Buscar ítems Relacionados</a></h3></div>
+
+<p>
+Si \(||x^{(i)} - x^{(j)}\)|| es un valor pequeño entonces los ítems \(i\) y \(j\) son similares.
+</p>
 </div>
   </body>
   <script
