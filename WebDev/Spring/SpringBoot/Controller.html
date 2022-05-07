@@ -1,0 +1,125 @@
+<html>
+  <head>
+    <link rel="Stylesheet" type="text/css" href="https://albamr09.github.io/style.css" />
+    <title>Controller</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <!-- For LaTeX -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script
+      id="MathJax-script"
+      async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+    ></script>
+    <!-- Code Highlight -->
+    <link
+      rel="Stylesheet"
+      type="text/css"
+      href="https://albamr09.github.io/atom-one-light.min.css"
+    />
+  </head>
+  <body>
+    <a
+      href="https://albamr09.github.io/"
+      style="
+        color: white;
+        font-weight: bold;
+        text-decoration: none;
+        padding: 3px 6px;
+        border-radius: 3px;
+        background-color: #1e90ff;
+        text-transform: uppercase;
+      "
+      >Index</a
+    >
+    <hr />
+    <div class="content">
+<p>
+<a href="../index.html">Back</a>
+</p>
+
+<div id="Rest Controller"><h1 id="Rest Controller" class="header"><a href="#Rest Controller">Rest Controller</a></h1></div>
+
+<hr />
+
+<p>
+In this section we are going to show how to create a REST controller in a Spring Boot application:
+</p>
+
+<div id="Rest Controller-Create Controller"><h2 id="Create Controller" class="header"><a href="#Rest Controller-Create Controller">Create Controller</a></h2></div>
+
+<p>
+The controller is the same as in Spring REST:
+</p>
+
+<pre java>
+package com.springboot.demo.mycoolapp.rest;
+
+import java.time.LocalDateTime;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class FunRestController {
+		
+	// expose "/" that return "Hello World"
+	
+	@GetMapping("/")
+	public String sayHello() {
+		return "Hello World! Time on server is " + LocalDateTime.now();
+	}
+	
+
+</pre>
+
+<div id="Rest Controller-Main App"><h2 id="Main App" class="header"><a href="#Rest Controller-Main App">Main App</a></h2></div>
+
+<p>
+The <code>SpringBootApplication</code> is made up of three annotations:
+</p>
+<ul>
+<li>
+Auto configuration (<code>@EnableAutoConfiguration</code>)
+
+<li>
+Component scanning (<code>@ComponentScan</code>)
+
+<li>
+Additional configuration (<code>@Configuration</code>)
+
+</ul>
+
+<pre java>
+package com.springboot.demo.mycoolapp;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+// Annotation to tell Spring this is an spring application
+@SpringBootApplication
+public class MycoolappApplication {
+
+	public static void main(String[] args) {
+		// Boostrap spring boot application
+		SpringApplication.run(MycoolappApplication.class, args);
+	}
+}
+</pre>
+</div>
+  </body>
+  <script
+    type="text/javascript"
+    src="https://albamr09.github.io/highlight.min.js"
+  ></script>
+  <script
+    type="text/javascript"
+    src="https://albamr09.github.io/zepto.min.js"
+  ></script>
+  <script type="text/javascript">
+    $("pre").each(function (index, item) {
+      $(item).html("<code>" + $(item).html() + "</code>");
+    });
+    hljs.initHighlightingOnLoad();
+  </script>
+</html>
