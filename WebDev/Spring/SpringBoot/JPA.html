@@ -1,7 +1,7 @@
 <html>
   <head>
     <link rel="Stylesheet" type="text/css" href="https://albamr09.github.io/style.css" />
-    <title>index</title>
+    <title>JPA</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <!-- For LaTeX -->
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
@@ -37,49 +37,25 @@
 <a href="../index.html">Back</a>
 </p>
 
-<div id="Overview"><h1 id="Overview" class="header"><a href="#Overview">Overview</a></h1></div>
+<div id="JPA"><h1 id="JPA" class="header"><a href="#JPA">JPA</a></h1></div>
 
 <hr />
 
 <p>
-Spring Boot is a framework that:
-</p>
-
-<ul>
-<li>
-Make it easier to get started with Spring development
-
-<li>
-Minimize the amount of manual configuration
-
-<ul>
-<li>
-Perform auto-configuration based on props files and JAR classpath
-
-</ul>
-<li>
-Help to resolve dependency conflicts (Maven or Gradle)
-
-<li>
-Provide an embedded HTTP server so you can get started quickly
-
-</ul>
-
-<p>
-To create a new project you just have to go to <a href="https://start.spring.io/">Spring Initiliazr</a>, where you simply select your dependencies and lets you create a maven/gradle project and import it into an IDE.
+Until now, to manage data we have been using the <code>EntityManager</code> along with the <code>Hibernate API</code>. However now we are going to use the <code>Standard JPA API</code>.
 </p>
 
 <p>
-So now our app is a <code>jar</code> file, and it includes the source code and also the embedded http server, so can be ran from the command line, from your IDE, etc. However if you want to export your code as a <code>war</code> file, you can also do that by exporting only your source code, without the embedded server.
+The <code>JPA API</code> methods are similar to <code>Native Hibernate API</code>. It also supports a query language <code>JPQL</code> (<code>JPA Query Language</code>)
 </p>
 
 <p>
-With the <code>jar</code> file you can run your application by executing:
+Comparing <code>Hibernate</code> to <code>JPA</code>:
 </p>
 
-<pre bash>
-$ java -jar app.jar
-</pre>
+<p>
+<img src="./assets/jpa_vs_hibernate.png" alt="Comparing JPA and Hibernate" />
+</p>
 </div>
   </body>
   <script
