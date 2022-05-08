@@ -127,9 +127,175 @@ The previous classifier allows for outputting multiples classes in the result, t
 Thus, instead of a probability for each class what we obtain is a probability distribution for all the classes.
 </p>
 
+<div id="Neural Networks-Architecture-Output Layer-ReLU"><h4 id="ReLU" class="header"><a href="#Neural Networks-Architecture-Output Layer-ReLU">ReLU</a></h4></div>
+
+<p>
+On linear regression we do not want the activation function to be linear, because then the whole network becomes a very large linear regression. Instead we use as an activation function the ReLU function (Rectified Linear Unit), whose output is zero if the input value is negative and linear otherwise.
+</p>
+
+<p>
+<img src="./assets/relu.svg" alt="ReLu Function" style="transform: translate(14vw, 0)" />
+</p>
+
+<div id="Neural Networks-Architecture-Output Layer-Loss Function"><h4 id="Loss Function" class="header"><a href="#Neural Networks-Architecture-Output Layer-Loss Function">Loss Function</a></h4></div>
+
+<p>
+The loss function when using the sigmoid function on the output layer is as follows:
+</p>
+
+\begin{align}
+\mathcal{L} = - \frac{1}{Q} \sum_{k=1}^Q [y^{(k)} \log(\hat{y}^{(k)}) + (1- y^{(k)})\log(1-\hat{y}^{(k)})]
+\end{align}
+
+<p>
+Where \(\hat{y}^{(k)}\) are the predicted values and \(Q\) is the total number of neurons on the output layer.
+</p>
+
+<hr />
+
+<p>
+However, if we use the softmax function as the activation function on the last layer we have to use a different derivative because this function does depend on the outputs of the other neurons. Thus, we make use of a function called cross entropy loss:
+</p>
+
+\begin{align}
+\mathcal{L}_{CE} = - \sum_{k=1}^Q y^{(k)} \log(\hat{y}^{(k)})
+\end{align}
+
+<hr />
+
+<p>
+For linear regression we use as the loss function the L1-Norm or the L2-Norm. The latter is defined as follows:
+</p>
+
+\begin{align}
+\mathcal{L} = || \hat{y} - y ||_2^2
+\end{align}
+
 <div id="Neural Networks-Forward Propagation"><h2 id="Forward Propagation" class="header"><a href="#Neural Networks-Forward Propagation">Forward Propagation</a></h2></div>
 
+<p>
+The forward propagation equations are the following:
+</p>
+
+\begin{align}
+z^{[i]} = w^{[i]} a^{[i-1]} + b^{[i]} \tag{1}
+\end{align}
+
+<p>
+Where \(i\) is the layer with \(i \geq 1\), and the first layer equals the input matrix, that is \(a^{[0]} = X\). By applying the activation function over \((1)\):
+</p>
+
+\begin{align}
+a^{[i]} = g(z^{[i]})
+\end{align}
+
+<p>
+Where \(g\) is the activation function (e.g \(\sigma(z^{[i]})\)).
+</p>
+
+<p>
+Now, what are the shapes of these matrices?
+</p>
+
+<ul>
+<li>
+\(z^{[i]} \in \mathbb{R}^{S_i \times m}\)
+
+<li>
+\(a^{[i]} \in \mathbb{R}^{S_i \times m}\)
+
+</ul>
+
+<p>
+Where \(S_i\) is the number of neurons on the ith layer and \(m\) is the number of examples. Note that the shape of the final layer changes depending on the task. So if \(K\) is the number of layers:
+</p>
+
+<ul>
+<li>
+In linear regression: \(\hat{y} = a^{[K]} \in \mathbb{R}^{1 \times m}\)
+
+<li>
+In multi-class classification: \(\hat{y} = a^{[K]} \in \mathbb{R}^{c \times m}\), where \(c\) is the number of classes.
+
+</ul>
+
+<p>
+Also the shape of the weights are \(w[i] \in \mathbb{R}^{S_i \times S_{i-1}}\), that is, this matrix is compatible with the outputs of the previous layer (\(a^{[i-1]} \in \mathbb{R}^{S_{i-1} \times m}\)) and the linear part of the next layer (\(z^{[i]} \in \mathbb{R}^{S^i \times m}\)).
+</p>
+
+<p>
+However, the bias are \(b^{[i]} \in \mathbb{R}^{S^i \times 1}\), therefore we cannot perform an element wise summation because the shape of \((w^{[i]} a^{[i-1]}) \in \mathbb{R}^{S_i \times m}\) and \(b^{[i]}\) are not compatible. To avoid this problem we apply a technique called broadcasting to \(b\), such that we replicate \(b^{[i]}\) \(m\) times:
+</p>
+
+\begin{align}
+\hat{b}^{[i]} = \begin{bmatrix}
+| &amp;  | &amp; \cdots &amp; | \\
+b^{[i]} &amp; b^{[i]} &amp; \cdots &amp; b^{[i]} \\
+| &amp; | &amp; \cdots &amp; | \\
+\end{bmatrix} \in \mathbb{R}^{S_i \times m}
+\end{align}
+
+<hr />
+
+<p>
+To sum up, the shapes of the data and the parameters on each layer \(i\) are:
+</p>
+
+<div id="Neural Networks-Forward Propagation-Parameters"><h4 id="Parameters" class="header"><a href="#Neural Networks-Forward Propagation-Parameters">Parameters</a></h4></div>
+
+\begin{align}
+\hat{b}^{[i]} = \begin{bmatrix}
+| &amp;  | &amp; \cdots &amp; | \\
+b^{[i]} &amp; b^{[i]} &amp; \cdots &amp; b^{[i]} \\
+| &amp; | &amp; \cdots &amp; | \\
+\end{bmatrix} \in \mathbb{R}^{S_i \times m}
+\end{align}
+
+\begin{align}
+w^{[i]} = \begin{bmatrix}
+| &amp; | &amp; \cdots &amp; | \\
+w^{[i](1)} &amp; w^{[i](2)} &amp; \cdots &amp; w^{[i](S_{i-1})} \\
+| &amp; | &amp; \cdots &amp; | \\
+\end{bmatrix} \in \mathbb{R}^{S_i \times S_{i-1}}
+\end{align}
+
+<div id="Neural Networks-Forward Propagation-Outputs"><h4 id="Outputs" class="header"><a href="#Neural Networks-Forward Propagation-Outputs">Outputs</a></h4></div>
+
+<p>
+Note that for each example \(j\) on layer \(i\) \(z^{[i](j)} = (w^{[i]} a^{[i-1](j)} + \hat{b}^{[i]})\), then:
+</p>
+
+\begin{align}
+z^{[i]} = \begin{bmatrix}
+| &amp;  | &amp; \cdots &amp; | \\
+z^{[i](1)} &amp; z^{[i](2)} &amp; \cdots &amp; z^{[i](m)} \\
+| &amp;  | &amp; \cdots &amp; | \\
+\end{bmatrix} \in \mathbb{R}^{S_i \times m}
+\end{align}
+
+\begin{align}
+a^{[i]} = \begin{bmatrix}
+| &amp;  | &amp; \cdots &amp; | \\
+g(z^{[i](1)}) &amp; g(z^{[i](2)}) &amp; \cdots &amp; g(z^{[i](m)}) \\
+| &amp;  | &amp; \cdots &amp; | \\
+\end{bmatrix} \in \mathbb{R}^{S_i \times m}
+\end{align}
+
+<div id="Neural Networks-Forward Propagation-Graphical Representation"><h4 id="Graphical Representation" class="header"><a href="#Neural Networks-Forward Propagation-Graphical Representation">Graphical Representation</a></h4></div>
+
+<p>
+Now we present a small example of how forward propagation works on neural networks:
+</p>
+
+<p>
+<img src="./assets/nn_forward_propagation.svg" alt="Forward Propagation Neural Network" style="width: 1000px" />
+</p>
+
 <div id="Neural Networks-Optimization Problem"><h2 id="Optimization Problem" class="header"><a href="#Neural Networks-Optimization Problem">Optimization Problem</a></h2></div>
+
+<div id="Neural Networks-Optimization Problem-Loss Function"><h3 id="Loss Function" class="header"><a href="#Neural Networks-Optimization Problem-Loss Function">Loss Function</a></h3></div>
+
+<div id="Neural Networks-Optimization Problem-Optimization"><h3 id="Optimization" class="header"><a href="#Neural Networks-Optimization Problem-Optimization">Optimization</a></h3></div>
 </div>
   </body>
   <script
