@@ -293,9 +293,152 @@ Now we present a small example of how forward propagation works on neural networ
 
 <div id="Neural Networks-Optimization Problem"><h2 id="Optimization Problem" class="header"><a href="#Neural Networks-Optimization Problem">Optimization Problem</a></h2></div>
 
+<p>
+What we want to do is find the parameters \(w^{[i]}, b^{[i]}\) for each layer \(i\) that minimize the cost.
+</p>
+
 <div id="Neural Networks-Optimization Problem-Loss Function"><h3 id="Loss Function" class="header"><a href="#Neural Networks-Optimization Problem-Loss Function">Loss Function</a></h3></div>
 
+<p>
+So first of all we define a cost function for the objective \(\mathcal{L}(\hat{y}, y)\), where \(\hat{y}\) is the predicted output and \(y\) is the real output. The cost function will depend on the type of problem (classification, regression).
+</p>
+
 <div id="Neural Networks-Optimization Problem-Optimization"><h3 id="Optimization" class="header"><a href="#Neural Networks-Optimization Problem-Optimization">Optimization</a></h3></div>
+
+<p>
+The we optimize the loss function we defined by using backward propagation. For each layer \(l=1, \cdots, K\), where \(K\) is the number of layers, we apply Batch Gradient Descent (not mandatory, but here it is convenient as we can vectorize the derivatives) as follows:
+</p>
+
+\begin{align}
+w^{[l]} = w^{[l]} - \alpha \frac{\delta \mathcal{L}(\hat{y}, y)}{\delta w^{[l]}}
+\end{align}
+
+\begin{align}
+b^{[l]} = b^{[l]} - \alpha \frac{\delta \mathcal{L}(\hat{y}, y)}{\delta b^{[l]}}
+\end{align}
+
+<div id="Neural Networks-Optimization Problem-Back-propagation"><h3 id="Back-propagation" class="header"><a href="#Neural Networks-Optimization Problem-Back-propagation">Back-propagation</a></h3></div>
+
+<p>
+To compute the derivatives of the cost function with respect to \(w^{[l]}\) and \(b^{[l]}\) we use the chain rule. 
+</p>
+
+<div id="Neural Networks-Optimization Problem-Back-propagation-Output Layer"><h4 id="Output Layer" class="header"><a href="#Neural Networks-Optimization Problem-Back-propagation-Output Layer">Output Layer</a></h4></div>
+
+<p>
+Suppose we have \(K\) layers, then we start by calculating \(\frac{\delta \mathcal{L}(\hat{y}, y)}{\delta w^{[K]}}\)  and \(\frac{\delta \mathcal{L}(\hat{y}, y)}{\delta b^{[K]}}\), that is, the derivatives on the last layer. Thus, to update \(w^{[K]}\) (we apply the same logic for \(b^{[K]}\)):
+</p>
+
+\begin{align}
+\frac{\delta \mathcal{L}(\hat{y}, y)}{\delta w^{[K]}} = \sum_{i=1}^m \frac{\delta \mathcal{L}(\hat{y^{(i)}}, y^{(i)})}{\delta w^{[K]}} = 
+\end{align}
+
+<p>
+Because \(\hat{y^{(i)}} = (a^{[K]})^{(i)}\):
+</p>
+
+\begin{align}
+ = \sum_{i=1}^m \frac{\delta \mathcal{L}((a^{[K]})^{(i)}, y^{(i)})}{\delta w^{[K]}}
+\end{align}
+
+<p>
+We apply the chain rule on the derivative, therefore:
+</p>
+
+\begin{align}
+ = \sum_{i=1}^m \frac{\delta \mathcal{L}((a^{[K]})^{(i)}, y^{(i)})}{\delta (a^{[K]})^{(i)}} \frac{\delta (a^{[K]})^{(i)}}{\delta w^{[K]}}
+\end{align}
+
+<p>
+Because \((a^{[K]})^{(i)} = g((z^{[K]})^{(i)})\), where \(g\) is the activation function:
+</p>
+
+\begin{align}
+ = \sum_{i=1}^m \frac{\delta \mathcal{L}((a^{[K]})^{(i)}, y^{(i)})}{\delta (a^{[K]})^{(i)}} \frac{\delta g((z^{[K]})^{(i)})}{\delta w^{[K]}}
+\end{align}
+
+<p>
+We apply the chain rule on the last derivative, therefore:
+</p>
+
+\begin{align}
+ = \sum_{i=1}^m \frac{\delta \mathcal{L}((a^{[K]})^{(i)}, y^{(i)})}{\delta (a^{[K]})^{(i)}} \frac{\delta g((z^{[K]})^{(i)})}{\delta (z^{[K]})^{(i)}} \frac{\delta (z^{[K]})^{(i)}}{\delta w^{[K]}}
+\end{align}
+
+<div id="Neural Networks-Optimization Problem-Back-propagation-Hidden Layers"><h4 id="Hidden Layers" class="header"><a href="#Neural Networks-Optimization Problem-Back-propagation-Hidden Layers">Hidden Layers</a></h4></div>
+
+<p>
+What about the previous layer \(K-1\)?
+</p>
+
+\begin{align}
+\frac{\delta \mathcal{L}(\hat{y}, y)}{\delta w^{[K-1]}} = \sum_{i=1}^m \frac{\delta \mathcal{L}(\hat{y^{(i)}}, y^{(i)})}{\delta w^{[K-1]}} = 
+\end{align}
+
+<p>
+Because \(\hat{y^{(i)}} = (a^{[K]})^{(i)}\):
+</p>
+
+\begin{align}
+ = \sum_{i=1}^m \frac{\delta \mathcal{L}((a^{[K]})^{(i)}, y^{(i)})}{\delta w^{[K-1]}}
+\end{align}
+
+<p>
+We apply the chain rule on the derivative, therefore:
+</p>
+
+\begin{align}
+ = \sum_{i=1}^m \frac{\delta \mathcal{L}((a^{[K]})^{(i)}, y^{(i)})}{\delta (a^{[K]})^{(i)}} \frac{\delta (a^{[K]})^{(i)}}{\delta w^{[K-1]}}
+\end{align}
+
+<p>
+Because \((a^{[K]})^{(i)} = g((z^{[K]})^{(i)})\), where \(g\) is the activation function:
+</p>
+
+\begin{align}
+ = \sum_{i=1}^m \frac{\delta \mathcal{L}((a^{[K]})^{(i)}, y^{(i)})}{\delta (a^{[K]})^{(i)}} \frac{\delta g((z^{[K]})^{(i)})}{\delta w^{[K-1]}}
+\end{align}
+
+<p>
+We apply the chain rule on the last derivative, therefore:
+</p>
+
+\begin{align}
+ = \sum_{i=1}^m \frac{\delta \mathcal{L}((a^{[K]})^{(i)}, y^{(i)})}{\delta (a^{[K]})^{(i)}} \frac{\delta g((z^{[K]})^{(i)})}{\delta (z^{[K]})^{(i)}} \frac{\delta (z^{[K]})^{(i)}}{\delta w^{[K-1]}}
+\end{align}
+
+<p>
+As you can see the first two derivatives are the same as the derivatives on the layer \(K\), let's denote \((\Delta^{[K]})^{(i)} = \frac{\delta \mathcal{L}((a^{[K]})^{(i)}, y^{(i)})}{\delta (a^{[K]})^{(i)}} \frac{\delta g((z^{[K]})^{(i)})}{\delta (z^{[K]})^{(i)}}\) the accumulated gradient on layer \(K\) for example \(i\), then:
+</p>
+
+\begin{align}
+ = \sum_{i=1}^m (\Delta^{[K]})^{(i)} \frac{\delta (z^{[K]})^{(i)}}{\delta w^{[K-1]}}
+\end{align}
+
+<p>
+Because \((z^{[K]})^{(i)} = w^{[K]} (a^{[K-1]})^{(i)} + b^{[k]}\):
+</p>
+
+\begin{align}
+ = \sum_{i=1}^m (\Delta^{[K]})^{(i)} \frac{\delta (w^{[K]} (a^{[K-1]})^{(i)} + b^{[k]})}{\delta w^{[K-1]}}
+\end{align}
+
+<p>
+Because \(\frac{\delta b^{[k]}}{\delta w^{[K-1]}} = 0\) and \((a^{[K-1]})^{(i)} = g((z^{[K-1]})^{(i)})\):
+</p>
+
+\begin{align}
+ = \sum_{i=1}^m (\Delta^{[K]})^{(i)} \frac{\delta (w^{[K]} g((z^{[K-1]})^{(i)}))}{\delta w^{[K-1]}}
+\end{align}
+
+<div id="Neural Networks-Improving a Neural Network"><h2 id="Improving a Neural Network" class="header"><a href="#Neural Networks-Improving a Neural Network">Improving a Neural Network</a></h2></div>
+<div id="Neural Networks-Improving a Neural Network-Activation Functions"><h3 id="Activation Functions" class="header"><a href="#Neural Networks-Improving a Neural Network-Activation Functions">Activation Functions</a></h3></div>
+
+<div id="Neural Networks-Improving a Neural Network-Initialization Techniques"><h3 id="Initialization Techniques" class="header"><a href="#Neural Networks-Improving a Neural Network-Initialization Techniques">Initialization Techniques</a></h3></div>
+
+<div id="Neural Networks-Improving a Neural Network-Vanishing/Exploding Gradients"><h3 id="Vanishing/Exploding Gradients" class="header"><a href="#Neural Networks-Improving a Neural Network-Vanishing/Exploding Gradients">Vanishing/Exploding Gradients</a></h3></div>
+
+<div id="Neural Networks-Improving a Neural Network-Optimization"><h3 id="Optimization" class="header"><a href="#Neural Networks-Improving a Neural Network-Optimization">Optimization</a></h3></div>
 </div>
   </body>
   <script
