@@ -56,6 +56,163 @@ Comparing <code>Hibernate</code> to <code>JPA</code>:
 <p>
 <img src="./assets/jpa_vs_hibernate.png" alt="Comparing JPA and Hibernate" />
 </p>
+
+<hr />
+
+<p>
+Example: for managing employees with <code>JPA</code>, we first create the Data Access Object:
+</p>
+
+<pre java>
+package com.springboot.cruddemo.dao;
+
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import com.luv2code.springboot.cruddemo.entity.Employee;
+
+@Repository
+public class EmployeeDAOJpaImpl implements EmployeeDAO {
+
+	private EntityManager entityManager;
+	
+	@Autowired
+	public EmployeeDAOJpaImpl(EntityManager theEntityManager) {
+		entityManager = theEntityManager;
+	}
+	
+	@Override
+	public List&lt;Employee&gt; findAll() {
+
+		// create a query
+		Query theQuery = 
+				entityManager.createQuery("from Employee");
+		
+		// execute query and get result list
+		List&lt;Employee&gt; employees = theQuery.getResultList();
+		
+		// return the results		
+		return employees;
+	}
+
+	@Override
+	public Employee findById(int theId) {
+
+		// get employee
+		Employee theEmployee = 
+				entityManager.find(Employee.class, theId);
+		
+		// return employee
+		return theEmployee;
+	}
+
+	@Override
+	public void save(Employee theEmployee) {
+
+		// save or update the employee
+		Employee dbEmployee = entityManager.merge(theEmployee);
+		
+		// update with id from db ... so we can get generated id for save/insert
+		theEmployee.setId(dbEmployee.getId());
+		
+	}
+
+	@Override
+	public void deleteById(int theId) {
+
+		// delete object with primary key
+		Query theQuery = entityManager.createQuery(
+							"delete from Employee where id=:employeeId");
+		
+		theQuery.setParameter("employeeId", theId);
+		
+		theQuery.executeUpdate();
+	}
+
+}
+</pre>
+
+<p>
+And then we call it from the Employee Service:
+</p>
+
+<pre java>
+package com.springboot.cruddemo.service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.springboot.cruddemo.dao.EmployeeDAO;
+import com.springboot.cruddemo.entity.Employee;
+
+@Service
+public class EmployeeServiceImpl implements EmployeeService {
+
+	private EmployeeDAO employeeDAO;
+	
+	@Autowired
+	public EmployeeServiceImpl(@Qualifier("employeeDAOJpaImpl") EmployeeDAO theEmployeeDAO) {
+		employeeDAO = theEmployeeDAO;
+	}
+	
+	@Override
+	@Transactional
+	public List&lt;Employee&gt; findAll() {
+		return employeeDAO.findAll();
+	}
+
+	@Override
+	@Transactional
+	public Employee findById(int theId) {
+		return employeeDAO.findById(theId);
+	}
+
+	@Override
+	@Transactional
+	public void save(Employee theEmployee) {
+		employeeDAO.save(theEmployee);
+	}
+
+	@Override
+	@Transactional
+	public void deleteById(int theId) {
+		employeeDAO.deleteById(theId);
+	}
+}
+</pre>
+
+<p>
+This class implements the following interface:
+</p>
+
+<pre java>
+package com.springboot.cruddemo.service;
+
+import java.util.List;
+
+import com.springboot.cruddemo.entity.Employee;
+
+public interface EmployeeService {
+
+	public List&lt;Employee&gt; findAll();
+	
+	public Employee findById(int theId);
+	
+	public void save(Employee theEmployee);
+	
+	public void deleteById(int theId);
+	
+}
+</pre>
 </div>
   </body>
   <script
