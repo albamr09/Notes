@@ -41,6 +41,70 @@
 
 <hr />
 
+<ol>
+<li>
+<a href="Neural Networks.html#Neural Networks-Architecture">Architecture</a>
+
+<ol>
+<li>
+<a href="Neural Networks.html#Neural Networks-Architecture-Algorithm">Algorithm</a>
+
+<li>
+<a href="Neural Networks.html#Neural Networks-Architecture-Output Layer">Output Layer</a>
+
+</ol>
+<li>
+<a href="Neural Networks.html#Neural Networks-Forward Propagation">Forward Propagation</a>
+
+<ol>
+<li>
+<a href="Neural Networks.html#Neural Networks-Forward Propagation-Parameters">Parameters</a>
+
+<li>
+<a href="Neural Networks.html#Neural Networks-Forward Propagation-Outputs">Outputs</a>
+
+<li>
+<a href="Neural Networks.html#Neural Networks-Forward Propagation-Graphical Representation">Graphical Representation</a>
+
+</ol>
+<li>
+<a href="Neural Networks.html#Neural Networks-Optimization Problem">Optimization Problem</a>
+
+<ol>
+<li>
+<a href="Neural Networks.html#Neural Networks-Optimization Problem-Loss Function">Loss Function</a>
+
+<li>
+<a href="Neural Networks.html#Neural Networks-Optimization Problem-Optimization">Optimization</a>
+
+<li>
+<a href="Neural Networks.html#Neural Networks-Optimization Problem-Back-propagation">Back-Propagation</a>
+
+<li>
+<a href="Neural Networks.html#Neural Networks-Optimization Problem-Vectorization">Vectorization</a>
+
+</ol>
+<li>
+<a href="Neural Networks.html#Neural Networks-Improving a Neural Network">Improving a Neural Network</a>
+
+<ol>
+<li>
+<a href="Neural Networks.html#Neural Networks-Improving a Neural Network-Activation Functions">Activation Functions</a>
+
+<li>
+<a href="Neural Networks.html#Neural Networks-Improving a Neural Network-Initialization Techniques">Initialization Techniques</a>
+
+<li>
+<a href="Neural Networks.html#Neural Networks-Improving a Neural Network-Vanishing/Exploding Gradients">Vanishing/Exploding Gradients</a>
+
+<li>
+<a href="Neural Networks.html#Neural Networks-Improving a Neural Network-Optimization">Optimization</a>
+
+</ol>
+</ol>
+
+<hr />
+
 <div id="Neural Networks-Architecture"><h2 id="Architecture" class="header"><a href="#Neural Networks-Architecture">Architecture</a></h2></div>
 
 <ul>
@@ -407,8 +471,12 @@ We apply the chain rule on the last derivative, therefore:
  = \sum_{i=1}^m \frac{\delta \mathcal{L}((a^{[K]})^{(i)}, y^{(i)})}{\delta (a^{[K]})^{(i)}} \frac{\delta g((z^{[K]})^{(i)})}{\delta (z^{[K]})^{(i)}} \frac{\delta (z^{[K]})^{(i)}}{\delta w^{[K-1]}}
 \end{align}
 
+\begin{align}
+ = \sum_{i=1}^m \frac{\delta \mathcal{L}((a^{[K]})^{(i)}, y^{(i)})}{\delta (a^{[K]})^{(i)}} \frac{\delta (a^{[K]})^{(i)}}{\delta (z^{[K]})^{(i)}} \frac{\delta (z^{[K]})^{(i)}}{\delta w^{[K-1]}}
+\end{align}
+
 <p>
-As you can see the first two derivatives are the same as the derivatives on the layer \(K\), let's denote \((\Delta^{[K]})^{(i)} = \frac{\delta \mathcal{L}((a^{[K]})^{(i)}, y^{(i)})}{\delta (a^{[K]})^{(i)}} \frac{\delta g((z^{[K]})^{(i)})}{\delta (z^{[K]})^{(i)}}\) the accumulated gradient on layer \(K\) for example \(i\), then:
+As you can see the first two derivatives are the same as the derivatives on the layer \(K\), let's denote \((\Delta^{[K]})^{(i)} = \frac{\delta \mathcal{L}((a^{[K]})^{(i)}, y^{(i)})}{\delta (a^{[K]})^{(i)}} \frac{\delta (a^{[K]})^{(i)}}{\delta (z^{[K]})^{(i)}}\) the accumulated gradient on layer \(K\) for example \(i\), then:
 </p>
 
 \begin{align}
@@ -423,22 +491,358 @@ Because \((z^{[K]})^{(i)} = w^{[K]} (a^{[K-1]})^{(i)} + b^{[k]}\):
  = \sum_{i=1}^m (\Delta^{[K]})^{(i)} \frac{\delta (w^{[K]} (a^{[K-1]})^{(i)} + b^{[k]})}{\delta w^{[K-1]}}
 \end{align}
 
+\begin{align}
+ = \sum_{i=1}^m (\Delta^{[K]})^{(i)} \frac{\delta (z^{[K-1]})^{(i)}}{\delta (a^{[K-1]})^{(i)}} \frac{\delta (a^{[K-1]})^{(i)}}{\delta w^{[K-1]}}
+\end{align}
+
 <p>
-Because \(\frac{\delta b^{[k]}}{\delta w^{[K-1]}} = 0\) and \((a^{[K-1]})^{(i)} = g((z^{[K-1]})^{(i)})\):
+Because \((a^{[K-1]})^{(i)} = g((z^{[K-1]})^{(i)})\)
 </p>
 
 \begin{align}
- = \sum_{i=1}^m (\Delta^{[K]})^{(i)} \frac{\delta (w^{[K]} g((z^{[K-1]})^{(i)}))}{\delta w^{[K-1]}}
+ = \sum_{i=1}^m (\Delta^{[K]})^{(i)} \frac{\delta (z^{[K-1]})^{(i)}}{\delta (a^{[K-1]})^{(i)}} \frac{\delta g((z^{[K-1]})^{(i)})}{\delta (z^{[K-1]})^{(i)}} \frac{\delta (z^{[K-1]})^{(i)}}{\delta w^{[K-1]}}
 \end{align}
 
+<p>
+We apply the chain rule on the last derivative, hence:
+</p>
+
+\begin{align}
+ = \sum_{i=1}^m (\Delta^{[K]})^{(i)} \frac{\delta (z^{[K-1]})^{(i)}}{\delta (a^{[K-1]})^{(i)}} \frac{\delta g((z^{[K-1]})^{(i)})}{\delta (z^{[K-1]})^{(i)}} \frac{\delta (z^{[K-1]})^{(i)}}{\delta w^{[K-1]}}
+\end{align}
+
+\begin{align}
+ = \sum_{i=1}^m (\Delta^{[K]})^{(i)} \frac{\delta (z^{[K-1]})^{(i)}}{\delta (a^{[K-1]})^{(i)}} \frac{\delta (a^{[K-1]})^{(i)}}{\delta (z^{[K-1]})^{(i)}} \frac{\delta (z^{[K-1]})^{(i)}}{\delta w^{[K-1]}}
+\end{align}
+
+<hr />
+
+<div id="Neural Networks-Optimization Problem-Vectorization"><h3 id="Vectorization" class="header"><a href="#Neural Networks-Optimization Problem-Vectorization">Vectorization</a></h3></div>
+
+<div id="Neural Networks-Optimization Problem-Vectorization-Output Layer"><h4 id="Output Layer" class="header"><a href="#Neural Networks-Optimization Problem-Vectorization-Output Layer">Output Layer</a></h4></div>
+
+<ol>
+<li>
+Accumulated gradient for layer \(K\): \(\Delta_w^{[K]} = \frac{\mathcal{L}(\hat{y}, y)}{\delta a^{[K]}} \frac{\delta a^{[K]}}{\delta z^{[K]}}\)
+
+<li>
+Gradient for layer \(K\): \(\frac{\delta \mathcal{L}(\hat{y}, y)}{\delta w^{[K]}} = \Delta_w^{[K]} \frac{\delta z^{[K]}}{\delta w^{[K]}}\)
+
+</ol>
+
+<div id="Neural Networks-Optimization Problem-Vectorization-Hidden Layer"><h4 id="Hidden Layer" class="header"><a href="#Neural Networks-Optimization Problem-Vectorization-Hidden Layer">Hidden Layer</a></h4></div>
+
+<ol>
+<li>
+Accumulated gradient for layer \(K-1\): \(\Delta_w^{[K-1]} = \Delta_w^{[K]} \frac{\delta z^{[K]}}{\delta a^{[K-1]}} \frac{\delta a^{[K-1]}}{\delta z^{[K-1]}}\)
+
+<li>
+Gradient for layer \(K-1\): \(\frac{\delta \mathcal{L}(\hat{y}, y)}{\delta w^{[K-1]}} = \Delta_w^{[K-1]} \frac{\delta z^{[K-1]}}{\delta w^{[K-1]}}\)
+
+</ol>
+
 <div id="Neural Networks-Improving a Neural Network"><h2 id="Improving a Neural Network" class="header"><a href="#Neural Networks-Improving a Neural Network">Improving a Neural Network</a></h2></div>
+
 <div id="Neural Networks-Improving a Neural Network-Activation Functions"><h3 id="Activation Functions" class="header"><a href="#Neural Networks-Improving a Neural Network-Activation Functions">Activation Functions</a></h3></div>
+
+<p>
+Why do we need activation functions? Well, suppose you have the following network where the activation function is the identity function. That is \(a^{[i]} = g(z^{[i]}) = z^{[i]}\):
+</p>
+
+<p>
+<img src="./assets/nn_no_activation_function.svg" alt="Neural Network Without Activation Function" style="transform: translate(22vw)" />
+</p>
+
+<p>
+Then:
+</p>
+
+\begin{align}
+\hat{y} = a^{[3]} = z^{[3]} = w^{[3]} a^{[2]} + b^{[3]} = w^{[3]} z^{[2]} + b^{[3]} = w^{[3]} (w^{[2]} a^{[1]} + b^{[2]}) + b^{[3]} 
+\end{align}
+
+\begin{align}
+= w^{[3]} (w^{[2]} z^{[1]} + b^{[2]}) + b^{[3]} = w^{[3]} (w^{[2]} (w^{[1]} x + b^{[1]}) + b^{[2]}) + b^{[3]}
+\end{align}
+
+\begin{align}
+= w^{[3]} (w^{[2]} w^{[1]} x + w^{[2]} b^{[1]} + b^{[2]}) + b^{[3]}
+\end{align}
+
+\begin{align}
+= w^{[3]} w^{[2]} w^{[1]} x + w^{[3]} w^{[2]} b^{[1]} + w^{[3]} b^{[2]} + b^{[3]}
+\end{align}
+
+<p>
+If 
+</p>
+
+\begin{align}
+W = w^{[3]} w^{[2]} w^{[1]}
+\end{align}
+
+\begin{align}
+B = w^{[3]} w^{[2]} b^{[1]} + w^{[3]} b^{[2]} + b^{[3]}
+\end{align}
+
+<p>
+Then: 
+</p>
+
+\begin{align}
+\hat{y} = WX + B
+\end{align}
+
+<p>
+As you can see if we do not use activation functions, it does not mater how deep your network is, it is going to be equivalent to a linear regression.
+</p>
+
+<hr />
+
+<p>
+Depending on the task at hand we use different activation functions:
+</p>
+
+<ul>
+<li>
+Sigmoid: \(\sigma(z) = \frac{1}{1 + e^{-z}}\), it maps \(z \in (-\infty, \infty)\) to \((0, 1)\)
+
+<ul>
+<li>
+It is good for classification
+
+<li>
+Works well when the values are in the linear region of the function
+
+<li>
+However when the values are on the extremes the gradient (slope) is very small, therefore it ends up vanishing in the network.
+  <img src="./assets/activation_function_sigmoid.svg" alt="Sigmoid Activation Function" />
+
+</ul>
+<li>
+ReLU: \(ReLU(z) = \begin{cases}0 &amp; z \geq 0 \\ 1 &amp; z &gt; 0\end{cases}\)
+
+<li>
+tanh: \(tanh(z) = \frac{e^z - e^{-z}}{(e^z + e^{-z})}\)
+
+</ul>
 
 <div id="Neural Networks-Improving a Neural Network-Initialization Techniques"><h3 id="Initialization Techniques" class="header"><a href="#Neural Networks-Improving a Neural Network-Initialization Techniques">Initialization Techniques</a></h3></div>
 
+<p>
+Usually we normalize the input to avoid having saturated activation functions. To normalize:
+</p>
+
+\begin{align}
+x^{(i)}_j = \frac{x^{(i)}_j - \mu_j}{\sigma_j}
+\end{align}
+
+<p>
+For every example \(i\) and feature \(j\). Where:
+</p>
+
+<ul>
+<li>
+\(\mu_j\) is the mean of the \(j\) feature, thus: \(\mu_j = \frac{1}{m} \sum_{i=1}^m x^{(i)}_j\)
+
+<li>
+\(\sigma_j^2\) is the variance of the \(j\) feature, thus: \(\sigma_j^2 = \frac{1}{m} \sum_{i=1}^m (x^{(i)}_j - \mu_j)^2\)
+
+</ul>
+
 <div id="Neural Networks-Improving a Neural Network-Vanishing/Exploding Gradients"><h3 id="Vanishing/Exploding Gradients" class="header"><a href="#Neural Networks-Improving a Neural Network-Vanishing/Exploding Gradients">Vanishing/Exploding Gradients</a></h3></div>
 
+<p>
+Suppose you have the following network, where the activation function is the identity function and \(b=0\).
+</p>
+
+<p>
+<img src="./assets/vanishing_exploding_gradients.svg" alt="Vanishing and Exploding Gradients" style="transform: translate(22vw, 0); margin: 5px" />
+</p>
+
+<p>
+Then \(\hat{y} = w^{[L]} a^{[L-1]} = w^{[L]} w^{[L-1]} a^{[L-2]} = \cdots = w^{[L]} w^{[L-1]} \cdots w^{[1]} x\)
+</p>
+
+<p>
+Therefore, if:
+</p>
+
+\begin{align}
+w^{[L]} = \begin{bmatrix}
+1.5 &amp; 0 \\
+0 &amp; 1.5 \\
+\end{bmatrix}
+\end{align}
+
+<p>
+then: 
+</p>
+
+\begin{align}
+\hat{y} = \begin{bmatrix}
+1.5^L &amp; 0 \\
+0 &amp; 1.5^L \\
+\end{bmatrix}
+\end{align}
+
+<p>
+Which means we end up with an exploding gradient. The inverse happens when:
+</p>
+
+\begin{align}
+w^{[L]} = \begin{bmatrix}
+0.5 &amp; 0 \\
+0 &amp; 0.5 \\
+\end{bmatrix}
+\end{align}
+
+<p>
+then:
+</p>
+
+\begin{align}
+\hat{y} = \begin{bmatrix}
+0.5^L &amp; 0 \\
+0 &amp; 0.5^L \\
+\end{bmatrix}
+\end{align}
+
+<p>
+Which results in a vanishing gradient.
+</p>
+
+<p>
+To avoid this somewhat, we need to initialize the weights properly. What we want is for the weights to be very close to one to avoid the exploding/diminishing problem.
+</p>
+
+<div id="Neural Networks-Improving a Neural Network-Vanishing/Exploding Gradients-Intuition"><h4 id="Intuition" class="header"><a href="#Neural Networks-Improving a Neural Network-Vanishing/Exploding Gradients-Intuition">Intuition</a></h4></div>
+
+<p>
+Given a single neuron:
+</p>
+
+<p>
+<img src="./assets/initialize_weights.svg" alt="Weight Initialization" style="transform: translate(22vw, 0)" />
+</p>
+
+<p>
+Then \(a = g(z)\) and \(z = w_1 x_1 + \cdots + w_n x_n\). We can see that \(z\) will increase if \(n\) increases, therefore we would want \(w_i\) to be as small as \(n\) is large, that is:
+</p>
+
+\begin{align}
+w_i = \frac{1}{n}
+\end{align}
+
+<div id="Neural Networks-Improving a Neural Network-Vanishing/Exploding Gradients-Initialization Techniques"><h4 id="Initialization Techniques" class="header"><a href="#Neural Networks-Improving a Neural Network-Vanishing/Exploding Gradients-Initialization Techniques">Initialization Techniques</a></h4></div>
+
+<ul>
+<li>
+If we want the value of \(w^{[L]}\) to be proportional to the number of inputs coming from the layer \(L\) (\(n^{[L-1]}\)). It works very well for sigmoid activation:
+
+</ul>
+
+<pre python>
+w[k] = np.random.randn(shape)*np.sqrt(1/n[L-1])
+</pre>
+
+<ul>
+<li>
+For ReLU:
+
+</ul>
+ 
+<pre python>
+w[k] = np.random.randn(shape)*np.sqrt(2/n[L-1])
+</pre>
+
+<ul>
+<li>
+Xavier initialization (used with tanh): \(w^{[L]} \sim \sqrt{\frac{1}{n^{[L-1]}}}\)
+
+<li>
+Her initialization: \(w^{[L]} \sim \sqrt{\frac{2}{n^{[L]} + n^{[L-1]}}}\)
+
+</ul>
+
+<p>
+Also you need to initialize the weights randomly, else you will run into the symmetry problem, where all neurons learn the same thing (that is they update very similarly).
+</p>
+
 <div id="Neural Networks-Improving a Neural Network-Optimization"><h3 id="Optimization" class="header"><a href="#Neural Networks-Improving a Neural Network-Optimization">Optimization</a></h3></div>
+
+<div id="Neural Networks-Improving a Neural Network-Optimization-Mini Batch Gradient Descent"><h4 id="Mini Batch Gradient Descent" class="header"><a href="#Neural Networks-Improving a Neural Network-Optimization-Mini Batch Gradient Descent">Mini Batch Gradient Descent</a></h4></div>
+
+<p>
+Mini Batch Gradient Descent is a trade off between batch gradient descent and stochastic gradient descent. Also, because Mini Batch Gradient Descent is an approximation it introduces some noise on the loss function:
+</p>
+
+<p>
+<img src="./assets/mini_batch_vs_batch.png" alt="Mini Batch Gradient Descent VS Batch Gradient Descent" style="transform: translate(17vw, 0)" />
+</p>
+
+<p>
+However Mini Batch Gradient Descent is more used because Batch Gradient Descent can be very computationally expensive.
+</p>
+
+<div id="Neural Networks-Improving a Neural Network-Optimization-Momentum Algorithm"><h4 id="Momentum Algorithm" class="header"><a href="#Neural Networks-Improving a Neural Network-Optimization-Momentum Algorithm">Momentum Algorithm</a></h4></div>
+
+<p>
+This algorithm combines Gradient Descent and momentum. Suppose you have the following contour plot, where the horizontal axis is much more extended that the vertical axis. By default on Gradient Descent the gradient of the loss will be orthogonal to the contour at the given point, as we can see:
+</p>
+
+<p>
+<img src="./assets/gradient_descent.svg" alt="Gradient Descent" style="transform: translate(22vw, 0)" />
+</p>
+
+<p>
+However, what we would like, so it would converge faster, is to make it move more horizontally than vertically. In order to do that we use a technique called momentum. It takes intro account past updates to find the right way to go. If you take an average of past updates, then:
+</p>
+
+<ul>
+<li>
+Vertical axis: it practically cancels itself because it oscillates a lot
+
+<li>
+Horizontal axis: its value it's maintained because the past and present gradients go in the same direction
+
+</ul>
+
+<p>
+<img src="./assets/momentum_gradient_descent.svg" alt="Gradient Descent wiht Momentum" style="transform: translate(22vw, 0)" />
+</p>
+
+<p>
+To update the weights we apply the following equation:
+</p>
+
+\begin{align}
+\upsilon = \beta \upsilon + (1 - \beta) \frac{\delta \mathcal{L}(\hat{y}, y)}{\delta w}
+\end{align}
+
+<p>
+Where:
+</p>
+
+<ul>
+<li>
+\(\upsilon\): stores past updates
+
+<li>
+\(\frac{\delta \mathcal{L}(\hat{y}, y)}{\delta w}\): stores the current update
+
+<li>
+We average with \(\beta\) and \((1 - \beta)\)
+
+</ul>
+
+<p>
+Finally we update the weights:
+</p>
+
+\begin{align}
+w = w - \alpha \upsilon
+\end{align}
 </div>
   </body>
   <script
