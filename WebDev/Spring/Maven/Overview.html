@@ -1,0 +1,100 @@
+<html>
+  <head>
+    <link rel="Stylesheet" type="text/css" href="https://albamr09.github.io/style.css" />
+    <title>Overview</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <!-- For LaTeX -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script
+      id="MathJax-script"
+      async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+    ></script>
+    <!-- Code Highlight -->
+    <link
+      rel="Stylesheet"
+      type="text/css"
+      href="https://albamr09.github.io/atom-one-light.min.css"
+    />
+  </head>
+  <body>
+    <a
+      href="https://albamr09.github.io/"
+      style="
+        color: white;
+        font-weight: bold;
+        text-decoration: none;
+        padding: 3px 6px;
+        border-radius: 3px;
+        background-color: #1e90ff;
+        text-transform: uppercase;
+      "
+      >Index</a
+    >
+    <hr />
+    <div class="content">
+<p>
+<a href="../index.html">Back</a>
+</p>
+
+<div id="Maven"><h1 id="Maven" class="header"><a href="#Maven">Maven</a></h1></div>
+
+<hr />
+
+<p>
+Maven is a project management tool. The most popular use of Maven is for build management and dependencies.
+</p>
+
+<p>
+Behind the scenes what Maven does is:
+</p>
+
+<ol>
+<li>
+Reads the configuration file of our application: <code>pom.xml</code>
+
+<li>
+Checks on the local repository if the library is already stored (like a cache)
+
+<li>
+If not, it goes to the remote repository and searches for it
+
+<li>
+Then it saves it to the local repository
+
+<li>
+Finally it uses the downloaded library to build and run the application
+
+</ol>
+
+<p>
+<img src="./assets/maven_flow.png" alt="Maven Behind the Scenes" style="width: 750px" />
+</p>
+
+<p>
+Maven also downloads the libraries' dependencies. And when you build and run your application, maven will handle the class/build path for you, based on the configuration file.
+</p>
+
+
+<div id="Maven-Standard Directory Structure"><h2 id="Standard Directory Structure" class="header"><a href="#Maven-Standard Directory Structure">Standard Directory Structure</a></h2></div>
+
+<p>
+<img src="./assets/maven_standard_directory.png" alt="Standard Directory Structure" style="width:750px" />
+</p>
+</div>
+  </body>
+  <script
+    type="text/javascript"
+    src="https://albamr09.github.io/highlight.min.js"
+  ></script>
+  <script
+    type="text/javascript"
+    src="https://albamr09.github.io/zepto.min.js"
+  ></script>
+  <script type="text/javascript">
+    $("pre").each(function (index, item) {
+      $(item).html("<code>" + $(item).html() + "</code>");
+    });
+    hljs.initHighlightingOnLoad();
+  </script>
+</html>
