@@ -37,7 +37,28 @@
 <a href="../Neural Networks.html">Back</a>
 </p>
 
-<div id="Clasificación múltiple"><h3 id="Clasificación múltiple" class="header"><a href="#Clasificación múltiple">Clasificación múltiple</a></h3></div>
+<div id="Anexo"><h1 id="Anexo" class="header"><a href="#Anexo">Anexo</a></h1></div>
+
+<hr />
+
+<ol>
+<li>
+<a href="index.html#Anexo-Clasificación múltiple">Clasificación múltiple</a>
+
+<li>
+<a href="index.html#Anexo-Función de coste">Función de coste</a>
+
+<li>
+<a href="index.html#Anexo-Retropropagación">Retropropagación</a>
+
+<li>
+<a href="index.html#Anexo-Algoritmo">Algoritmo</a>
+
+</ol>
+
+<hr />
+
+<div id="Anexo-Clasificación múltiple"><h2 id="Clasificación múltiple" class="header"><a href="#Anexo-Clasificación múltiple">Clasificación múltiple</a></h2></div>
 
 <p>
 Para crear una red neuronal que permita trabajar con \(c\) clases lo que hacemos es hacer que la red neuronal tenga \(c\) nodos en su capa de salida. Esto se ilustra en la siguiente imagen:
@@ -56,9 +77,9 @@ Como podemos ver, los valores de \(y_j\) indican claramente a qué clase pertene
 <hr />
 </p>
 
-<div id="Función de coste"><h2 id="Función de coste" class="header"><a href="#Función de coste">Función de coste</a></h2></div>
+<div id="Anexo-Función de coste"><h2 id="Función de coste" class="header"><a href="#Anexo-Función de coste">Función de coste</a></h2></div>
 
-<div id="Función de coste-Notación"><h4 id="Notación" class="header"><a href="#Función de coste-Notación">Notación</a></h4></div>
+<div id="Anexo-Función de coste-Notación"><h4 id="Notación" class="header"><a href="#Anexo-Función de coste-Notación">Notación</a></h4></div>
 
 <p>
 Como ya hemos visto en función del número de clases la salida tendrá distinta forma:
@@ -66,10 +87,10 @@ Como ya hemos visto en función del número de clases la salida tendrá distinta
 
 <ul>
 <li>
-<span id="Función de coste-Notación-Clasificación binaria"></span><strong id="Clasificación binaria">Clasificación binaria</strong>: para cada ejemplo \(j\), \(y_j \in \{0, 1\}\), \(h_\Theta(x_j) \in \mathbb{R}\)
+<span id="Anexo-Función de coste-Notación-Clasificación binaria"></span><strong id="Clasificación binaria">Clasificación binaria</strong>: para cada ejemplo \(j\), \(y_j \in \{0, 1\}\), \(h_\Theta(x_j) \in \mathbb{R}\)
 
 <li>
-<span id="Función de coste-Notación-Clasificación múltiple"></span><strong id="Clasificación múltiple">Clasificación múltiple</strong>: para cada ejemplo \(j\), \(y \in \mathbb{R}^c\), \(h_\Theta(x_j) \in \mathbb{R}^c\), donde \(c\) es el número de clases
+<span id="Anexo-Función de coste-Notación-Clasificación múltiple"></span><strong id="Clasificación múltiple">Clasificación múltiple</strong>: para cada ejemplo \(j\), \(y \in \mathbb{R}^c\), \(h_\Theta(x_j) \in \mathbb{R}^c\), donde \(c\) es el número de clases
 
 <li>
 Sea \(k\) el número de capas y \(S_i\) el número de nodos en la capa \(i\).
@@ -102,7 +123,7 @@ Esta función se aplica sobre los \(k\) nodos en la capa de salida.
 </p>
 
 
-<div id="Función de coste-Regularización"><h4 id="Regularización" class="header"><a href="#Función de coste-Regularización">Regularización</a></h4></div>
+<div id="Anexo-Función de coste-Regularización"><h4 id="Regularización" class="header"><a href="#Anexo-Función de coste-Regularización">Regularización</a></h4></div>
 
 <p>
 Definimos la función de coste introduciendo regularización como sigue:
@@ -140,7 +161,7 @@ Una vez se han sumado todas las matrices de pesos obtenemos un escalar, que mult
 
 </ol>
 
-<div id="Función de coste-Múltiple Ejemplos"><h4 id="Múltiple Ejemplos" class="header"><a href="#Función de coste-Múltiple Ejemplos">Múltiple Ejemplos</a></h4></div>
+<div id="Anexo-Función de coste-Múltiple Ejemplos"><h4 id="Múltiple Ejemplos" class="header"><a href="#Anexo-Función de coste-Múltiple Ejemplos">Múltiple Ejemplos</a></h4></div>
 
 <p>
 La salida de cada capa \(q\) es una matriz \(S_q \times m\), donde \(S_q\) denota el número de nodos en la capa \(q\) y \(m\) denota el número de ejemplos. 
@@ -156,14 +177,13 @@ Si generalizamos esto a \(m\) ejemplos tenemos que la salida de cada capa es una
 
 <p>
 <img src="./assets/nn_multi_ejemplos.svg" alt="Red Neuronal con varios ejemplos" style="width:800px;height:600px" />
+<hr />
 </p>
 
-<hr />
-
-<div id="Retropropagación"><h2 id="Retropropagación" class="header"><a href="#Retropropagación">Retropropagación</a></h2></div>
+<div id="Anexo-Retropropagación"><h2 id="Retropropagación" class="header"><a href="#Anexo-Retropropagación">Retropropagación</a></h2></div>
 
 <p>
-Vamos, ahora a explicar cómo se aplica la retropropagación. Lo primero que debemos tener en cuenta es que este proceso se basa en la misma idea de optimización que la <a href="../Regresión Lineal.html">Regresión Lineal</a> y la <a href="../Regresión Logística.html">Regresión Logística</a>, es decir, lo que queremos hacer es minimizar el coste, \(J(\Theta)\)
+Vamos, ahora a explicar cómo se aplica la retropropagación. Lo primero que debemos tener en cuenta es que este proceso se basa en la misma idea de optimización que la <a href="../../Regresión Lineal.html">Regresión Lineal</a> y la <a href="../../Regresión Logística.html">Regresión Logística</a>, es decir, lo que queremos hacer es minimizar el coste, \(J(\Theta)\)
 </p>
 
 
@@ -190,10 +210,10 @@ Normalmente en las capas intermedias, \(q\), nos referimos al término \(\frac{\
 
 <hr />
 
-<div id="Retropropagación-Derivada de la función de coste"><h3 id="Derivada de la función de coste" class="header"><a href="#Retropropagación-Derivada de la función de coste">Derivada de la función de coste</a></h3></div>
+<div id="Anexo-Retropropagación-Derivada de la función de coste"><h3 id="Derivada de la función de coste" class="header"><a href="#Anexo-Retropropagación-Derivada de la función de coste">Derivada de la función de coste</a></h3></div>
 
 <p>
-A continuación explicamos cómo derivar la función de coste (<span id="Retropropagación-Derivada de la función de coste-Paso 1"></span><strong id="Paso 1">Paso 1</strong>).
+A continuación explicamos cómo derivar la función de coste (<span id="Anexo-Retropropagación-Derivada de la función de coste-Paso 1"></span><strong id="Paso 1">Paso 1</strong>).
 </p>
 
 <p>
@@ -203,10 +223,10 @@ A continuación explicamos cómo derivar la función de coste (<span id="Retropr
 
 <hr />
 
-<div id="Retropropagación-Capas intermedias"><h3 id="Capas intermedias" class="header"><a href="#Retropropagación-Capas intermedias">Capas intermedias</a></h3></div>
+<div id="Anexo-Retropropagación-Capas intermedias"><h3 id="Capas intermedias" class="header"><a href="#Anexo-Retropropagación-Capas intermedias">Capas intermedias</a></h3></div>
 
 <p>
-Veamos, ahora, cómo llevar a cabo el <span id="Retropropagación-Capas intermedias-Paso 2"></span><strong id="Paso 2">Paso 2</strong>: ¿cómo calculamos el gradiente (o lo que contribuye el peso \(it\) en el error) para los pesos de las capas intermedias?, es decir, cómo calculamos:
+Veamos, ahora, cómo llevar a cabo el <span id="Anexo-Retropropagación-Capas intermedias-Paso 2"></span><strong id="Paso 2">Paso 2</strong>: ¿cómo calculamos el gradiente (o lo que contribuye el peso \(it\) en el error) para los pesos de las capas intermedias?, es decir, cómo calculamos:
 </p>
 
 \[%align
@@ -219,7 +239,7 @@ Veamos, ahora, cómo llevar a cabo el <span id="Retropropagación-Capas intermed
 
 <hr />
 
-<div id="Retropropagación-Ejemplo de retropropagación"><h3 id="Ejemplo de retropropagación" class="header"><a href="#Retropropagación-Ejemplo de retropropagación">Ejemplo de retropropagación</a></h3></div>
+<div id="Anexo-Retropropagación-Ejemplo de retropropagación"><h3 id="Ejemplo de retropropagación" class="header"><a href="#Anexo-Retropropagación-Ejemplo de retropropagación">Ejemplo de retropropagación</a></h3></div>
 
 <p>
 <a href="Ejemplo de retropropagación.html">Ejemplo de retropropagación</a>
@@ -228,13 +248,13 @@ Veamos, ahora, cómo llevar a cabo el <span id="Retropropagación-Capas intermed
 
 <hr />
 
-<div id="Algoritmo"><h2 id="Algoritmo" class="header"><a href="#Algoritmo">Algoritmo</a></h2></div>
+<div id="Anexo-Algoritmo"><h2 id="Algoritmo" class="header"><a href="#Anexo-Algoritmo">Algoritmo</a></h2></div>
 
 <p>
 <a href="Partes del algoritmo en python.html">Partes del algoritmo en python</a>
 </p>
 
-<div id="Algoritmo-Notación"><h3 id="Notación" class="header"><a href="#Algoritmo-Notación">Notación</a></h3></div>
+<div id="Anexo-Algoritmo-Notación"><h3 id="Notación" class="header"><a href="#Anexo-Algoritmo-Notación">Notación</a></h3></div>
 
 <ul>
 <li>
@@ -268,7 +288,7 @@ Función de activación sigmoide para clasificación o linear para regresión
 
 </ul>
 
-<div id="Algoritmo-Pseudocódigo"><h3 id="Pseudocódigo" class="header"><a href="#Algoritmo-Pseudocódigo">Pseudocódigo</a></h3></div>
+<div id="Anexo-Algoritmo-Pseudocódigo"><h3 id="Pseudocódigo" class="header"><a href="#Anexo-Algoritmo-Pseudocódigo">Pseudocódigo</a></h3></div>
 
 <p>
 <img src="./assets/nn_pseudocodigo.png" alt="Pseudocódigo Red Neuronal" />
