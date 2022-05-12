@@ -520,7 +520,7 @@ We apply the chain rule on the last derivative, hence:
 
 <ol>
 <li>
-Accumulated gradient for layer \(K\): \(\Delta_w^{[K]} = \frac{\mathcal{L}(\hat{y}, y)}{\delta a^{[K]}} \frac{\delta a^{[K]}}{\delta z^{[K]}}\)
+Accumulated gradient for layer \(K\): \(\Delta_w^{[K]} = \frac{\delta \mathcal{L}(\hat{y}, y)}{\delta a^{[K]}} \frac{\delta a^{[K]}}{\delta z^{[K]}}\)
 
 <li>
 Gradient for layer \(K\): \(\frac{\delta \mathcal{L}(\hat{y}, y)}{\delta w^{[K]}} = \Delta_w^{[K]} \frac{\delta z^{[K]}}{\delta w^{[K]}}\)
@@ -623,11 +623,17 @@ Works well when the values are in the linear region of the function
 
 <li>
 However when the values are on the extremes the gradient (slope) is very small, therefore it ends up vanishing in the network.
-  <img src="./assets/activation_function_sigmoid.svg" alt="Sigmoid Activation Function" />
 
 </ul>
+</ul>
+
+<p>
+<img src="./assets/activation_function_sigmoid.svg" alt="Sigmoid Activation Function" />
+</p>
+
+<ul>
 <li>
-ReLU: \(ReLU(z) = \begin{cases}0 &amp; z \geq 0 \\ 1 &amp; z &gt; 0\end{cases}\)
+ReLU: \(ReLU(z) = \begin{cases}0 &amp; z \leq 0 \\ 1 &amp; z &gt; 0\end{cases}\)
 
 <li>
 tanh: \(tanh(z) = \frac{e^z - e^{-z}}{(e^z + e^{-z})}\)
