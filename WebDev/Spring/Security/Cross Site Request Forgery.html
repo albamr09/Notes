@@ -1,0 +1,96 @@
+<html>
+  <head>
+    <link rel="Stylesheet" type="text/css" href="https://albamr09.github.io/style.css" />
+    <title>Cross Site Request Forgery</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <!-- For LaTeX -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script
+      id="MathJax-script"
+      async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+    ></script>
+    <!-- Code Highlight -->
+    <link
+      rel="Stylesheet"
+      type="text/css"
+      href="https://albamr09.github.io/atom-one-light.min.css"
+    />
+  </head>
+  <body>
+    <a
+      href="https://albamr09.github.io/"
+      style="
+        color: white;
+        font-weight: bold;
+        text-decoration: none;
+        padding: 3px 6px;
+        border-radius: 3px;
+        background-color: #1e90ff;
+        text-transform: uppercase;
+      "
+      >Index</a
+    >
+    <hr />
+    <div class="content">
+<p>
+<a href="../index.html">Back</a>
+</p>
+
+<div id="Cross Site Request Forgery"><h1 id="Cross Site Request Forgery" class="header"><a href="#Cross Site Request Forgery">Cross Site Request Forgery</a></h1></div>
+
+<hr />
+
+<p>
+Spring Security protects against Cross-Site Request Forgery. CSRF is a security attack where a website tricks you into executing an action on a web application that you are currently logged in. Protection from this type of attack is embedded in the Spring Security Filters.
+</p>
+
+<p>
+This protection is enabled by default. Spring Security uses the Synchronizer Token Pattern, where each request includes a session cookie and a randomly generated token. So for request processing, Spring Security verifies the token before processing.
+</p>
+
+<p>
+How to use it?
+</p>
+
+<ul>
+<li>
+For form submissions use "POST" instead of "GET"
+
+<li>
+The Spring Security tag <code>&lt;form:form&gt;</code> automatically adds the CSRF token.
+
+<li>
+If you do not use the tag, you must manually add the CSRF token.
+
+<li>
+If you do not add the token you get an error message: <code>403 Forbidden</code>, and further information about how the token cannot be null.
+
+</ul>
+
+<div id="Cross Site Request Forgery-How to see the CSRF token?"><h2 id="How to see the CSRF token?" class="header"><a href="#Cross Site Request Forgery-How to see the CSRF token?">How to see the CSRF token?</a></h2></div>
+
+<p>
+When your <code>jsp</code> with the <code>&lt;form:form&gt;</code> tag is processed into an <code>html</code> page, you will be able to see the token inside the <code>form</code> tag:
+</p>
+
+<p>
+<img src="./assets/see_csrf_token.png" alt="See CSRF token" style="width:750px" />
+</p>
+</div>
+  </body>
+  <script
+    type="text/javascript"
+    src="https://albamr09.github.io/highlight.min.js"
+  ></script>
+  <script
+    type="text/javascript"
+    src="https://albamr09.github.io/zepto.min.js"
+  ></script>
+  <script type="text/javascript">
+    $("pre").each(function (index, item) {
+      $(item).html("<code>" + $(item).html() + "</code>");
+    });
+    hljs.initHighlightingOnLoad();
+  </script>
+</html>
