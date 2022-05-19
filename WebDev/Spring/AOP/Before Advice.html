@@ -1,0 +1,107 @@
+<html>
+  <head>
+    <link rel="Stylesheet" type="text/css" href="https://albamr09.github.io/style.css" />
+    <title>Before Advice</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <!-- For LaTeX -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script
+      id="MathJax-script"
+      async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+    ></script>
+    <!-- Code Highlight -->
+    <link
+      rel="Stylesheet"
+      type="text/css"
+      href="https://albamr09.github.io/atom-one-light.min.css"
+    />
+  </head>
+  <body>
+    <a
+      href="https://albamr09.github.io/"
+      style="
+        color: white;
+        font-weight: bold;
+        text-decoration: none;
+        padding: 3px 6px;
+        border-radius: 3px;
+        background-color: #1e90ff;
+        text-transform: uppercase;
+      "
+      >Index</a
+    >
+    <hr />
+    <div class="content">
+<p>
+<a href="../index.html">Back</a>
+</p>
+
+<div id="Before Advice"><h1 id="Before Advice" class="header"><a href="#Before Advice">Before Advice</a></h1></div>
+
+<hr />
+
+<p>
+We use the tag <code>@Before</code> to execute some code before we call the target object function:
+</p>
+
+<p>
+<img src="./assets/before_interaction.png" alt="Before Advice" style="width: 750px" />
+</p>
+
+<div id="Before Advice-Add Dependencies"><h2 id="Add Dependencies" class="header"><a href="#Before Advice-Add Dependencies">Add Dependencies</a></h2></div>
+
+<ul>
+<li>
+We have to download the <code>AspectJ</code> jar file, because <code>Spring AOP</code> depends on some on their framework's classes 
+
+<li>
+We have to include <code>Spring AOP</code> to our <code>pom.xml</code> file:
+
+</ul>
+
+<pre xml>
+</pre>
+ 
+<div id="Before Advice-Create Target Object"><h2 id="Create Target Object" class="header"><a href="#Before Advice-Create Target Object">Create Target Object</a></h2></div>
+
+<p>
+We create a DAO object:
+</p>
+
+<pre java>
+package com.aopdemo.dao;
+
+import org.springframework.stereotype.Component;
+
+@Component
+public class AccountDAO {
+
+	public void addAccount() {
+		System.out.println(getClass() + ": DOING MY DB WORK: ADDING AN ACCOUNT");
+	}
+}
+</pre>
+
+<div id="Before Advice-Spring Configuration"><h2 id="Spring Configuration" class="header"><a href="#Before Advice-Spring Configuration">Spring Configuration</a></h2></div>
+
+<div id="Before Advice-Create Aspect with @Before"><h2 id="Create Aspect with @Before" class="header"><a href="#Before Advice-Create Aspect with @Before">Create Aspect with @Before</a></h2></div>
+
+<div id="Before Advice-Main App"><h2 id="Main App" class="header"><a href="#Before Advice-Main App">Main App</a></h2></div>
+</div>
+  </body>
+  <script
+    type="text/javascript"
+    src="https://albamr09.github.io/highlight.min.js"
+  ></script>
+  <script
+    type="text/javascript"
+    src="https://albamr09.github.io/zepto.min.js"
+  ></script>
+  <script type="text/javascript">
+    $("pre").each(function (index, item) {
+      $(item).html("<code>" + $(item).html() + "</code>");
+    });
+    hljs.initHighlightingOnLoad();
+  </script>
+</html>

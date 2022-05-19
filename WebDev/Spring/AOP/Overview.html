@@ -1,0 +1,159 @@
+<html>
+  <head>
+    <link rel="Stylesheet" type="text/css" href="https://albamr09.github.io/style.css" />
+    <title>Overview</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <!-- For LaTeX -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script
+      id="MathJax-script"
+      async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+    ></script>
+    <!-- Code Highlight -->
+    <link
+      rel="Stylesheet"
+      type="text/css"
+      href="https://albamr09.github.io/atom-one-light.min.css"
+    />
+  </head>
+  <body>
+    <a
+      href="https://albamr09.github.io/"
+      style="
+        color: white;
+        font-weight: bold;
+        text-decoration: none;
+        padding: 3px 6px;
+        border-radius: 3px;
+        background-color: #1e90ff;
+        text-transform: uppercase;
+      "
+      >Index</a
+    >
+    <hr />
+    <div class="content">
+<p>
+<a href="../index.html">Back</a>
+</p>
+
+<div id="Overview"><h1 id="Overview" class="header"><a href="#Overview">Overview</a></h1></div>
+
+<hr />
+
+<p>
+Aspect-Oriented Programming is a programming technique based on the concept of an Aspect (that is something that encapsulated cross-cutting logic/functionality, which means logic that affect the project transversally like logging or security).
+</p>
+
+<p>
+What AOP does behind the scenes is call methods from the classes/aspects (like a logging class) whenever a method is called (this depends on the configuration):
+</p>
+
+<p>
+<img src="./assets/aop_behind_scenes.png" alt="AOP Behind the Scenes" style="width:750px" />
+</p>
+
+<div id="Overview-Advantages"><h2 id="Advantages" class="header"><a href="#Overview-Advantages">Advantages</a></h2></div>
+
+<ul>
+<li>
+Reusable modules
+
+<li>
+Resolve code tangling
+
+<li>
+Resolve code scatter
+
+<li>
+Applied selectively based on configuration
+
+</ul>
+
+<div id="Overview-Disadvantages"><h2 id="Disadvantages" class="header"><a href="#Overview-Disadvantages">Disadvantages</a></h2></div>
+
+<ul>
+<li>
+Too many aspects and app flow is hard to follow 
+
+<li>
+Minor performance cost for aspect execution
+
+</ul>
+
+<div id="Overview-Terminology"><h2 id="Terminology" class="header"><a href="#Overview-Terminology">Terminology</a></h2></div>
+
+<ul>
+<li>
+Aspect: module of code for a cross-cutting concern (logging, security...)
+
+<li>
+Advice: what action is takes and when it should be applied
+
+<li>
+Joint Point: when to apply code during program execution
+
+<li>
+Pointcut: a predicate expression for where advice should be applied
+
+</ul>
+
+<div id="Overview-Terminology-Advice Types"><h3 id="Advice Types" class="header"><a href="#Overview-Terminology-Advice Types">Advice Types</a></h3></div>
+
+<ul>
+<li>
+Before advice: run before the method
+
+<li>
+After finally advice: run after the method (like finally clause in try catch)
+
+<li>
+After returning advice: run after the method (success execution)
+
+<li>
+After throwing advice: run after the method (if exception if thrown)
+
+<li>
+Around advice: run before and after the method
+
+</ul>
+
+
+<div id="Overview-Terminology-Weaving"><h3 id="Weaving" class="header"><a href="#Overview-Terminology-Weaving">Weaving</a></h3></div>
+
+<p>
+It refers to the connection being made between aspects and target objects to create an advised object. There are different types:
+</p>
+
+<ul>
+<li>
+Compile-time
+
+<li>
+Load-time
+
+<li>
+Run-time
+
+</ul>
+
+<p>
+Note that the slowest is the run-time weaving
+</p>
+</div>
+  </body>
+  <script
+    type="text/javascript"
+    src="https://albamr09.github.io/highlight.min.js"
+  ></script>
+  <script
+    type="text/javascript"
+    src="https://albamr09.github.io/zepto.min.js"
+  ></script>
+  <script type="text/javascript">
+    $("pre").each(function (index, item) {
+      $(item).html("<code>" + $(item).html() + "</code>");
+    });
+    hljs.initHighlightingOnLoad();
+  </script>
+</html>
