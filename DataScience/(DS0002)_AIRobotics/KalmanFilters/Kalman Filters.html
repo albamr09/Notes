@@ -1,0 +1,536 @@
+<html>
+  <head>
+    <!-- Normal styling from vimwiki -->
+    <link rel="Stylesheet" type="text/css" href="https://albamr09.github.io/style.css" />
+    <!-- Styling for search -->
+    <link
+      rel="Stylesheet"
+      type="text/css"
+      href="https://albamr09.github.io/search.css"
+    />
+    <title>Kalman Filters</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <!-- For LaTeX -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script
+      id="MathJax-script"
+      async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+    ></script>
+    <!-- Code Highlight -->
+    <link
+      rel="Stylesheet"
+      type="text/css"
+      href="https://albamr09.github.io/atom-one-light.min.css"
+    />
+  </head>
+  <body>
+    <a
+      href="https://albamr09.github.io/"
+      style="
+        color: white;
+        font-weight: bold;
+        text-decoration: none;
+        padding: 3px 6px;
+        border-radius: 3px;
+        background-color: #1e90ff;
+        text-transform: uppercase;
+      "
+      >Index</a
+    >
+    <form id="search_form" class="search-form">
+      <input required type="search" id="search_term" class="searchTerm" />
+      <button type="submit" class="searchButton">Search</button>
+    </form>
+    <div id="search-result" class="search-result-hide"></div>
+    <hr />
+    <div class="content">
+<p>
+<a href="../index.html">Back</a>
+</p>
+
+<div id="Kalman Filters"><h1 id="Kalman Filters" class="header"><a href="#Kalman Filters">Kalman Filters</a></h1></div>
+
+<hr />
+
+<p>
+This is a tracking technique. It is similar to the <a href="../Localization/Localization.html">Monte Carlo Localization</a> we talked about previously, however there are some key differences:
+</p>
+
+<ul>
+<li>
+Kalman Filter maintains a continuous state (therefore uses a uni-modal distribution: probability density function only has one peak)
+
+<li>
+Monte Carlo Localization uses discrete state to represent the world (uses a multi-modal distribution: probability density function has multiple peaks)
+
+</ul>
+
+<div id="Kalman Filters-Markov Model"><h2 id="Markov Model" class="header"><a href="#Kalman Filters-Markov Model">Markov Model</a></h2></div>
+
+<p>
+In <a href="../Localization/Localization.html">Monte Carlo Localization</a> we assigned a probability to each cell in the world:
+</p>
+
+<p>
+[\(0.2\)][\(0.1\)][\(0.5\)][\(0.1\)][\(0.2\)]
+</p>
+
+<p>
+What we did is we divided the continuous space into a finite number of cells, that approximates the posterior distribution (which is continuous: red line) by a histogram (blue bars) over the original distribution.
+</p>
+
+<p>
+<img src="./assets/monte_carlo_histogram.png" alt="Monte Carlo Histogram" />
+</p>
+
+<p>
+However in Kalman Filters this distribution is given by a Gaussian Distribution.
+</p>
+
+<div id="Kalman Filters-Gaussian Distribution"><h2 id="Gaussian Distribution" class="header"><a href="#Kalman Filters-Gaussian Distribution">Gaussian Distribution</a></h2></div>
+
+<p>
+A Gaussian Distribution is a continuous function which is described in \(\mathbb{R}\) by the mean \(\mu\) and the variance \(\sigma^2\).
+</p>
+
+<p>
+<img src="./assets/gaussian_distribution.png" alt="Gaussian Distribution" />
+</p>
+
+<p>
+The formula is the following:
+</p>
+
+\begin{align}
+f(x) = \frac{1}{\sqrt{2\pi\sigma^2}} \exp^{-\frac{1}{2}\frac{(x-\mu)}{\sigma^2}}
+\end{align}
+
+<p>
+Where \(\frac{1}{\sqrt{2\pi\sigma^2}}\) is a constant that normalizes \(\exp^{-\frac{1}{2}\frac{(x-\mu)}{\sigma^2}}\)
+</p>
+
+<p>
+<em>Remark</em> The bigger the covariance \(\sigma^2\) the wider the distribution, which means we are less certain of the state. If it is narrow, that means we are confident about our location.
+</p>
+
+<div id="Kalman Filters-Measurement and Motion"><h2 id="Measurement and Motion" class="header"><a href="#Kalman Filters-Measurement and Motion">Measurement and Motion</a></h2></div>
+
+<p>
+Like with localization Kalman Filters operate within a cycle, that is, it iterates like so:
+</p>
+
+<ol>
+<li>
+Measurement (or measurement update), which corresponds to application of the Baye's Rule (product)
+
+<li>
+Motion (or prediction), which corresponds to the application to the Total Probability Theorem, resulting in a convolution or sum
+
+</ol>
+
+<p>
+<img src="./assets/measurement_motion_cycle.png" alt="Measurement-Motion Cycle" />
+</p>
+
+<div id="Kalman Filters-Measurement Update"><h2 id="Measurement Update" class="header"><a href="#Kalman Filters-Measurement Update">Measurement Update</a></h2></div>
+
+<div id="Kalman Filters-Measurement Update-Shifting the Mean"><h3 id="Shifting the Mean" class="header"><a href="#Kalman Filters-Measurement Update-Shifting the Mean">Shifting the Mean</a></h3></div>
+
+<p>
+Suppose the prior distribution is as follows:
+</p>
+
+<p>
+<img src="./assets/prior_distribution.png" alt="Prior Distribution" />
+</p>
+
+<p>
+Where the covariance is very large, so we are very uncertain about a location. And we recieve a measurement of the form:
+</p>
+
+<p>
+<img src="./assets/measurement.png" alt="Measurement of Location" />
+</p>
+
+<p>
+Which is much more certain about the location. Then the mean will shift accordingly (green line):
+</p>
+
+<p>
+<img src="./assets/shift_mean.png" alt="Shifting the Mean" />
+</p>
+
+<div id="Kalman Filters-Measurement Update-Parameter Update"><h3 id="Parameter Update" class="header"><a href="#Kalman Filters-Measurement Update-Parameter Update">Parameter Update</a></h3></div>
+
+<p>
+So, after multiplying the prior and the measurement shown previously, the resulting gaussian y more certain than both of the prior and the measurement gaussians. That is the covariance of this new gaussian is smaller, so the more measurements we have the more certain the are.
+</p>
+
+<p>
+<img src="./assets/posterior_gaussian.png" alt="Gaussian after measurement" />
+</p>
+
+<p>
+Why does this happen? Well, given these two distributions:
+</p>
+
+<p>
+<img src="./assets/prior_likelihood.png" alt="Prior and Likelihood distributions" />
+</p>
+
+<p>
+Where the first distribution is characterized by \((\mu, \sigma^2)\) and the second distribution is characterized by \((\nu, r^2)\). The product of the two is a distribution characterized by \((\hat{\mu}, \hat{\sigma}^2)\), computed as follows:
+</p>
+
+\begin{align}
+\hat{\mu} = \frac{r^2\mu + \sigma^2\nu}{r^2 + \sigma^2}
+\end{align}
+
+<p>
+Observe, because \(\sigma^2 &gt;&gt; r^2\) in our example, then \(\hat{\mu}\) will be closer to the second distribution's mean \(\nu\). Also:
+</p>
+
+\begin{align}
+\hat{\sigma}^2 = \frac{1}{\frac{1}{r^2} + \frac{1}{\sigma^2}} = \frac{\sigma^2 r^2}{\sigma^2 + r^2}
+\end{align}
+
+<p>
+Thus, the updated covariance is not affected by the means and will always be smaller than \(\sigma^2\) and \(r^2\). We illustrate this is the following image, where the updated distribution is the one drawn in blue:
+</p>
+
+<p>
+<img src="./assets/distrubtion_after_update.png" alt="Gaussian Distribution after update" />
+</p>
+
+<p>
+Note that the wider distribution represents the prior, the measurement represents the likelihood and the updated distribution represents the posterior.
+</p>
+
+<div id="Kalman Filters-Motion Update"><h2 id="Motion Update" class="header"><a href="#Kalman Filters-Motion Update">Motion Update</a></h2></div>
+
+<p>
+Suppose, at moment \(t\), your location is represented as follows:
+</p>
+
+<p>
+<img src="./assets/motion_updat.png" alt="Motion Update" />
+</p>
+
+<p>
+Where:
+</p>
+
+<ul>
+<li>
+The blue gaussian distribution represents your best guess at where your are at \(t\), and is characterized by \((\mu, \sigma^2)\)
+
+<li>
+The green gaussian distribution represents the motion of \(\nu\) units, which has its own uncertainty, and is characterized by \((\nu, r^2)\)
+
+<li>
+The red gaussian distribution represents you location at time \(t+1\) after the motion
+
+</ul>
+
+<p>
+This last distribution is characterized by:
+</p>
+
+\begin{align}
+\hat{\mu} = \mu + \nu
+\end{align}
+
+\begin{align}
+\hat{\sigma}^2 = \sigma^2 + r^2
+\end{align}
+
+<p>
+So, basically the mean is shifted \(\nu\) units and the covariance is made larger by summing \(\sigma^2\) and \(r^2\), as a result of summing the distributions.
+</p>
+
+<div id="Kalman Filters-Kalman Filter on High Dimensional Spaces"><h2 id="Kalman Filter on High Dimensional Spaces" class="header"><a href="#Kalman Filters-Kalman Filter on High Dimensional Spaces">Kalman Filter on High Dimensional Spaces</a></h2></div>
+
+<p>
+Up until now we have been operating in a one dimensional space, however if we were to work withing higher dimensional spaces we would need to make use of Multivariate Gaussians. So a multivariate gaussian in a D-dimensional space is characterized as follows:
+</p>
+
+\begin{align}
+\mu = \begin{bmatrix}
+\mu_0 \\
+\vdots \\
+\mu_D \\
+\end{bmatrix}, 
+\Sigma = \begin{bmatrix}
+\sigma_{11} &amp; \cdots &amp; \sigma_{1D}\\
+\vdots \\
+\sigma_{D1} &amp; \cdots &amp; \sigma_{DD}\\
+\end{bmatrix}
+\end{align}
+
+<p>
+Also de density function is now, for \(x \in \mathbb{R}^D\):
+</p>
+
+\begin{align}
+f(x) = (2\pi)^{-\frac{D}{2}}|\Sigma|^{-\frac{1}{2}} \exp^{-\frac{1}{2}(x - \mu)^T\Sigma^{-1}(x-\mu)}
+\end{align}
+
+<p>
+For example, a gaussian distribution in a two-dimensional space might have the form:
+</p>
+
+<p>
+<img src="./assets/multivariate_gaussian.png" alt="Multivariate Gaussian in 2D" />
+</p>
+
+<p>
+In this case we can see that the distribution is "tilted", that would mean that the variance of the x-axis and the variance of the y-axis is correlated. The case in which the variance in the y-axis is large and small in the x-axis is represented in the following image:
+</p>
+
+<p>
+<img src="./assets/high_small_variance.png" alt="Variance in Multivariate Gaussian" />
+</p>
+
+<div id="Kalman Filters-Kalman Filter on High Dimensional Spaces-Predicting Velocity"><h3 id="Predicting Velocity" class="header"><a href="#Kalman Filters-Kalman Filter on High Dimensional Spaces-Predicting Velocity">Predicting Velocity</a></h3></div>
+
+<p>
+Given the following graph:
+</p>
+
+<p>
+<img src="./assets/multivariate_gaussian_velocity.png" alt="Correlation of velocity and Location" />
+</p>
+
+<p>
+Where \(\hat{x}\) represents the velocity and \(x\) represents the location. In this first instance, we represent the position as an elongated gaussian because we do not know anything about the velocity. So, if we take into account each possible velocity in the y-axis and the localization distribution (blue gaussian distribution), then we end up with a gaussian distribution where the velocity and the location are correlated:
+</p>
+
+<p>
+<img src="./assets/correlation_location_velocity.png" alt="Correlation between location and velocity" />
+</p>
+
+<p>
+Suppose we take a new measurement (a second observation), which also tells us nothing about the velocity, it only gives us information about the location as the first observation did. Then:
+</p>
+
+<p>
+<img src="./assets/second_observation.png" alt="Second observation" />
+</p>
+
+<p>
+However if we now multiply the prior (red gaussian) with the measurement or likelihood (green gaussian), then we obtain a new gaussian which gives us an estimate of the velocity as well as the localization:
+</p>
+
+<p>
+<img src="./assets/gaussian_velocity_localization.png" alt="New Gaussian that estimates velocity and localization" />
+</p>
+
+<p>
+So we were able to infer the velocity by only observing the location.
+</p>
+
+<hr />
+
+<div id="Kalman Filters-Kalman Filters States"><h2 id="Kalman Filters States" class="header"><a href="#Kalman Filters-Kalman Filters States">Kalman Filters States</a></h2></div>
+
+<p>
+Kalman Filters are made up from what it's called states, and we differentiate two different kinds of states:
+</p>
+
+<ul>
+<li>
+Observables (in our case the location)
+
+<li>
+Hidden (in our case the velocity, which i can never observe)
+
+</ul>
+
+<p>
+These two types of states interact with each other in the sense that a sequence of observable variables gives us information about the hidden variables. Thus we can estimate what these hidden variables are. Applied to our case scenario, multiple observations of where we are, that is, our location, we can estimate how fast we are moving, that is, our velocity.
+</p>
+
+<div id="Kalman Filters-Design Kalman Filters"><h2 id="Design Kalman Filters" class="header"><a href="#Kalman Filters-Design Kalman Filters">Design Kalman Filters</a></h2></div>
+
+<p>
+To design a Kalman Filter you need two things:
+</p>
+
+<ul>
+<li>
+A state transition function, which is usually a matrix \(F\):
+
+</ul>
+
+\begin{align}
+\begin{bmatrix}
+x \\
+\hat{x} \\
+\end{bmatrix}
+\leftarrow
+F
+\begin{bmatrix}
+x \\
+\hat{x} \\
+\end{bmatrix}
+\end{align}
+
+<ul>
+<li>
+A measurement function, represented by the matrix \(H\):
+
+</ul>
+
+\begin{align}
+z
+\leftarrow
+H
+\begin{bmatrix}
+x \\
+\hat{x} \\
+\end{bmatrix}
+\end{align}
+
+<p>
+For example, suppose we update the location and the velocity as follows:
+</p>
+
+\begin{align}
+x' = x + \hat{x}
+\end{align}
+
+\begin{align}
+\hat{x}' = \hat{x}
+\end{align}
+
+<p>
+Then the transition function is represented as the following matrix:
+</p>
+
+\begin{align}
+F = \begin{bmatrix}
+1 &amp; 1 \\
+0 &amp; 1 \\
+\end{bmatrix}
+\end{align}
+
+<p>
+And for the measurement function, we only observe the location not the velocity, therefore:
+</p>
+
+\begin{align}
+H = \begin{bmatrix}
+1 &amp; 0 \\
+\end{bmatrix}
+\end{align}
+
+<div id="Kalman Filters-Design Kalman Filters-Kalman Filter Cycle"><h3 id="Kalman Filter Cycle" class="header"><a href="#Kalman Filters-Design Kalman Filters-Kalman Filter Cycle">Kalman Filter Cycle</a></h3></div>
+
+<p>
+Given the following data:
+</p>
+
+<ul>
+<li>
+\(x\): estimate
+
+<li>
+\(P\): uncertainty covariance
+
+<li>
+\(F\): state transition function
+
+<li>
+\(u\): motion vector
+
+<li>
+\(z\): measurement
+
+<li>
+\(H\): measurement function
+
+<li>
+\(R\): measurement noise
+
+</ul>
+
+<hr />
+
+<p>
+So in the Kalman Filter cycle what we do is: first we perform the measurement update and then we perform the motion or prediction. More concretely:
+</p>
+
+<div id="Kalman Filters-Design Kalman Filters-Measurement Update"><h3 id="Measurement Update" class="header"><a href="#Kalman Filters-Design Kalman Filters-Measurement Update">Measurement Update</a></h3></div>
+
+<ul>
+<li>
+Perform measurement update:
+
+<ul>
+<li>
+Compute the error that compares the measurement with out prediction: \(y = z - H \cdot x\)
+
+</ul>
+</ul>
+ 
+<ul>
+<li>
+Map the error into a matrix \(S\) by projecting the system uncertainty onto the measurement space: \(S = H \cdot P \cdot H^T + R\)
+
+<li>
+Map this projection onto a matrix \(K\): \(K = P \cdot H^T \cdot S^{-1}\)
+
+<li>
+Finally update
+
+<ul>
+<li>
+Estimate: \(x' = x + (K \cdot y)\)
+
+<li>
+Uncertainty: \(P' = (I- K\cdot H) \cdot P\)
+
+</ul>
+</ul>
+ 
+<div id="Kalman Filters-Design Kalman Filters-Prediction"><h3 id="Prediction" class="header"><a href="#Kalman Filters-Design Kalman Filters-Prediction">Prediction</a></h3></div>
+
+<ul>
+<li>
+Compute the prediction
+
+</ul>
+
+\begin{align}
+x' = Fx + u
+\end{align}
+
+\begin{align}
+P' = F \cdot P \cdot F^T
+\end{align}
+</div>
+  </body>
+  <script
+    type="text/javascript"
+    src="https://albamr09.github.io/highlight.min.js"
+  ></script>
+  <script
+    type="text/javascript"
+    src="https://albamr09.github.io/zepto.min.js"
+  ></script>
+  <script
+    type="text/javascript"
+    src="https://albamr09.github.io/flexsearch.bundle.js"
+  ></script>
+  <script
+    type="text/javascript"
+    src="https://albamr09.github.io/search.js"
+  ></script>
+  <script type="text/javascript">
+    $("pre").each(function (index, item) {
+      $(item).html("<code>" + $(item).html() + "</code>");
+    });
+    hljs.initHighlightingOnLoad();
+  </script>
+</html>
