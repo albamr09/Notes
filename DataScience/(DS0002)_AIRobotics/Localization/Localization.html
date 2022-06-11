@@ -140,7 +140,13 @@ Suppose we have a world made up of a grid with 5 cells with the following probab
 </p>
 
 <p>
-We also know that with 100% probability the world moves to the right. To compute the probability of each cell after the movement, we use the law of total probability that states:
+We also know that with 100% probability the world moves to the right. 
+</p>
+
+<div id="Localization-Exact Motion-Theorem of Total Probability"><h3 id="Theorem of Total Probability" class="header"><a href="#Localization-Exact Motion-Theorem of Total Probability">Theorem of Total Probability</a></h3></div>
+
+<p>
+To compute the probability of each cell after the movement, we use the law of total probability that states:
 </p>
 
 <p>
@@ -159,6 +165,7 @@ Then, by the conditional probability formula:
 P(A) = \sum_n P(A|B_n)P(B_n)
 \end{align}
 
+<hr />
 
 <p>
 So to apply this theorem what we do is sum the probabilities of ending up in cell \(j\) when we come from cell \(i\), which is expressed symbolically:

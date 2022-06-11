@@ -53,6 +53,41 @@
 
 <hr />
 
+<ol>
+<li>
+<a href="Kalman Filters.html#Kalman Filters-Markov Model">Markov Model</a>
+
+<li>
+<a href="Kalman Filters.html#Kalman Filters-Gaussian Distribution">Gaussian Distribution</a>
+
+<li>
+<a href="Kalman Filters.html#Kalman Filters-Measurement and Motion">Measurement and Motion</a>
+
+<li>
+<a href="Kalman Filters.html#Kalman Filters-Measurement Update">Measurement Update</a>
+
+<li>
+<a href="Kalman Filters.html#Kalman Filters-Motion Update">Motion Update</a>
+
+<li>
+<a href="Kalman Filters.html#Kalman Filters-High Dimensional Spaces">High Dimensional Spaces</a>
+
+<li>
+<a href="Kalman Filters.html#Kalman Filters-States">States</a>
+
+<li>
+<a href="Kalman Filters.html#Kalman Filters-Design Kalman Filters for 2D">Design Kalman Filters for 2D</a>
+
+<li>
+<a href="Kalman Filters.html#Kalman Filters-Kalman Filter Cycle">Kalman Filter Cycle</a>
+
+<li>
+<a href="Kalman Filters.html#Kalman Filters-Algorithm">Algorithm</a>
+
+</ol>
+
+<hr />
+
 <p>
 This is a tracking technique. It is similar to the <a href="../Localization/Localization.html">Monte Carlo Localization</a> we talked about previously, however there are some key differences:
 </p>
@@ -249,7 +284,7 @@ This last distribution is characterized by:
 So, basically the mean is shifted \(\nu\) units and the covariance is made larger by summing \(\sigma^2\) and \(r^2\), as a result of summing the distributions.
 </p>
 
-<div id="Kalman Filters-Kalman Filter on High Dimensional Spaces"><h2 id="Kalman Filter on High Dimensional Spaces" class="header"><a href="#Kalman Filters-Kalman Filter on High Dimensional Spaces">Kalman Filter on High Dimensional Spaces</a></h2></div>
+<div id="Kalman Filters-High Dimensional Spaces"><h2 id="High Dimensional Spaces" class="header"><a href="#Kalman Filters-High Dimensional Spaces">High Dimensional Spaces</a></h2></div>
 
 <p>
 Up until now we have been operating in a one dimensional space, however if we were to work withing higher dimensional spaces we would need to make use of Multivariate Gaussians. So a multivariate gaussian in a D-dimensional space is characterized as follows:
@@ -292,7 +327,7 @@ In this case we can see that the distribution is "tilted", that would mean that 
 <img src="./assets/high_small_variance.png" alt="Variance in Multivariate Gaussian" />
 </p>
 
-<div id="Kalman Filters-Kalman Filter on High Dimensional Spaces-Predicting Velocity"><h3 id="Predicting Velocity" class="header"><a href="#Kalman Filters-Kalman Filter on High Dimensional Spaces-Predicting Velocity">Predicting Velocity</a></h3></div>
+<div id="Kalman Filters-High Dimensional Spaces-Predicting Velocity"><h3 id="Predicting Velocity" class="header"><a href="#Kalman Filters-High Dimensional Spaces-Predicting Velocity">Predicting Velocity</a></h3></div>
 
 <p>
 Given the following graph:
@@ -332,7 +367,7 @@ So we were able to infer the velocity by only observing the location.
 
 <hr />
 
-<div id="Kalman Filters-Kalman Filters States"><h2 id="Kalman Filters States" class="header"><a href="#Kalman Filters-Kalman Filters States">Kalman Filters States</a></h2></div>
+<div id="Kalman Filters-States"><h2 id="States" class="header"><a href="#Kalman Filters-States">States</a></h2></div>
 
 <p>
 Kalman Filters are made up from what it's called states, and we differentiate two different kinds of states:
@@ -351,10 +386,10 @@ Hidden (in our case the velocity, which i can never observe)
 These two types of states interact with each other in the sense that a sequence of observable variables gives us information about the hidden variables. Thus we can estimate what these hidden variables are. Applied to our case scenario, multiple observations of where we are, that is, our location, we can estimate how fast we are moving, that is, our velocity.
 </p>
 
-<div id="Kalman Filters-Design Kalman Filters"><h2 id="Design Kalman Filters" class="header"><a href="#Kalman Filters-Design Kalman Filters">Design Kalman Filters</a></h2></div>
+<div id="Kalman Filters-Design Kalman Filters for 2D"><h2 id="Design Kalman Filters for 2D" class="header"><a href="#Kalman Filters-Design Kalman Filters for 2D">Design Kalman Filters for 2D</a></h2></div>
 
 <p>
-To design a Kalman Filter you need two things:
+To design a Kalman Filter in two dimensions (position, velocity) you need two things:
 </p>
 
 <ul>
@@ -373,7 +408,7 @@ F
 \begin{bmatrix}
 x \\
 \hat{x} \\
-\end{bmatrix}
+\end{bmatrix} =
 \end{align}
 
 <ul>
@@ -425,7 +460,76 @@ H = \begin{bmatrix}
 \end{bmatrix}
 \end{align}
 
-<div id="Kalman Filters-Design Kalman Filters-Kalman Filter Cycle"><h3 id="Kalman Filter Cycle" class="header"><a href="#Kalman Filters-Design Kalman Filters-Kalman Filter Cycle">Kalman Filter Cycle</a></h3></div>
+<hr />
+
+<div id="Kalman Filters-Design Kalman Filters for 2D-4D Example"><h4 id="4D Example" class="header"><a href="#Kalman Filters-Design Kalman Filters for 2D-4D Example">4D Example</a></h4></div>
+
+<div id="Kalman Filters-Design Kalman Filters for 2D-4D Example-Motion"><h5 id="Motion" class="header"><a href="#Kalman Filters-Design Kalman Filters for 2D-4D Example-Motion">Motion</a></h5></div>
+
+<p>
+Given a state \((x, y, \hat{x}, \hat{y})\), where \((x, y)\) is the position and \((\hat{x}, \hat{y})\) is the velocity.If in each iteration the motion update for the state is:
+</p>
+
+\begin{align}
+\begin{matrix}
+x + dt\cdot \hat{x} \\
+y + dt\cdot \hat{y} \\
+\hat{x} \\
+\hat{y} \\
+\end{matrix}
+\end{align}
+
+<p>
+So the position moves with time and the velocity does not change with time. Then the state transition function is represented by the following matrix:
+</p>
+
+\begin{align}
+F =
+\begin{bmatrix}
+1 &amp; 0 &amp; dt &amp; 0\\
+0 &amp; 1 &amp; 0 &amp; dt\\
+0 &amp; 0 &amp; 1 &amp; 0\\
+0 &amp; 0 &amp; 0 &amp; 1\\
+\end{bmatrix}
+\end{align}
+
+<div id="Kalman Filters-Design Kalman Filters for 2D-4D Example-Measurement"><h5 id="Measurement" class="header"><a href="#Kalman Filters-Design Kalman Filters for 2D-4D Example-Measurement">Measurement</a></h5></div>
+
+<p>
+And, because we can only measure the position the measurement update is of the form:
+</p>
+
+\begin{align}
+z \leftarrow
+\begin{bmatrix}
+x \\
+y \\ 
+\end{bmatrix}
+\leftarrow 
+H \cdot
+\begin{bmatrix}
+x \\
+y \\
+\hat{x} \\
+\hat{y} \\
+\end{bmatrix}
+\end{align}
+
+<p>
+Therefore the measurement function is represented as follows:
+</p>
+
+\begin{align}
+H =
+\begin{bmatrix}
+1 &amp; 0 &amp; 0 &amp; 0 \\
+0 &amp; 1 &amp; 0 &amp; 0 \\
+\end{bmatrix}
+\end{align}
+
+<hr />
+
+<div id="Kalman Filters-Kalman Filter Cycle"><h2 id="Kalman Filter Cycle" class="header"><a href="#Kalman Filters-Kalman Filter Cycle">Kalman Filter Cycle</a></h2></div>
 
 <p>
 Given the following data:
@@ -461,7 +565,7 @@ Given the following data:
 So in the Kalman Filter cycle what we do is: first we perform the measurement update and then we perform the motion or prediction. More concretely:
 </p>
 
-<div id="Kalman Filters-Design Kalman Filters-Measurement Update"><h3 id="Measurement Update" class="header"><a href="#Kalman Filters-Design Kalman Filters-Measurement Update">Measurement Update</a></h3></div>
+<div id="Kalman Filters-Kalman Filter Cycle-Measurement Update"><h3 id="Measurement Update" class="header"><a href="#Kalman Filters-Kalman Filter Cycle-Measurement Update">Measurement Update</a></h3></div>
 
 <ul>
 <li>
@@ -469,7 +573,10 @@ Perform measurement update:
 
 <ul>
 <li>
-Compute the error that compares the measurement with out prediction: \(y = z - H \cdot x\)
+Obtain the current measurement: \(z\) 
+
+<li>
+Compute the error that compares the measurement with our prediction: \(y = z - H \cdot x\)
 
 </ul>
 </ul>
@@ -494,7 +601,7 @@ Uncertainty: \(P' = (I- K\cdot H) \cdot P\)
 </ul>
 </ul>
  
-<div id="Kalman Filters-Design Kalman Filters-Prediction"><h3 id="Prediction" class="header"><a href="#Kalman Filters-Design Kalman Filters-Prediction">Prediction</a></h3></div>
+<div id="Kalman Filters-Kalman Filter Cycle-Prediction"><h3 id="Prediction" class="header"><a href="#Kalman Filters-Kalman Filter Cycle-Prediction">Prediction</a></h3></div>
 
 <ul>
 <li>
@@ -509,6 +616,110 @@ x' = Fx + u
 \begin{align}
 P' = F \cdot P \cdot F^T
 \end{align}
+
+<hr />
+
+<div id="Kalman Filters-Algorithm"><h2 id="Algorithm" class="header"><a href="#Kalman Filters-Algorithm">Algorithm</a></h2></div>
+
+<p>
+The filter algorithm follows the same steps laid out in the previous section:
+</p>
+
+<pre python>
+def filter(x, P):
+    for n in range(len(measurements)):
+        
+        # prediction
+        x = (F * x) + u
+        P = F * P * F.transpose()
+        
+        # measurement update
+        Z = matrix([measurements[n]])
+        y = Z.transpose() - (H * x)
+        S = H * P * H.transpose() + R
+        K = P * H.transpose() * S.inverse()
+        x = x + (K * y)
+        P = (I - (K * H)) * P
+    
+    return x, P
+</pre>
+
+<p>
+So for the following data, which deals with 4D data, that is we store a 2D location and a 2D velocity vector in the state. We will have to take this into account in the different update matrices and uncertainty matrix:
+</p>
+
+<pre python>
+# Location measurements
+measurements = [[5., 10.], [6., 8.], [7., 6.], [8., 4.], [9., 2.], [10., 0.]]
+# Initial location
+initial_xy = [4., 12.]
+
+dt = 0.1
+
+x = matrix([[initial_xy[0]], [initial_xy[1]], [0.], [0.]]) # initial state (location and velocity)
+u = matrix([[0.], [0.], [0.], [0.]]) # external motion
+
+# initial uncertainty: 0 for positions x and y, 1000 for the two velocities
+# P = 0     0   0       0
+#     0     0   0       0
+#     0     0   1000    0
+#     0     0   0       1000
+P = matrix([[0., 0., 0., 0.], [0., 0., 0., 0.], [0., 0., 1000., 0.], [0., 0., 0., 1000.]])
+# next state function: generalize the 2d version to 4d
+# F = 1     0   0.1     0
+#     0     1   0       0.1
+#     0     0   1       0
+#     0     0   0       1
+# So, velocity vector (x', y') does not change, and the position vector (x, y) is updated according to the velocity and dt
+# F · x =   x + 0.1x'
+#           y + 0.1y'
+#           x'
+#           y'
+F = matrix([[1., 0., dt, 0], [0, 1., 0, dt], [0, 0, 1., 0], [0, 0, 0, 1.]]) 
+# measurement function: reflect the fact that we observe x and y but not the two velocities
+# H = 1     0   0       0
+#     0     1   0       0
+# So, for the measurement we only take into account the position vector (x,y) and not the velocity
+# z = H · x =   x
+#               y
+H = matrix([[1., 0., 0., 0.], [0., 1., 0., 0.]])
+# measurement uncertainty: use 2x2 matrix with 0.1 as main diagonal
+# R = 0.1   0   
+#     0     0.1
+R = matrix([[.1, 0.], [0., .1]]) 
+# 4d identity matrix
+# I = 1     0   0       0
+#     0     1   0       0 
+#     0     0   1       0
+#     0     0   0       1
+I = matrix([[1., 0., 0., 0.], [0., 1., 0., 0.], [0., 0., 1., 0.], [0., 0., 0., 1.]])
+</pre>
+
+<p>
+And we execute the filter:
+</p>
+
+<pre python>
+filter(x, P)
+</pre>
+
+<p>
+To obtain the following state \(x\) and uncertainty matrix \(P\):
+</p>
+
+<pre bash>
+x= 
+[9.999340731787717]
+[0.001318536424568617]
+[9.998901219646193]
+[-19.997802439292386]
+ 
+P= 
+[0.03955609273706198, 0.0, 0.06592682122843721, 0.0]
+[0.0, 0.03955609273706198, 0.0, 0.06592682122843721]
+[0.06592682122843718, 0.0, 0.10987803538073201, 0.0]
+[0.0, 0.06592682122843718, 0.0, 0.10987803538073201]
+</pre>
 </div>
   </body>
   <script
