@@ -53,6 +53,32 @@
 
 <hr />
 
+<ol>
+<li>
+<a href="Particle Filters.html#Particle Filters-Properties">Properties</a>
+
+<li>
+<a href="Particle Filters.html#Particle Filters-Introduction">Introduction</a>
+
+<li>
+<a href="Particle Filters.html#Particle Filters-Initial Probability">Initial Probability</a>
+
+<li>
+<a href="Particle Filters.html#Particle Filters-Resampling">Resampling</a>
+
+<li>
+<a href="Particle Filters.html#Particle Filters-Motion">Motion</a>
+
+<li>
+<a href="Particle Filters.html#Particle Filters-Algorithm">Algorithm</a>
+
+<li>
+<a href="Particle Filters.html#Particle Filters-Resampling Example">Resampling Example</a>
+
+</ol>
+
+<hr />
+
 <div id="Particle Filters-Properties"><h2 id="Properties" class="header"><a href="#Particle Filters-Properties">Properties</a></h2></div>
 
 <table>
@@ -120,31 +146,24 @@ So, initially the robot is completely uncertain as to where it is, which derives
 In summary, the particles guess where the robot might be moving and then the filter makes them "survive" (it does not discard them) using survival of the fittest. This latter statement means that those particles that are more consistent with the measurements are more likely to survive.
 </p>
 
-
-<div id="Particle Filters-Importance Weight"><h2 id="Importance Weight" class="header"><a href="#Particle Filters-Importance Weight">Importance Weight</a></h2></div>
+<div id="Particle Filters-Initial Probability"><h2 id="Initial Probability" class="header"><a href="#Particle Filters-Initial Probability">Initial Probability</a></h2></div>
 
 <p>
-Each particle has assigned an importance weight \(w\) that determines how likely a measurement is.
+At the start the robot only has the map of the room and no other knowledge, therefore there is equal probability that the robot is at any position in the map. Hence, we create a set of \(N\) particles modeled after a uniform distribution. Which means each particle is as likely to be chosen as any other. 
 </p>
 
 <div id="Particle Filters-Resampling"><h2 id="Resampling" class="header"><a href="#Particle Filters-Resampling">Resampling</a></h2></div>
 
 <p>
-Given a total of \(N\) particles:
+At first, we have \(N\) particles scattered all over the map and most of them are wrong. So now, we can start removing some of the wrong guesses using measurements of the environment. And we do this by resampling \(N\) particles. This translates into, we choose \(N\) particles that represent the place we believe the robot is in.
 </p>
 
-\begin{align}
-N 
-\begin{cases}
-(\cdots, \cdots, \cdots)=p_1 \\
-(\cdots, \cdots, \cdots)=p_2 \\
-\vdots\\
-(\cdots, \cdots, \cdots)=p_N \\
-\end{cases}
-\end{align}
+<p>
+So, now the filter can go through each of our particles and determine what the measurement would be if our robot was in the position indicated by the particle. In other words, each particle has assigned an importance weight \(w\) that determines how likely the measurement \(Z\) is given a concrete particle \(p_i\), (\(P(Z|p_i)\)).
+</p>
 
 <p>
-Where each particle has an importance weight assigned:
+So, given a total of \(N\) particles:
 </p>
 
 \begin{align}
@@ -172,7 +191,11 @@ p_N &amp; \rightarrow w_N &amp; \rightarrow \alpha_N = \frac{w_N}{W}\\
 \end{align}
 
 <p>
-Hence, \(\sum_i \alpha_i = 1.0\). What resampling does is, it puts every \(\alpha_i\) into a set:
+Hence, \(\sum_i \alpha_i = 1.0\). So we have now defined a new probability distribution that describes more clearly the position of our robot because it takes into account our measurement.
+</p>
+
+<p>
+So, it's time for the resampling. We have to choose \(N\) particles from the overall set, where each particle \(p_i\) is chosen with probability \(\alpha_i\):
 </p>
 
 <p>
@@ -180,7 +203,7 @@ Hence, \(\sum_i \alpha_i = 1.0\). What resampling does is, it puts every \(\alph
 </p>
 
 <p>
-And then it draws with replacement a given number of elements from the set. And we pick each particle with probability \(\alpha_i\). In our case, we draw \(N\) elements from the set. Also, because we allow replacement, we can draw multiple copies of the same particle \(\p_i\):
+Note we allow replacement, so we can draw multiple copies of the same particle \(p_i\). So what will happen is, the higher \(\alpha_i\) the more likely it is that particle \(p_i\) is chosen multiple times, meanwhile the lower \(\alpha_i\) is the more likely it is that it will not be chosen, and therefore simply removed from the set of particles.
 </p>
 
 <p>
@@ -190,7 +213,76 @@ And then it draws with replacement a given number of elements from the set. And 
 As you can see in the previous image, we have drawn three times \(p_2\), probably because the associated \(\alpha_2\) was larger than the rest of the \(\alpha\). 
 </blockquote>
     
-<div id="Particle Filters-Resampling-Example"><h3 id="Example" class="header"><a href="#Particle Filters-Resampling-Example">Example</a></h3></div>
+<p>
+Therefore, the particles with a low importance weight will survive with a much lower rate than the ones with a higher importance weight. 
+</p>
+
+<div id="Particle Filters-Motion"><h2 id="Motion" class="header"><a href="#Particle Filters-Motion">Motion</a></h2></div>
+
+<p>
+We also have to take into account that our particles cannot be static, but have to move with our robot. So whichever motion is applied to the robot should be applied to every single particle. Once the motion is applied we obtain a measurement and perform resampling to choose those particles that are more likely to describe the real position of the robot.
+</p>
+
+<p>
+Note that the motion will most probably contain noise, so we do not want to propagate the motion equally to each particle. What we would want is to add some gaussian noise to the particles to represent somewhat this uncertainty about the motion.
+</p>
+
+<div id="Particle Filters-Algorithm"><h2 id="Algorithm" class="header"><a href="#Particle Filters-Algorithm">Algorithm</a></h2></div>
+
+<div id="Particle Filters-Algorithm-Measurement Updates"><h3 id="Measurement Updates" class="header"><a href="#Particle Filters-Algorithm-Measurement Updates">Measurement Updates</a></h3></div>
+
+<p>
+We compute the posterior over state distribution:
+</p>
+
+\begin{align}
+P(X|Z) \propto P(Z|X)P(X)
+\end{align}
+
+<p>
+Here:
+</p>
+
+<ul>
+<li>
+\(P(X)\) is the distribution over the set of particles.
+
+<li>
+\(P(Z|X)\) is the distribution that models the importance weights.
+
+</ul>
+
+<p>
+And by resampling we obtain \(P(X|Z)\), because we draw with probability equal to the importance weight a given particle.
+</p>
+
+<div id="Particle Filters-Algorithm-Motion Updates"><h3 id="Motion Updates" class="header"><a href="#Particle Filters-Algorithm-Motion Updates">Motion Updates</a></h3></div>
+
+<p>
+We compute the posterior over distribution one step later (after movement):
+</p>
+
+\begin{align}
+P(X^t) = \sum P(X^t|X)P(X)
+\end{align}
+
+<p>
+Where:
+</p>
+
+<ul>
+<li>
+\(P(X)\) is the distribution over the set of particles.
+
+</ul>
+
+<p>
+And then, we sample from the sum. That is we generate a random particle \(X^t\) by applying the motion model \(P(X^t|X)\) to the particles \(P(X)\).
+</p>
+
+<hr />
+
+<div id="Particle Filters-Resampling Example"><h2 id="Resampling Example" class="header"><a href="#Particle Filters-Resampling Example">Resampling Example</a></h2></div>
 
 <p>
 Suppose we have the following data:
