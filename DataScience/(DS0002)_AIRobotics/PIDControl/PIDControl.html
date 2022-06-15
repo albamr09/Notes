@@ -184,6 +184,66 @@ Where \(\sum CTE\) equals the sum of the \(CTE\) error overtime. Note:
 \(- \tau_I \sum CTE\): represents the integral error
 
 </ul>
+
+<div id="PID Control-Twiddle"><h2 id="Twiddle" class="header"><a href="#PID Control-Twiddle">Twiddle</a></h2></div>
+
+<p>
+We use Twiddle to optimize a set of parameters. In our case what we do is optimize, that is minimize, the average CTE.
+</p>
+
+<p>
+So, given a parameters vector \(p = [0, 0, 0]\) and a vector of potential changes \(dp = [1, 1, 1]\) we:
+</p>
+
+<ol>
+<li>
+Execute <code>run()</code> which computes the "optimal" steering angle and moves the robot accordingly. It also stores this motion as a trajectory. This function will return a "goodness" metric, that will signify the CTE.
+
+<li>
+So, after executing <code>run()</code> we get the best error so far.
+
+<li>
+We modify <code>p</code> to make our error smaller, to make this modification we use Twiddle. The algorithm is as follows:
+
+</ol>
+
+<pre python>
+# Compute initial error
+best_error = run(p)
+# While the sum of the potential changes is bigger than a tolerance parameter
+while sum(dp) &lt; tolerance:
+  # Iterate over every parameter
+  for i in range(len(p)):
+    # Update the parameter value by the value of the corresponding potential change
+    p[i] += dp[i]
+    # Compute the new error for this change
+    err = run(p)
+    # Does this better the previous error?
+    err &lt; best_error:
+      # Make the change bigger
+      dp[i] *= 1.1
+    # If the error is worse
+    else:
+      # We try updating the parameter by subtracting (by two because we added before)
+      p[i] -= 2*dp[i]
+      err = run(p)
+      # Does this better the previous error?
+      err &lt; best_error:
+        # Make the change bigger
+        dp[i] *= 1.1
+      # If substracting does not make the error better
+      else:
+        # We decrease the change
+        dp[i] *= 0.9
+</pre>
+
+<p>
+Basically Twiddle decreases/increases the parameters first a little bit, and for each time we make the error better we augment the increase or decrease.
+</p>
+
+<p>
+And we stop when there are no major changes being made to the parameters, that is <code>sum(dp) &lt; tolerance</code>.
+</p>
 </div>
   </body>
   <script
