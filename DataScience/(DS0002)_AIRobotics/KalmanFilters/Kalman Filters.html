@@ -70,19 +70,19 @@
 <a href="Kalman Filters.html#Kalman Filters-Measurement Step">Measurement Step</a>
 
 <li>
-<a href="Kalman Filters.html#Kalman Filters-Put Everything Together">Put Everything Together</a>
-
-<li>
-<a href="Kalman Filters.html#Kalman Filters-Algorithm">Algorithm</a>
-
-<li>
 <a href="Kalman Filters.html#Kalman Filters-States">States</a>
+
+<li>
+<a href="Kalman Filters.html#Kalman Filters-Predicting Velocity">Predicting Velocity</a>
 
 <li>
 <a href="Kalman Filters.html#Kalman Filters-High Dimensional Spaces">High Dimensional Spaces</a>
 
 <li>
-<a href="Kalman Filters.html#Kalman Filters-Predicting Velocity">Predicting Velocity</a>
+<a href="Kalman Filters.html#Kalman Filters-Put Everything Together">Put Everything Together</a>
+
+<li>
+<a href="Kalman Filters.html#Kalman Filters-Algorithm">Algorithm</a>
 
 </ol>
 
@@ -319,6 +319,95 @@ However, note that the measurement might also be noisy. So we again introduce ga
 
 <hr />
 
+
+<div id="Kalman Filters-States"><h2 id="States" class="header"><a href="#Kalman Filters-States">States</a></h2></div>
+
+<p>
+Kalman Filters are made up from what it's called states, and we differentiate two different kinds of states:
+</p>
+
+<ul>
+<li>
+Observables (in our case the location)
+
+<li>
+Hidden (in our case the velocity, which i can never observe)
+
+</ul>
+
+<p>
+These two types of states interact with each other in the sense that a sequence of observable variables gives us information about the hidden variables. Thus we can estimate what these hidden variables are. Applied to our case scenario, multiple observations of where we are, that is, our location, we can estimate how fast we are moving, that is, our velocity.
+</p>
+
+<div id="Kalman Filters-Predicting Velocity"><h2 id="Predicting Velocity" class="header"><a href="#Kalman Filters-Predicting Velocity">Predicting Velocity</a></h2></div>
+
+<p>
+Given the following graph:
+</p>
+
+<p>
+<img src="./assets/multivariate_gaussian_velocity.png" alt="Correlation of velocity and Location" />
+</p>
+
+<p>
+Where \(\hat{x}\) represents the velocity and \(x\) represents the location. In this first instance, we represent the measurement at with an elongated gaussian because the measurement does not tell us anything about the velocity. However, if we now draw our predicition, given by our motion model which is represented by the red gaussian distribution, we obtain:
+</p>
+
+<p>
+<img src="./assets/correlation_location_velocity.png" alt="Correlation between location and velocity" />
+</p>
+
+<p>
+Suppose we take a new measurement (a second observation) represeted by the green normal distribution (remember, it tells us nothing about the velocity), it only gives us information about the location as the first observation did. Then:
+</p>
+
+<p>
+<img src="./assets/second_observation.png" alt="Second observation" />
+</p>
+
+<p>
+Multiply the prior (the red Gaussian) and the measurement (the green Gaussian) to obtain a really good estimate of an object's velocity and location (black distribution):
+</p>
+
+<p>
+<img src="./assets/gaussian_velocity_localization.png" alt="New Gaussian that estimates velocity and localization" />
+</p>
+
+<p>
+So we were able to infer the velocity by only observing the location.
+</p>
+
+<div id="Kalman Filters-High Dimensional Spaces"><h2 id="High Dimensional Spaces" class="header"><a href="#Kalman Filters-High Dimensional Spaces">High Dimensional Spaces</a></h2></div>
+
+<p>
+Up until now we have generally been operating in a one dimensional space, however if we were to work withing higher dimensional spaces we would need to make use of Multivariate Gaussians. So a multivariate gaussian in a D-dimensional space is characterized as follows:
+</p>
+
+\begin{align}
+\mu = \begin{bmatrix}
+\mu_0 \\
+\vdots \\
+\mu_D \\
+\end{bmatrix}, 
+\Sigma = \begin{bmatrix}
+\sigma_{11} &amp; \cdots &amp; \sigma_{1D}\\
+\vdots \\
+\sigma_{D1} &amp; \cdots &amp; \sigma_{DD}\\
+\end{bmatrix}
+\end{align}
+
+<p>
+Also de density function is now, for \(x \in \mathbb{R}^D\):
+</p>
+
+\begin{align}
+f(x) = (2\pi)^{-\frac{D}{2}}|\Sigma|^{-\frac{1}{2}} \exp^{-\frac{1}{2}(x - \mu)^T\Sigma^{-1}(x-\mu)}
+\end{align}
+
+<p>
+Here are some <a href="Examples.html">examples</a> of how the Kalman filter works for spaces with higher dimension:
+</p>
+
 <div id="Kalman Filters-Put Everything Together"><h2 id="Put Everything Together" class="header"><a href="#Kalman Filters-Put Everything Together">Put Everything Together</a></h2></div>
 
 <div id="Kalman Filters-Put Everything Together-Motion"><h3 id="Motion" class="header"><a href="#Kalman Filters-Put Everything Together-Motion">Motion</a></h3></div>
@@ -546,94 +635,6 @@ def filter(x, P):
     
     return x, P
 </pre>
-
-<div id="Kalman Filters-States"><h2 id="States" class="header"><a href="#Kalman Filters-States">States</a></h2></div>
-
-<p>
-Kalman Filters are made up from what it's called states, and we differentiate two different kinds of states:
-</p>
-
-<ul>
-<li>
-Observables (in our case the location)
-
-<li>
-Hidden (in our case the velocity, which i can never observe)
-
-</ul>
-
-<p>
-These two types of states interact with each other in the sense that a sequence of observable variables gives us information about the hidden variables. Thus we can estimate what these hidden variables are. Applied to our case scenario, multiple observations of where we are, that is, our location, we can estimate how fast we are moving, that is, our velocity.
-</p>
-
-<div id="Kalman Filters-High Dimensional Spaces"><h2 id="High Dimensional Spaces" class="header"><a href="#Kalman Filters-High Dimensional Spaces">High Dimensional Spaces</a></h2></div>
-
-<p>
-Up until now we have generally been operating in a one dimensional space, however if we were to work withing higher dimensional spaces we would need to make use of Multivariate Gaussians. So a multivariate gaussian in a D-dimensional space is characterized as follows:
-</p>
-
-\begin{align}
-\mu = \begin{bmatrix}
-\mu_0 \\
-\vdots \\
-\mu_D \\
-\end{bmatrix}, 
-\Sigma = \begin{bmatrix}
-\sigma_{11} &amp; \cdots &amp; \sigma_{1D}\\
-\vdots \\
-\sigma_{D1} &amp; \cdots &amp; \sigma_{DD}\\
-\end{bmatrix}
-\end{align}
-
-<p>
-Also de density function is now, for \(x \in \mathbb{R}^D\):
-</p>
-
-\begin{align}
-f(x) = (2\pi)^{-\frac{D}{2}}|\Sigma|^{-\frac{1}{2}} \exp^{-\frac{1}{2}(x - \mu)^T\Sigma^{-1}(x-\mu)}
-\end{align}
-
-<p>
-Here are some <a href="Examples.html">examples</a> of how the Kalman filter works for spaces with higher dimension:
-</p>
-
-<div id="Kalman Filters-Predicting Velocity"><h2 id="Predicting Velocity" class="header"><a href="#Kalman Filters-Predicting Velocity">Predicting Velocity</a></h2></div>
-
-<p>
-Given the following graph:
-</p>
-
-<p>
-<img src="./assets/multivariate_gaussian_velocity.png" alt="Correlation of velocity and Location" />
-</p>
-
-<p>
-Where \(\hat{x}\) represents the velocity and \(x\) represents the location. In this first instance, we represent the position as an elongated gaussian because we do not know anything about the velocity. So, if we take into account each possible velocity in the y-axis and the localization distribution (blue gaussian distribution), then we end up with a gaussian distribution where the velocity and the location are correlated:
-</p>
-
-<p>
-<img src="./assets/correlation_location_velocity.png" alt="Correlation between location and velocity" />
-</p>
-
-<p>
-Suppose we take a new measurement (a second observation), which also tells us nothing about the velocity, it only gives us information about the location as the first observation did. Then:
-</p>
-
-<p>
-<img src="./assets/second_observation.png" alt="Second observation" />
-</p>
-
-<p>
-However if we now multiply the prior (red gaussian) with the measurement or likelihood (green gaussian), then we obtain a new gaussian which gives us an estimate of the velocity as well as the localization:
-</p>
-
-<p>
-<img src="./assets/gaussian_velocity_localization.png" alt="New Gaussian that estimates velocity and localization" />
-</p>
-
-<p>
-So we were able to infer the velocity by only observing the location.
-</p>
 </div>
   </body>
   <script
