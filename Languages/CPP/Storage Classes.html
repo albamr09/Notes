@@ -1,0 +1,205 @@
+<html>
+  <head>
+    <!-- Normal styling from vimwiki -->
+    <link rel="Stylesheet" type="text/css" href="https://albamr09.github.io/style.css" />
+    <!-- Styling for search -->
+    <link
+      rel="Stylesheet"
+      type="text/css"
+      href="https://albamr09.github.io/search.css"
+    />
+    <title>Storage Classes</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <!-- For LaTeX -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script
+      id="MathJax-script"
+      async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+    ></script>
+    <!-- Code Highlight -->
+    <link
+      rel="Stylesheet"
+      type="text/css"
+      href="https://albamr09.github.io/atom-one-light.min.css"
+    />
+  </head>
+  <body>
+    <a
+      href="https://albamr09.github.io/"
+      style="
+        color: white;
+        font-weight: bold;
+        text-decoration: none;
+        padding: 3px 6px;
+        border-radius: 3px;
+        background-color: #1e90ff;
+        text-transform: uppercase;
+      "
+      >Index</a
+    >
+    <form id="search_form" class="search-form">
+      <input required type="search" id="search_term" class="searchTerm" />
+      <button type="submit" class="searchButton">Search</button>
+    </form>
+    <div id="search-result" class="search-result-hide"></div>
+    <hr />
+    <div class="content">
+<p>
+<a href="index.html">Back</a>
+</p>
+
+<div id="Storage Classes"><h1 id="Storage Classes" class="header"><a href="#Storage Classes">Storage Classes</a></h1></div>
+
+<hr />
+
+<p>
+A storage class defines the scope (visibility) and life-time of variables and/or functions within a C++ Program.
+</p>
+
+<ul>
+<li>
+auto
+
+<li>
+register
+
+<li>
+static
+
+<li>
+extern
+
+<li>
+mutable
+
+</ul>
+
+<div id="Storage Classes-Auto Storage Class"><h2 id="Auto Storage Class" class="header"><a href="#Storage Classes-Auto Storage Class">Auto Storage Class</a></h2></div>
+
+<p>
+The auto storage class is the default storage class for all local variables.
+</p>
+
+<pre cpp>
+{
+int mount;
+auto int month;
+}
+</pre>
+
+<p>
+These are the same
+</p>
+
+<div id="Storage Classes-Register Storage Class"><h2 id="Register Storage Class" class="header"><a href="#Storage Classes-Register Storage Class">Register Storage Class</a></h2></div>
+
+<p>
+The register storage class is used to define local variables that should be stored in a register instead of RAM.
+</p>
+
+<pre cpp>
+register int miles;
+</pre>
+
+<div id="Storage Classes-Static Storage Class"><h2 id="Static Storage Class" class="header"><a href="#Storage Classes-Static Storage Class">Static Storage Class</a></h2></div>
+
+<p>
+The static storage class instructs the compiler to keep a local variable in existence during the life-time of the program instead of creating and destroying it each time it comes into and goes out of scope.
+</p>
+
+<p>
+When static is used on a class data member, it causes only one copy of that member to be shared by all objects of its class.
+</p>
+
+<pre cpp>
+#include &lt;iostream&gt;
+ 
+// Function declaration
+void func(void);
+ 
+static int count = 10; /* Global variable */
+ 
+main() {
+   while(count--) {
+      func();
+   }
+   
+   return 0;
+}
+
+// Function definition
+void func( void ) {
+   static int i = 5; // local static variable
+   i++;
+   std::cout &lt;&lt; "i is " &lt;&lt; i ;
+   std::cout &lt;&lt; " and count is " &lt;&lt; count &lt;&lt; std::endl;
+}
+
+</pre>
+
+<div id="Storage Classes-Extern Storage Class"><h2 id="Extern Storage Class" class="header"><a href="#Storage Classes-Extern Storage Class">Extern Storage Class</a></h2></div>
+
+<p>
+The extern storage class is used to give a reference of a global variable that is visible to ALL the program files.
+</p>
+
+<p>
+Extern is used to declare a global variable or function in another file. The extern modifier is most commonly used when there are two or more files sharing the same global variables.
+</p>
+
+<pre cpp>
+#include &lt;iostream&gt;
+int count ;
+extern void write_extern();
+ 
+main() {
+   count = 5;
+   write_extern();
+}
+</pre>
+
+<pre cpp>
+#include &lt;iostream&gt;
+
+extern int count;
+
+void write_extern(void) {
+  std::cout &lt;&lt; "Count is " &lt;&lt; count &lt;&lt; std::endl;
+}
+</pre>
+
+<div id="Storage Classes-Mutable Storage Class"><h2 id="Mutable Storage Class" class="header"><a href="#Storage Classes-Mutable Storage Class">Mutable Storage Class</a></h2></div>
+
+<p>
+The mutable specifier applies only to class objects. 
+</p>
+
+<p>
+It allows a member of an object to override const member function. That is, a mutable member can be modified by a const member function.
+</p>
+</div>
+  </body>
+  <script
+    type="text/javascript"
+    src="https://albamr09.github.io/highlight.min.js"
+  ></script>
+  <script
+    type="text/javascript"
+    src="https://albamr09.github.io/zepto.min.js"
+  ></script>
+  <script
+    type="text/javascript"
+    src="https://albamr09.github.io/flexsearch.bundle.js"
+  ></script>
+  <script
+    type="text/javascript"
+    src="https://albamr09.github.io/search.js"
+  ></script>
+  <script type="text/javascript">
+    $("pre").each(function (index, item) {
+      $(item).html("<code>" + $(item).html() + "</code>");
+    });
+    hljs.initHighlightingOnLoad();
+  </script>
+</html>

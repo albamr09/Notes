@@ -1,0 +1,129 @@
+<html>
+  <head>
+    <!-- Normal styling from vimwiki -->
+    <link rel="Stylesheet" type="text/css" href="https://albamr09.github.io/style.css" />
+    <!-- Styling for search -->
+    <link
+      rel="Stylesheet"
+      type="text/css"
+      href="https://albamr09.github.io/search.css"
+    />
+    <title>Modifier Types</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <!-- For LaTeX -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script
+      id="MathJax-script"
+      async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+    ></script>
+    <!-- Code Highlight -->
+    <link
+      rel="Stylesheet"
+      type="text/css"
+      href="https://albamr09.github.io/atom-one-light.min.css"
+    />
+  </head>
+  <body>
+    <a
+      href="https://albamr09.github.io/"
+      style="
+        color: white;
+        font-weight: bold;
+        text-decoration: none;
+        padding: 3px 6px;
+        border-radius: 3px;
+        background-color: #1e90ff;
+        text-transform: uppercase;
+      "
+      >Index</a
+    >
+    <form id="search_form" class="search-form">
+      <input required type="search" id="search_term" class="searchTerm" />
+      <button type="submit" class="searchButton">Search</button>
+    </form>
+    <div id="search-result" class="search-result-hide"></div>
+    <hr />
+    <div class="content">
+<p>
+<a href="index.html">Back</a>
+</p>
+
+<div id="Modifier Types"><h1 id="Modifier Types" class="header"><a href="#Modifier Types">Modifier Types</a></h1></div>
+
+<hr />
+
+<p>
+C++ allows the char, int, and double data types to have modifiers preceding them. A modifier is used to alter the meaning of the base type so that it more precisely fits the needs of various situations.
+</p>
+
+<p>
+The data type modifiers are listed here:
+</p>
+
+<ul>
+<li>
+signed
+
+<li>
+unsigned
+
+<li>
+long
+
+<li>
+short
+
+</ul>
+
+<p>
+The modifiers signed, unsigned, long, and short can be applied to integer base types. In addition, signed and unsigned can be applied to char, and long can be applied to double.
+</p>
+
+<p>
+The modifiers signed and unsigned can also be used as prefix to long or short modifiers. For example, unsigned long int.
+</p>
+
+
+<div id="Modifier Types-Type Qualifiers in C++"><h2 id="Type Qualifiers in C++" class="header"><a href="#Modifier Types-Type Qualifiers in C++">Type Qualifiers in C++</a></h2></div>
+
+<p>
+The type qualifiers provide additional information about the variables they precede.
+</p>
+
+<p>
+<code>const</code>: Objects of type const cannot be changed by your program during execution.
+</p>
+
+<p>
+<code>volatile</code>: The modifier volatile tells the compiler that a variable's value may be changed in ways not explicitly specified by the program.
+</p>
+
+<p>
+<code>restrict</code>: A pointer qualified by restrict is initially the only means by which the object it points to can be accessed. Only C99 adds a new type qualifier called restrict.
+</p>
+</div>
+  </body>
+  <script
+    type="text/javascript"
+    src="https://albamr09.github.io/highlight.min.js"
+  ></script>
+  <script
+    type="text/javascript"
+    src="https://albamr09.github.io/zepto.min.js"
+  ></script>
+  <script
+    type="text/javascript"
+    src="https://albamr09.github.io/flexsearch.bundle.js"
+  ></script>
+  <script
+    type="text/javascript"
+    src="https://albamr09.github.io/search.js"
+  ></script>
+  <script type="text/javascript">
+    $("pre").each(function (index, item) {
+      $(item).html("<code>" + $(item).html() + "</code>");
+    });
+    hljs.initHighlightingOnLoad();
+  </script>
+</html>

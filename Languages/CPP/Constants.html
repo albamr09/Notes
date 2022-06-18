@@ -1,0 +1,123 @@
+<html>
+  <head>
+    <!-- Normal styling from vimwiki -->
+    <link rel="Stylesheet" type="text/css" href="https://albamr09.github.io/style.css" />
+    <!-- Styling for search -->
+    <link
+      rel="Stylesheet"
+      type="text/css"
+      href="https://albamr09.github.io/search.css"
+    />
+    <title>Constants</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <!-- For LaTeX -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script
+      id="MathJax-script"
+      async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+    ></script>
+    <!-- Code Highlight -->
+    <link
+      rel="Stylesheet"
+      type="text/css"
+      href="https://albamr09.github.io/atom-one-light.min.css"
+    />
+  </head>
+  <body>
+    <a
+      href="https://albamr09.github.io/"
+      style="
+        color: white;
+        font-weight: bold;
+        text-decoration: none;
+        padding: 3px 6px;
+        border-radius: 3px;
+        background-color: #1e90ff;
+        text-transform: uppercase;
+      "
+      >Index</a
+    >
+    <form id="search_form" class="search-form">
+      <input required type="search" id="search_term" class="searchTerm" />
+      <button type="submit" class="searchButton">Search</button>
+    </form>
+    <div id="search-result" class="search-result-hide"></div>
+    <hr />
+    <div class="content">
+<p>
+<a href="index.html">Back</a>
+</p>
+
+<div id="Constants"><h1 id="Constants" class="header"><a href="#Constants">Constants</a></h1></div>
+
+<hr />
+
+<div id="Constants-The #define Preprocessor"><h2 id="The #define Preprocessor" class="header"><a href="#Constants-The #define Preprocessor">The #define Preprocessor</a></h2></div>
+
+<pre cpp>
+#include &lt;iostream&gt;
+using namespace std;
+
+#define LENGTH 10   
+#define WIDTH  5
+#define NEWLINE '\n'
+
+int main() {
+   int area;  
+   
+   area = LENGTH * WIDTH;
+   cout &lt;&lt; area;
+   cout &lt;&lt; NEWLINE;
+   return 0;
+}
+
+</pre>
+
+<div id="Constants-The const Keyword"><h2 id="The const Keyword" class="header"><a href="#Constants-The const Keyword">The const Keyword</a></h2></div>
+
+<p>
+You can use const prefix to declare constants with a specific type as follows −
+</p>
+
+<pre cpp>
+#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+   const int  LENGTH = 10;
+   const int  WIDTH  = 5;
+   const char NEWLINE = '\n';
+   int area;  
+   
+   area = LENGTH * WIDTH;
+   cout &lt;&lt; area;
+   cout &lt;&lt; NEWLINE;
+   return 0;
+}
+</pre>
+</div>
+  </body>
+  <script
+    type="text/javascript"
+    src="https://albamr09.github.io/highlight.min.js"
+  ></script>
+  <script
+    type="text/javascript"
+    src="https://albamr09.github.io/zepto.min.js"
+  ></script>
+  <script
+    type="text/javascript"
+    src="https://albamr09.github.io/flexsearch.bundle.js"
+  ></script>
+  <script
+    type="text/javascript"
+    src="https://albamr09.github.io/search.js"
+  ></script>
+  <script type="text/javascript">
+    $("pre").each(function (index, item) {
+      $(item).html("<code>" + $(item).html() + "</code>");
+    });
+    hljs.initHighlightingOnLoad();
+  </script>
+</html>
