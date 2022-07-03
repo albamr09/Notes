@@ -51,7 +51,7 @@
 <a href="../index.html">Back</a>
 </p>
 
-<div id="Monte Carlo Localization"><h1 id="Monte Carlo Localization" class="header"><a href="#Monte Carlo Localization">Monte Carlo Localization</a></h1></div>
+<div id="Histogram Localization"><h1 id="Histogram Localization" class="header"><a href="#Histogram Localization">Histogram Localization</a></h1></div>
 
 <hr />
 
@@ -84,13 +84,13 @@
 
 <hr />
 
-<div id="Monte Carlo Localization-Probability given by Belief"><h2 id="Probability given by Belief" class="header"><a href="#Monte Carlo Localization-Probability given by Belief">Probability given by Belief</a></h2></div>
+<div id="Histogram Localization-Probability given by Belief"><h2 id="Probability given by Belief" class="header"><a href="#Histogram Localization-Probability given by Belief">Probability given by Belief</a></h2></div>
 
 <p>
 Suppose every place in the world is modeled after an uniform probability distribution, then every cell the robot has the same probability.
 </p>
 
-<div id="Monte Carlo Localization-Probability after Sense"><h2 id="Probability after Sense" class="header"><a href="#Monte Carlo Localization-Probability after Sense">Probability after Sense</a></h2></div>
+<div id="Histogram Localization-Probability after Sense"><h2 id="Probability after Sense" class="header"><a href="#Histogram Localization-Probability after Sense">Probability after Sense</a></h2></div>
 
 <p>
 Now suppose the robot is able to sense a color, and each cell has a different color assigned.
@@ -110,7 +110,7 @@ Note that the hit value is a big value, and the miss value is lower. Thus the pr
 Also, observe that a measurement refers to what the robot senses, that is, a green cell or a red cell.
 </p>
 
-<div id="Monte Carlo Localization-Probability after Sense-Normalize the distribution"><h3 id="Normalize the distribution" class="header"><a href="#Monte Carlo Localization-Probability after Sense-Normalize the distribution">Normalize the distribution</a></h3></div>
+<div id="Histogram Localization-Probability after Sense-Normalize the distribution"><h3 id="Normalize the distribution" class="header"><a href="#Histogram Localization-Probability after Sense-Normalize the distribution">Normalize the distribution</a></h3></div>
 
 <p>
 Now that we have altered the values of the probability distribution, it is likely that they do not sum up to one, which is a requirement to every probability function. Therefore we need to normalize it.
@@ -131,7 +131,7 @@ Normalize these probabilities by dividing each probability by the total sum of a
 
 <hr />
 
-<div id="Monte Carlo Localization-Exact Motion"><h2 id="Exact Motion" class="header"><a href="#Monte Carlo Localization-Exact Motion">Exact Motion</a></h2></div>
+<div id="Histogram Localization-Exact Motion"><h2 id="Exact Motion" class="header"><a href="#Histogram Localization-Exact Motion">Exact Motion</a></h2></div>
 
 <p>
 Suppose we have a world made up of a grid with 5 cells with the following probabilities:
@@ -145,7 +145,7 @@ Suppose we have a world made up of a grid with 5 cells with the following probab
 We also know that with 100% probability the world moves to the right. 
 </p>
 
-<div id="Monte Carlo Localization-Exact Motion-Theorem of Total Probability"><h3 id="Theorem of Total Probability" class="header"><a href="#Monte Carlo Localization-Exact Motion-Theorem of Total Probability">Theorem of Total Probability</a></h3></div>
+<div id="Histogram Localization-Exact Motion-Theorem of Total Probability"><h3 id="Theorem of Total Probability" class="header"><a href="#Histogram Localization-Exact Motion-Theorem of Total Probability">Theorem of Total Probability</a></h3></div>
 
 <p>
 To compute the probability of each cell after the movement, we use the law of total probability that states:
@@ -189,7 +189,7 @@ P(X_j|X_i) =
 \end{cases}
 \end{align}
 
-<div id="Monte Carlo Localization-Inexact Motion"><h2 id="Inexact Motion" class="header"><a href="#Monte Carlo Localization-Inexact Motion">Inexact Motion</a></h2></div>
+<div id="Histogram Localization-Inexact Motion"><h2 id="Inexact Motion" class="header"><a href="#Histogram Localization-Inexact Motion">Inexact Motion</a></h2></div>
 
 <p>
 However what if \(P(X_j|X_i) &lt; 1\)? Suppose:
@@ -231,7 +231,7 @@ P(X_{j}|X_{i}) =
 
 <hr />
 
-<div id="Monte Carlo Localization-Inexact Motion-Entropy"><h3 id="Entropy" class="header"><a href="#Monte Carlo Localization-Inexact Motion-Entropy">Entropy</a></h3></div>
+<div id="Histogram Localization-Inexact Motion-Entropy"><h3 id="Entropy" class="header"><a href="#Histogram Localization-Inexact Motion-Entropy">Entropy</a></h3></div>
 
 <p>
 The entropy will decrease after the measurement update (sense) step, and the entropy will increase after the movement step (move).
@@ -251,7 +251,7 @@ Entropy = \sum_{i=1}^5(-p(x_i) \cdot \log(p(x_i)))
 
 <hr />
 
-<div id="Monte Carlo Localization-Bayes Rule"><h2 id="Bayes Rule" class="header"><a href="#Monte Carlo Localization-Bayes Rule">Bayes Rule</a></h2></div>
+<div id="Histogram Localization-Bayes Rule"><h2 id="Bayes Rule" class="header"><a href="#Histogram Localization-Bayes Rule">Bayes Rule</a></h2></div>
 
 <p>
 Suppose:
@@ -310,7 +310,7 @@ For each \(X_i\) normalize the posterior with the evidence: \(P(X_i|Z) = \frac{\
 
 </ol>
 
-<div id="Monte Carlo Localization-Motion using Total Probability"><h2 id="Motion using Total Probability" class="header"><a href="#Monte Carlo Localization-Motion using Total Probability">Motion using Total Probability</a></h2></div>
+<div id="Histogram Localization-Motion using Total Probability"><h2 id="Motion using Total Probability" class="header"><a href="#Histogram Localization-Motion using Total Probability">Motion using Total Probability</a></h2></div>
 
 <p>
 Let's say we are at time \(t\), and \(i\) determines the cell, then the motion is expressed probabilistically as follows:
@@ -338,15 +338,15 @@ If we break down this formula:
 
 <hr />
 
-<div id="Monte Carlo Localization-Summary"><h2 id="Summary" class="header"><a href="#Monte Carlo Localization-Summary">Summary</a></h2></div>
+<div id="Histogram Localization-Summary"><h2 id="Summary" class="header"><a href="#Histogram Localization-Summary">Summary</a></h2></div>
 
-<div id="Monte Carlo Localization-Summary-Belief"><h3 id="Belief" class="header"><a href="#Monte Carlo Localization-Summary-Belief">Belief</a></h3></div>
+<div id="Histogram Localization-Summary-Belief"><h3 id="Belief" class="header"><a href="#Histogram Localization-Summary-Belief">Belief</a></h3></div>
 
 <p>
 Represents where are possible places the robot might be, that is each cell has an associated probability value
 </p>
 
-<div id="Monte Carlo Localization-Summary-Sense"><h3 id="Sense" class="header"><a href="#Monte Carlo Localization-Summary-Sense">Sense</a></h3></div>
+<div id="Histogram Localization-Summary-Sense"><h3 id="Sense" class="header"><a href="#Histogram Localization-Summary-Sense">Sense</a></h3></div>
 
 <p>
 Also known as the measurement update function. 
@@ -361,7 +361,7 @@ Therefore, for each cell in the world we multiply the previous probability value
 To satisfy the probability function properties, we need to normalize it, so it sums up to one.
 </p>
 
-<div id="Monte Carlo Localization-Summary-Move"><h3 id="Move" class="header"><a href="#Monte Carlo Localization-Summary-Move">Move</a></h3></div>
+<div id="Histogram Localization-Summary-Move"><h3 id="Move" class="header"><a href="#Histogram Localization-Summary-Move">Move</a></h3></div>
 
 <p>
 It is a convolution, for each possible location, after the motion, we reverse engineered the situation and guessed where the world might have come from.
@@ -413,7 +413,7 @@ P(X_k) = P(X_l) * P_{exact} + P(X_i) * P_{undershoot} + P(X_j) * P_{overshoot}
 
 <hr />
 
-<div id="Monte Carlo Localization-Localization Algorithm"><h2 id="Localization Algorithm" class="header"><a href="#Monte Carlo Localization-Localization Algorithm">Localization Algorithm</a></h2></div>
+<div id="Histogram Localization-Localization Algorithm"><h2 id="Localization Algorithm" class="header"><a href="#Histogram Localization-Localization Algorithm">Localization Algorithm</a></h2></div>
 
 <p>
 Next we lay out an example of the localization algorithm implemented in \(\mathbb{R}^2\):

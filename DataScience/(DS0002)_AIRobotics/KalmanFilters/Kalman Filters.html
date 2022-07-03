@@ -91,7 +91,7 @@
 <hr />
 
 <p>
-This is a tracking technique. It is similar to the <a href="../Localization/Localization.html">Monte Carlo Localization</a> we talked about previously, however there are some key differences:
+This is a tracking technique. It is similar to the <a href="../Localization/Localization.html">Histogram Localization</a> we talked about previously, however there are some key differences:
 </p>
 
 <ul>
@@ -99,14 +99,14 @@ This is a tracking technique. It is similar to the <a href="../Localization/Loca
 Kalman Filter maintains a continuous state (therefore uses a uni-modal distribution: probability density function only has one peak)
 
 <li>
-Monte Carlo Localization uses discrete state to represent the world (uses a multi-modal distribution: probability density function has multiple peaks)
+Histogram Localization uses discrete state to represent the world (uses a multi-modal distribution: probability density function has multiple peaks)
 
 </ul>
 
 <div id="Kalman Filters-Markov Model"><h2 id="Markov Model" class="header"><a href="#Kalman Filters-Markov Model">Markov Model</a></h2></div>
 
 <p>
-In <a href="../Localization/Localization.html">Monte Carlo Localization</a> we assigned a probability to each cell in the world:
+In <a href="../Localization/Localization.html">Histogram Localization</a> we assigned a probability to each cell in the world:
 </p>
 
 <p>
@@ -118,7 +118,7 @@ What we did is we divided the continuous space into a finite number of cells, th
 </p>
 
 <p>
-<img src="./assets/monte_carlo_histogram.png" alt="Monte Carlo Histogram" />
+<img src="./assets/monte_carlo_histogram.png" alt="Map in Histogram Locations" />
 </p>
 
 <p>
