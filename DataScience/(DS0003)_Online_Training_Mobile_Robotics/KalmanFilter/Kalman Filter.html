@@ -60,6 +60,9 @@
 <a href="Kalman Filter.html#Kalman Filter-Introduction">Introduction</a>
 
 <li>
+<a href="Kalman Filter.html#Kalman Filter-Properties of Gaussian Distributions">Properties of Gaussian Distributions</a>
+
+<li>
 <a href="Kalman Filter.html#Kalman Filter-Linear Model">Linear Model</a>
 
 <ol>
@@ -76,6 +79,12 @@
 <li>
 <a href="Kalman Filter.html#Kalman Filter-Gaussian World">Gaussian World</a>
 
+<li>
+<a href="Kalman Filter.html#Kalman Filter-Representing the Belief">Representing the Belief</a>
+
+<li>
+<a href="Kalman Filter.html#Kalman Filter-Algorithm">Algorithm</a>
+
 </ol>
 
 <hr />
@@ -84,6 +93,24 @@
 The Kalman Filter requires the world to be Gaussian, that is every probability distribution used must be Gaussian. This filter also assumes linear models.
 </p>
 
+<div id="Kalman Filter-Properties of Gaussian Distributions"><h2 id="Properties of Gaussian Distributions" class="header"><a href="#Kalman Filter-Properties of Gaussian Distributions">Properties of Gaussian Distributions</a></h2></div>
+
+<p>
+In order to derive and prove some parts of the Kalman Filter we exploit the following properties:
+</p>
+
+<ul>
+<li>
+The product of two Gaussian is a Gaussian.
+
+<li>
+A Gaussian stays Gaussian under linear transformations
+
+<li>
+The marginal and conditional distribution of a Gaussian is a Gaussian
+
+</ul>
+ 
 <div id="Kalman Filter-Introduction"><h2 id="Introduction" class="header"><a href="#Kalman Filter-Introduction">Introduction</a></h2></div>
 
 <p>
@@ -235,7 +262,117 @@ As we have said, we are assuming everything is Gaussian. Up until now we have de
 </p>
 
 <p>
-If we suppose \(\hat{bel}(x_t)\) is Gaussian, then \(bel(x_t)\) is Gaussian because the product of Gaussian distribution is a Gaussian distribution. Therefore we need to show that \(\hat{bel}(x_t)\) is also Gaussian.
+If we suppose \(\hat{bel}(x_t)\) is Gaussian, then \(bel(x_t)\) is Gaussian because the product of Gaussian distribution is a Gaussian distribution. Therefore we need to show that \(\hat{bel}(x_t)\) is also Gaussian. That is:
+</p>
+
+\[
+\hat{bel}(x_t) = \int p(x_t|u_t,x_{t-1})bel(x_{t-1})dx_{t-1}
+\]
+
+<p>
+We know, by its definition, that \(p(x_t|u_t,x_{t-1})\) is Gaussian, and also we can prove by mathematical induction that \(bel(xx_{t-1})\) is Gaussian. Because if we start from a Gaussian distributed belief and everything stays Gaussian then the belief at time \(t-1\) will also be Gaussian.
+</p>
+
+<p>
+Noting that the convolution of two Gaussian stays Gaussian we conclude that \(\hat{bel}(x_t)\) is Gaussian and thus \(bel(t)\) is also Gaussian. Let's show however that the integral preserves the Gaussian. Note that we can express the predicted belief by using our linear models as follows:
+</p>
+
+\[
+\hat{bel}(x_t) = \int p(x_t|u_t,x_{t-1}) bel(x_{t-1})dx_{t-1} 
+\]
+
+\[
+= \int \det(2\pi R_t)^{-\frac{1}{2}} \exp(-\frac{1}{2}(x_t - A_tx_{t-1} - B_tu_t)^TR^{-1}_t(x_t - A_tx_{t-1} - B_tu_t))bel(x_{t-1})dx_{t-1}
+\]
+
+\[
+= \eta \int \exp(-\frac{1}{2}(x_t - A_tx_{t-1} - B_tu_t)^TR^{-1}_t(x_t - A_tx_{t-1} - B_tu_t))bel(x_{t-1})dx_{t-1}
+\]
+
+\[
+= \eta \int \exp(-\frac{1}{2}(x_t - A_tx_{t-1} - B_tu_t)^TR^{-1}_t(x_t - A_tx_{t-1} - B_tu_t)) exp(-\frac{1}{2}(x_{t-1} - \mu_{t-1})^T\Sigma_{t-1}^{-1}(x_{t-1} - \mu_{t-1}))
+\]
+
+<p>
+Where \(exp(-\frac{1}{2}(x_{t-1} - \mu_{t-1})^T\Sigma_{t-1}^{-1}(x_{t-1} - \mu_{t-1}))\) is the expected value of the Gaussian that describes our previous belief \(bel(x_{t-1})\).
+</p>
+
+<p>
+Now, we combine both exponentials, given \(exp(x) \cdot exp(y) = exp(x + y)\):
+</p>
+
+
+\[
+\hat{bel}(x_t) = \eta \int \exp(-L_t)dx_{t-1}
+\]
+
+<p>
+Given:
+</p>
+
+\[
+L_{t} = \frac{1}{2}(x_t - A_tx_{t-1} - B_tu_t)^TR^{-1}_t(x_t - A_tx_{t-1} - B_tu_t) 
+\]
+
+\[
++ \frac{1}{2}(x_{t-1} - \mu_{t-1})^T\Sigma_{t-1}^{-1}(x_{t-1} - \mu_{t-1})
+\]
+
+<p>
+We can split \(L_t\) up in a part that only depends on \(x_t\) and another part that depends on \(x_t, x_{t-1}\). Such that:
+</p>
+
+\[
+L_t = L_t(x_{t-1}, x_t) + L_t(x_t)
+\]
+
+<p>
+Thus:
+</p>
+
+\[
+\hat{bel}(x_t) = \eta \int \exp(-L_t(x_{t-1}, x_t) -L_t(x_t))dx_{t-1}
+\]
+
+\[
+\hat{bel}(x_t) = \eta \exp(-L_t(x_t)) \int \exp(-L_t(x_{t-1}, x_t) )dx_{t-1}
+\]
+
+<p>
+This way we have:
+</p>
+
+<ul>
+<li>
+\(\exp(-L_t(x_t))\): Gaussian distribution
+
+<li>
+\(\int \exp(-L_t(x_{t-1}, x_t) )dx_{t-1}\): this is the marginalization of a Gaussian of the variable \(x_{t-1}\), which happens to also be a Gaussian.
+
+</ul>
+
+<p>
+Therefore we have shown that everything stays Gaussian:
+</p>
+
+<p>
+<img src="./assets/all_gaussian.png" alt="Everything Stays Gaussian" style="transform:translate(30vw,0)" />
+</p>
+
+<div id="Kalman Filter-Representing the Belief"><h2 id="Representing the Belief" class="header"><a href="#Kalman Filter-Representing the Belief">Representing the Belief</a></h2></div>
+
+<p>
+We have said that everything is Gaussian, which includes our belief. This belief will be represented, like any other Gaussian is, by its mean \(\mu\) and variance \(\Sigma\). So our belief at time \(t\) would be represented by \((\mu_t, \Sigma_t)\).
+</p>
+
+<div id="Kalman Filter-Algorithm"><h2 id="Algorithm" class="header"><a href="#Kalman Filter-Algorithm">Algorithm</a></h2></div>
+
+<p>
+The Kalman Filter algorithm is defined as follows:
+</p>
+
+<p>
+<img src="./assets/kalman_filter_algorithm.png" alt="Kalman Filter Algorithm" style="transform:translate(30vw,0)" />
 </p>
 </div>
   </body>
