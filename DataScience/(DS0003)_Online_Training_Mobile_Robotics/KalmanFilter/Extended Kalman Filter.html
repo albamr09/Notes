@@ -1,0 +1,137 @@
+<html>
+  <head>
+    <!-- Normal styling from vimwiki -->
+    <link rel="Stylesheet" type="text/css" href="https://albamr09.github.io/style.css" />
+    <!-- Styling for search -->
+    <link
+      rel="Stylesheet"
+      type="text/css"
+      href="https://albamr09.github.io/search.css"
+    />
+    <title>Extended Kalman Filter</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <!-- For LaTeX -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script
+      id="MathJax-script"
+      async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+    ></script>
+    <!-- Code Highlight -->
+    <link
+      rel="Stylesheet"
+      type="text/css"
+      href="https://albamr09.github.io/atom-one-light.min.css"
+    />
+    <!-- Page icon -->
+    <link rel="icon" type="image/svg+xml" href="https://albamr09.github.io/icon.svg">
+  </head>
+  <body>
+    <a
+      href="https://albamr09.github.io/"
+      style="
+        color: white;
+        font-weight: bold;
+        text-decoration: none;
+        padding: 3px 6px;
+        border-radius: 3px;
+        background-color: #1e90ff;
+        text-transform: uppercase;
+      "
+      >Index</a
+    >
+    <form id="search_form" class="search-form">
+      <input required type="search" id="search_term" class="searchTerm" />
+      <button type="submit" class="searchButton">Search</button>
+    </form>
+    <div id="search-result" class="search-result-hide"></div>
+    <hr />
+    <div class="content">
+<p>
+<a href="../index.html">Back</a>
+</p>
+
+<div id="Extended Kalman Filter"><h1 id="Extended Kalman Filter" class="header"><a href="#Extended Kalman Filter">Extended Kalman Filter</a></h1></div>
+
+<hr />
+
+<ol>
+<li>
+<a href="Extended Kalman Filter.html#Extended Kalman Filter-Introduction">Introduction</a>
+
+<li>
+<a href="Extended Kalman Filter.html#Extended Kalman Filter-Local Linearization">Local Linearization</a>
+
+</ol>
+
+<hr />
+
+<div id="Extended Kalman Filter-Introduction"><h2 id="Introduction" class="header"><a href="#Extended Kalman Filter-Introduction">Introduction</a></h2></div>
+
+<p>
+What happens if we are dealing with non-linear dynamic systems, such that we do not use our linear models anymore:
+</p>
+
+\[
+x_t = A_tx_{t-1} + B_tu_t + \epsilon_t
+\]
+
+\[
+z_t = C_t x_t + \delta_t
+\]
+
+<p>
+But we introduce new functions that need not be linear:
+</p>
+
+\[
+x_t = g(u_t, x_{t-1}) + \epsilon_t
+\]
+
+\[
+z_t = h(x_t) + \delta_t
+\]
+
+<p>
+Before, when we transformed our belief (a Gaussian) with a linear transformation, something like the following happened:
+</p>
+
+<p>
+<img src="./assets/gaussian_under_linear_transformation.png" alt="Gaussian under linear transformation" style="transform:translate(30vw,0)" />
+</p>
+
+<p>
+Where the distribution of the upper left is the result of transforming the distribution of the bottom by applying the linear function on the upper right. However, if we try to do this same thing with a non-linear transformation, we could end up with something like this:
+</p>
+
+<p>
+<img src="./assets/gaussian_under_non_linear_transformation.png" alt="Gaussian under non linear transformation" style="transform:translate(30vw,0)" />
+So, the result of the transformation is clearly no a Gaussian. Which means, the Kalman Filter is not applicable anymore. To prevent this problem we are going to use Local Linearization.
+</p>
+
+<div id="Extended Kalman Filter-Local Linearization"><h2 id="Local Linearization" class="header"><a href="#Extended Kalman Filter-Local Linearization">Local Linearization</a></h2></div>
+</div>
+  </body>
+  <script
+    type="text/javascript"
+    src="https://albamr09.github.io/highlight.min.js"
+  ></script>
+  <script
+    type="text/javascript"
+    src="https://albamr09.github.io/zepto.min.js"
+  ></script>
+  <script
+    type="text/javascript"
+    src="https://albamr09.github.io/flexsearch.bundle.js"
+  ></script>
+  <script
+    type="text/javascript"
+    src="https://albamr09.github.io/search.js"
+  ></script>
+  <script type="text/javascript">
+    $("pre").each(function (index, item) {
+      $(item).html("<code>" + $(item).html() + "</code>");
+    });
+    hljs.initHighlightingOnLoad();
+  </script>
+</html>
