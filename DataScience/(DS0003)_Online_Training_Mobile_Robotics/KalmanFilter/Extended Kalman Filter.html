@@ -62,6 +62,28 @@
 <li>
 <a href="Extended Kalman Filter.html#Extended Kalman Filter-Local Linearization">Local Linearization</a>
 
+<ol>
+<li>
+<a href="Extended Kalman Filter.html#Extended Kalman Filter-Local Linearization-Jacobian">Jacobian</a>
+
+<li>
+<a href="Extended Kalman Filter.html#Extended Kalman Filter-Local Linearization-Error Under Local Linearization">Error Under Local Linearization</a>
+
+</ol>
+<li>
+<a href="Extended Kalman Filter.html#Extended Kalman Filter-Linearized Motion Model">Linearized Motion Model</a>
+
+<li>
+<a href="Extended Kalman Filter.html#Extended Kalman Filter-Linearized Observation Model">Linearized Observation Model</a>
+
+<li>
+<a href="Extended Kalman Filter.html#Extended Kalman Filter-Algorithm">Algorithm</a>
+
+<ol>
+<li>
+<a href="Extended Kalman Filter.html#Extended Kalman Filter-Algorithm-Kalman Gain">Kalman Gain</a>
+
+</ol>
 </ol>
 
 <hr />
@@ -106,10 +128,360 @@ Where the distribution of the upper left is the result of transforming the distr
 
 <p>
 <img src="./assets/gaussian_under_non_linear_transformation.png" alt="Gaussian under non linear transformation" style="transform:translate(30vw,0)" />
+</p>
+
+<p>
 So, the result of the transformation is clearly no a Gaussian. Which means, the Kalman Filter is not applicable anymore. To prevent this problem we are going to use Local Linearization.
 </p>
 
 <div id="Extended Kalman Filter-Local Linearization"><h2 id="Local Linearization" class="header"><a href="#Extended Kalman Filter-Local Linearization">Local Linearization</a></h2></div>
+
+<p>
+In order to perform local linearization what we do is approximate the non-linear functions \(g\) and \(h\) by the means of the Taylor Expansion. Thus we re-define our non-linear functions as follows:
+</p>
+
+<p>
+The linearization for prediction step consists of linearizing around our previous state \(x_{t-1} = (\mu_{t-1}, \Sigma_{t-1})\)and is described as follows:
+</p>
+
+\[
+g(u_t, x_{t-1}) \approx g(u_t, \mu_{t-1}) + \frac{\delta g(u_t, \mu_{t-1})}{\delta x_{t-1}}(x_{t-1} - \mu_{t-1})
+\]
+
+<ul>
+<li>
+\(g(u_t, \mu_{t-1})\) is the value of our non-linear model at the linearization point \(\mu_{t-1}\), which corresponds to our previous belief.
+
+<li>
+\(G_t = \frac{\delta g(u_t, \mu_{t-1})}{\delta x_{t-1}}\) is the slope of the local linearization at \(x_{t-1}\). This is a first partial derivative which constitutes a Jacobian.
+
+<li>
+\((x_{t-1} - \mu_{t-1})\) tells us how far we are away from the linearization point \(\mu_{t-1}\).
+
+</ul>
+
+<p>
+For the correction step we linearize around our predicted state \(\overline{x}_t = (\overline{\mu}_t, \overline{\Sigma}_t)\):
+</p>
+
+\[
+h(x_t) \approx h(\overline{\mu}_t) + \frac{\delta h(\overline{\mu}_t)}{\delta x_t} (x_t - \overline{\mu}_t)
+\]
+
+<ul>
+<li>
+\(h(\overline{\mu}_t)\) is the value of our non-linear observation model at the linearization point, which now is the predicted belief, that is the best estimate that I have.
+
+<li>
+\(H_t = \frac{\delta h(\overline{\mu}_t)}{\delta x_t}\) is the Jacobian that equals the slope at the linearization point.
+
+<li>
+\((x_t - \overline{\mu}_t)\) signifies how far away is the variable \(x_t\) to our linearization point \(\overline{\mu}_t\).
+
+</ul>
+
+<div id="Extended Kalman Filter-Local Linearization-Jacobian"><h3 id="Jacobian" class="header"><a href="#Extended Kalman Filter-Local Linearization-Jacobian">Jacobian</a></h3></div>
+
+<p>
+Given a function \(f: \mathbb{R}^n \rightarrow \mathbb{R}^m\), such that given \(x \in \mathbb{R}^n\), \(x \mapsto f(x) \in \mathbb{R}^{m}\). Then the Jacobian has the following shape:
+</p>
+
+\[
+J = \begin{bmatrix}
+\frac{\delta f_1}{\delta x_1} &amp; \frac{\delta f_1}{\delta x_2} &amp; \cdots &amp; \frac{\delta f_1}{\delta x_n}  \\
+\vdots &amp; \cdots &amp; \cdots &amp; \vdots \\
+\frac{\delta f_m}{\delta x_1} &amp; \frac{\delta f_m}{\delta x_2} &amp; \cdots &amp; \frac{\delta f_m}{\delta x_n} 
+\end{bmatrix} \in \mathbb{R}^{m \times n}
+\]
+
+<p>
+And we can illustrate it graphically:
+</p>
+
+<p>
+<img src="./assets/jacobian.png" alt="Jacobian" style="transform: translate(30vw, 0)" />
+</p>
+
+<p>
+As you can see, for points close to the linearization point, it constitutes a good approximation, but the further we move away the bigger the error is.
+</p>
+
+<hr />
+
+<p>
+So, let's revisit the transformation of our Gaussian belief. Remember we had, the following non-linear transformation:
+</p>
+
+<p>
+<img src="./assets/gaussian_under_non_linear_transformation.png" alt="Gaussian under non linear transformation" style="transform:translate(30vw,0)" />
+</p>
+
+<p>
+What we do now, is take the mean of our belief \(\mu_t\) and approximate it locally with a linear function by using the Taylor Expansion as we have explained before. And then we transform our Gaussian belief with this linear approximation (represented by the red line) which results in the following transformation:
+</p>
+
+<p>
+<img src="./assets/gaussian_under_approximated_linear_transformation.png" alt="Gaussian under non linear transformation" style="transform:translate(30vw,0)" />
+</p>
+
+<div id="Extended Kalman Filter-Local Linearization-Error Under Local Linearization"><h3 id="Error Under Local Linearization" class="header"><a href="#Extended Kalman Filter-Local Linearization-Error Under Local Linearization">Error Under Local Linearization</a></h3></div>
+
+<p>
+When we perform local linearization the error depends on to factors:
+</p>
+
+<ul>
+<li>
+The difference between the non-linear function and its linear approximation
+
+<li>
+The uncertainty of our original Gaussian distribution. Because the larger the uncertainty, more probability mass will fall farther from our linearization point (the mean of that same Gaussian distribution), and remember that the further we are from the linearization point the worse the approximation is, and thus the bigger the error is.
+
+</ul>
+
+<div id="Extended Kalman Filter-Linearized Motion Model"><h2 id="Linearized Motion Model" class="header"><a href="#Extended Kalman Filter-Linearized Motion Model">Linearized Motion Model</a></h2></div>
+
+<p>
+We defined our linear motion model as follows:
+</p>
+
+\[
+p(x_t|x_{t-1}, u_t) = \det(2\pi R_t)^{-\frac{1}{2}} \exp(-\frac{1}{2}(x_t - A_tx_{t-1} - B_tu_t)^TR^{-1}_t(x_t - A_tx_{t-1} - B_tu_t))
+\]
+
+<p>
+If our world is non-linear we substitute 
+</p>
+
+\[
+x_t = A_tx_{t-1} + B_tu_t + \epsilon_t
+\]
+
+<p>
+for
+</p>
+
+\[
+x_t = g(u_t, x_{t-1}) + \epsilon_t
+\]
+
+<p>
+Therefore the motion model is expressed as follows:
+</p>
+
+\[
+p(x_t|x_{t-1}, u_t) = \det(2\pi R_t)^{-\frac{1}{2}} \exp(-\frac{1}{2}(x_t - g(u_t, x_{t-1}))^TR^{-1}_t(x_t - g(u_t, x_{t-1})))
+\]
+
+<p>
+Finally we find a linear approximation, such that:
+</p>
+
+\[
+g(u_t, x_{t-1}) \approx g(u_t, \mu_{t-1}) + \frac{\delta g(u_t, \mu_{t-1})}{\delta x_{t-1}}(x_{t-1} - \mu_{t-1}) = g(u_t, \mu_{t-1}) + G_t(x_{t-1} - \mu_{t-1})
+\]
+
+<p>
+And the linearized motion model becomes:
+</p>
+
+\[
+p(x_t|x_{t-1}, u_t) = \det(2\pi R_t) ^{-\frac{1}{2}} \cdot
+\]
+\[
+\cdot \exp(-\frac{1}{2}(x_t - g(u_t, \mu_{t-1}) - G_t(x_{t-1} - \mu_{t-1}))^TR^{-1}_t \cdot
+\]
+\[
+\cdot (x_t - g(u_t, \mu_{t-1}) - G_t(x_{t-1} - \mu_{t-1})))
+\]
+
+<p>
+Where \(R^{-1}_t\) describes the motion noise.
+</p>
+
+<div id="Extended Kalman Filter-Linearized Observation Model"><h2 id="Linearized Observation Model" class="header"><a href="#Extended Kalman Filter-Linearized Observation Model">Linearized Observation Model</a></h2></div>
+
+<p>
+We defined our linear observation model as follows:
+</p>
+
+\[
+p(z_t|x_t) = \det(2\pi Q_t)^{-\frac{1}{2}} \exp(-\frac{1}{2}(z_t - C_tx_t)^TQ^{-1}_t(z_t - C_tx_t))
+\]
+
+<p>
+If our world is non-linear we substitute 
+</p>
+
+\[
+z_t = C_t x_t + \delta_t
+\]
+
+<p>
+for
+</p>
+
+\[
+z_t = h(x_t) + \delta_t = h(\overline{\mu}_t) + \delta_t
+\]
+
+<p>
+Note that \(x_t = \overline{\mu}_t\) here refers to our best estimation up until now, that comes from the prediction step. Therefore the observation model is expressed as follows:
+</p>
+
+\[
+p(z_t|x_t) = \det(2\pi Q_t)^{-\frac{1}{2}} \exp(-\frac{1}{2}(z_t - h(\overline{\mu}_{t}))^TQ^{-1}_t(z_t - h(\overline{\mu}_{t})))
+\]
+
+<p>
+Finally we find a linear approximation, such that:
+</p>
+
+\[
+h(x_t) \approx h(\overline{\mu}_t) + \frac{\delta h(\overline{\mu}_t)}{\delta x_t} (x_t - \overline{\mu}_t) = h(\overline{\mu}_t) + H_t (x_t - \overline{\mu}_t)
+\]
+
+<p>
+And the linearized observation model becomes:
+</p>
+
+\[
+p(z_t|x_t) = \det(2\pi Q_t)^{-\frac{1}{2}} \cdot
+\]
+\[
+\cdot \exp(-\frac{1}{2}(z_t - h(\overline{\mu}_t) - H_t (x_t - \overline{\mu}_t))^TQ^{-1}_t \cdot
+\]
+\[
+\cdot (z_t - h(\overline{\mu}_t) - H_t (x_t - \overline{\mu}_t)))
+\]
+
+<p>
+Where \(Q^{-1}_t\) describes the measurement noise.
+</p>
+
+<div id="Extended Kalman Filter-Algorithm"><h2 id="Algorithm" class="header"><a href="#Extended Kalman Filter-Algorithm">Algorithm</a></h2></div>
+
+<p>
+To take into account the linearized models, we have to make a few changes to the Kalman Filter Algorithm:
+</p>
+
+<p>
+<img src="./assets/EKF_algorithm.png" alt="Extended Kalman Filter Algorithm" style="transform:translate(30vw, 0)" />
+</p>
+
+<ul>
+<li>
+The first thing that changes is that we use our linearized moition model \(g(u_t, \mu_{t-1})\) to obtain our predicted estate \(\overline{x}_t = (\overline{\mu}_t, \overline{\Sigma}_t)\)
+
+<li>
+We use the Jacobian \(G_t\) to transform our previous uncertainty \(\Sigma_{t-1}\), given the Jacobian is the linear transformation that approximates the non-linear transformation we defined originally for our motion model.
+
+<li>
+Same thing goes for the correction step. We use the Jacobian \(H_t\) to apply a linear transformation that allows us to map \(\overline{\Sigma}_t\) from the state space to the observation space, and thus calculate the Kalman Gain taking into account the measurement noise. 
+
+<li>
+Then we compute the corrected mean of the estimated state \(x_t\) by obtaining the weighted sum of the mean of the predicted state \(\overline{\mu}_t\) and the correction factor. This correction factor equals the difference between the actual measurement \(z_t\) and the mapping of the predicted state to the observation space given by our linearized function \(h(\overline{\mu}_t)\). This mapping equals the expected measurement given our state is \(\overline{\mu}_t\).
+
+<li>
+We do the same thing for the uncertainty \(\Sigma_t\).
+
+</ul>
+
+<div id="Extended Kalman Filter-Algorithm-Kalman Gain"><h3 id="Kalman Gain" class="header"><a href="#Extended Kalman Filter-Algorithm-Kalman Gain">Kalman Gain</a></h3></div>
+
+<p>
+Suppose you have a perfect sensor, that is we trust completely the values given by this sensor and thus we set the measurement noise to be equal to zero (\(Q_t = 0\)). Then, the Kalman Gain becomes:
+</p>
+
+\[
+K_t = \overline{\Sigma}_t H_t^T \cdot (H_t \overline{\Sigma}_t H_t^T + Q_t)^{-1}
+\]
+
+\[
+K_t = \overline{\Sigma}_t H_t^T \cdot (H_t \overline{\Sigma}_t H_t^T + 0)^{-1}
+\]
+
+\[
+K_t = \overline{\Sigma}_t H_t^T \cdot (H_t^T)^{-1} \overline{\Sigma}_t^{-1} H_t^{-1}
+\]
+
+\[
+K_t = \overline{\Sigma}_t I \overline{\Sigma}_t^{-1} H_t^{-1}
+\]
+
+\[
+K_t = I H_t^{-1} = H_t^{-1}
+\]
+
+<p>
+So, when we perform the correction over the mean of our belief:
+</p>
+
+\[
+\mu_t = \overline{\mu}_t + K_t (z_t - h(\overline{\mu}_t))
+\]
+
+\[
+\mu_t = \overline{\mu}_t + H_t^{-1} (z_t - h(\overline{\mu}_t))
+\]
+
+\[
+\mu_t = \overline{\mu}_t + H_t^{-1} z_t - H_t^{-1}h(\overline{\mu}_t)
+\]
+
+<p>
+With \(H_t^{-1}h(\overline{\mu}_t)\) what we are doing is, first computing \(h(\overline{\mu}_t)\) to map \(\overline{\mu}_t\) to the observation space, and the undoing this mapping with \(H_t^{-1}\), which means:
+</p>
+
+\[
+\mu_t = \overline{\mu}_t + H_t^{-1} z_t - \overline{\mu}_t
+\]
+
+\[
+\mu_t = \overline{\mu}_t - \overline{\mu}_t + H_t^{-1} z_t 
+\]
+
+\[
+\mu_t = H_t^{-1} z_t 
+\]
+
+<p>
+Where \(H_t^{-1}\) maps \(z_t\) from the observation space to the state space, and this means in this update we trust our observation completely, and therefore our estate equals the observation.
+</p>
+
+<p>
+On the contrary, suppose the sensor is very unreliable, and so the noise is set to be infinity. Then the correction step is executed as follows:
+</p>
+
+\[
+K_t = \overline{\Sigma}_t H_t^T \cdot (H_t \overline{\Sigma}_t H_t^T + Q_t)^{-1}
+\]
+
+\[
+K_t = \overline{\Sigma}_t H_t^T \cdot (H_t \overline{\Sigma}_t H_t^T + \infty)^{-1}
+\]
+
+<p>
+Because we are dividing by infinity, \(K_t = 0\). So the mean of our belief is computed as follows:
+</p>
+
+\[
+\mu_t = \overline{\mu}_t + K_t (z_t - h(\overline{\mu}_t))
+\]
+
+\[
+\mu_t = \overline{\mu}_t + 0 (z_t - h(\overline{\mu}_t))
+\]
+
+\[
+\mu_t = \overline{\mu}_t
+\]
+
+<p>
+Hence, if the measurement is too noisy, we only take into account our predicted state.
+</p>
+
+<div id="Extended Kalman Filter-EKF Localization"><h2 id="EKF Localization" class="header"><a href="#Extended Kalman Filter-EKF Localization">EKF Localization</a></h2></div>
 </div>
   </body>
   <script
