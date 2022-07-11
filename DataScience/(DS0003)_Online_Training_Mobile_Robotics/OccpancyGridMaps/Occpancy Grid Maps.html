@@ -1,0 +1,117 @@
+<html>
+  <head>
+    <!-- Normal styling from vimwiki -->
+    <link rel="Stylesheet" type="text/css" href="https://albamr09.github.io/style.css" />
+    <!-- Styling for search -->
+    <link
+      rel="Stylesheet"
+      type="text/css"
+      href="https://albamr09.github.io/search.css"
+    />
+    <title>Occpancy Grid Maps</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <!-- For LaTeX -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script
+      id="MathJax-script"
+      async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+    ></script>
+    <!-- Code Highlight -->
+    <link
+      rel="Stylesheet"
+      type="text/css"
+      href="https://albamr09.github.io/atom-one-light.min.css"
+    />
+    <!-- Page icon -->
+    <link rel="icon" type="image/svg+xml" href="https://albamr09.github.io/icon.svg">
+  </head>
+  <body>
+    <a
+      href="https://albamr09.github.io/"
+      style="
+        color: white;
+        font-weight: bold;
+        text-decoration: none;
+        padding: 3px 6px;
+        border-radius: 3px;
+        background-color: #1e90ff;
+        text-transform: uppercase;
+      "
+      >Index</a
+    >
+    <form id="search_form" class="search-form">
+      <input required type="search" id="search_term" class="searchTerm" />
+      <button type="submit" class="searchButton">Search</button>
+    </form>
+    <div id="search-result" class="search-result-hide"></div>
+    <hr />
+    <div class="content">
+<p>
+<a href="../index.html">Back</a>
+</p>
+
+<div id="Occupancy Grid Maps"><h1 id="Occupancy Grid Maps" class="header"><a href="#Occupancy Grid Maps">Occupancy Grid Maps</a></h1></div>
+
+<hr />
+
+<ol>
+<li>
+<a href="Occpancy Grid Maps.html#Occupancy Grid Maps-Introduction">Introduction</a>
+
+</ol>
+
+<hr />
+
+<div id="Occupancy Grid Maps-Introduction"><h2 id="Introduction" class="header"><a href="#Occupancy Grid Maps-Introduction">Introduction</a></h2></div>
+
+<p>
+Occupancy Grid Maps store information about the environment regarding which parts of the map are occupied and which are free.
+</p>
+
+<div id="Occupancy Grid Maps-Introduction-Features vs Volumetric Maps"><h3 id="Features vs Volumetric Maps" class="header"><a href="#Occupancy Grid Maps-Introduction-Features vs Volumetric Maps">Features vs Volumetric Maps</a></h3></div>
+
+<ul>
+<li>
+Feature Map representations store where on the environment certain points or landmarks lay that the systems uses in order to estimate where it is.
+
+</ul>
+
+<p>
+<img src="./assets/feature_map.png" alt="Feature Map" style="transform:translate(30vw)" />
+</p>
+
+<ul>
+<li>
+Volumetric maps are most typically used to store free space.
+
+</ul>
+
+<p>
+<img src="./assets/volumetric_map.png" alt="Volumetric Map" style="transform:translate(30vw)" />
+</p>
+</div>
+  </body>
+  <script
+    type="text/javascript"
+    src="https://albamr09.github.io/highlight.min.js"
+  ></script>
+  <script
+    type="text/javascript"
+    src="https://albamr09.github.io/zepto.min.js"
+  ></script>
+  <script
+    type="text/javascript"
+    src="https://albamr09.github.io/flexsearch.bundle.js"
+  ></script>
+  <script
+    type="text/javascript"
+    src="https://albamr09.github.io/search.js"
+  ></script>
+  <script type="text/javascript">
+    $("pre").each(function (index, item) {
+      $(item).html("<code>" + $(item).html() + "</code>");
+    });
+    hljs.initHighlightingOnLoad();
+  </script>
+</html>

@@ -95,24 +95,6 @@
 <p>
 The Kalman Filter requires the world to be Gaussian, that is every probability distribution used must be Gaussian. This filter also assumes linear models.
 </p>
-
-<div id="Kalman Filter-Properties of Gaussian Distributions"><h2 id="Properties of Gaussian Distributions" class="header"><a href="#Kalman Filter-Properties of Gaussian Distributions">Properties of Gaussian Distributions</a></h2></div>
-
-<p>
-In order to derive and prove some parts of the Kalman Filter we exploit the following properties:
-</p>
-
-<ul>
-<li>
-The product of two Gaussian is a Gaussian.
-
-<li>
-A Gaussian stays Gaussian under linear transformations
-
-<li>
-The marginal and conditional distribution of a Gaussian is a Gaussian
-
-</ul>
  
 <div id="Kalman Filter-Introduction"><h2 id="Introduction" class="header"><a href="#Kalman Filter-Introduction">Introduction</a></h2></div>
 
@@ -153,6 +135,24 @@ So now we can perform our new state estimate by combining by the means of a weig
 This weighted sum is performed trading off how certain you are about your prediction and how certain you are about your observation.
 </p>
 
+<div id="Kalman Filter-Properties of Gaussian Distributions"><h2 id="Properties of Gaussian Distributions" class="header"><a href="#Kalman Filter-Properties of Gaussian Distributions">Properties of Gaussian Distributions</a></h2></div>
+
+<p>
+In order to derive and prove some parts of the Kalman Filter we exploit the following properties:
+</p>
+
+<ul>
+<li>
+The product of two Gaussian is a Gaussian.
+
+<li>
+A Gaussian stays Gaussian under linear transformations
+
+<li>
+The marginal and conditional distribution of a Gaussian is a Gaussian
+
+</ul>
+
 <div id="Kalman Filter-Linear Model"><h2 id="Linear Model" class="header"><a href="#Kalman Filter-Linear Model">Linear Model</a></h2></div>
 
 <p>
@@ -178,7 +178,7 @@ The motion model is defined as follows:
 </p>
 
 \[
-x_t = A_t x_{t-1} + B_tu_t + \epsilon_t
+\overline{x}_t = A_t x_{t-1} + B_tu_t + \epsilon_t
 \]
 
 <p>
@@ -202,16 +202,16 @@ The observation model is defined as follows:
 </p>
 
 \[
-z_t = C_t x_t + \delta_t
+z_t = C_t \overline{x}_t + \delta_t
 \]
 
 <p>
-Where \(x_{t}\) is the space of state and \(\delta_t\) is Gaussian noise. <span id="Kalman Filter-Linear Model-Models-Important"></span><strong id="Important">Important</strong>: we use \(C_t\) to map from the space state to the observation space. Also:
+Where \(\overline{x}_t\) is the estimated state and \(\delta_t\) is Gaussian noise.
 </p>
 
 <ul>
 <li>
-\(C_t\) is a matrix \(k \times n\) (a mapping between the state space and the observation space) that describes how to map the state \(x_t\) to an observation \(z_t\).
+\(C_t\) is a matrix \(k \times n\) which describes a mapping between the state \(\overline{x}_t\) to an observation \(z_t\).
 
 <li>
 \(\delta_t\) is a random variable that represents the observation noise with covariance \(Q_t\).
@@ -243,15 +243,15 @@ We will apply the same reasoning to obtain the observation model under a Gaussia
 </p>
 
 \[
-p(z_t|x_t) = \det(2\pi Q_t)^{-\frac{1}{2}} \exp(-\frac{1}{2}(z_t - C_tx_t)^TQ^{-1}_t(z_t - C_tx_t))
+p(z_t|\overline{x}_t) = \det(2\pi Q_t)^{-\frac{1}{2}} \exp(-\frac{1}{2}(z_t - C_t\overline{x}_t)^TQ^{-1}_t(z_t - C_t\overline{x}_t))
 \]
 
 <p>
-Which means we are obtaining the difference between the observation \(z_t\) and what I expect to observe \(x_{t}\) (\(z_t - Cx_t\)) while also taking the uncertainty into account \(Q_t^{-1}\). We compute this incorporating our linear model for the correction step:
+Which means we are obtaining the difference between the observation \(z_t\) and what I expect to observe \(\overline{x}_{t}\) (\(z_t - C\overline{x}_t\)) while also taking the uncertainty into account \(Q_t^{-1}\). We compute this incorporating our linear model for the correction step:
 </p>
 
 \[
-p(x_t|x_{t-1}, u_t) \sim \mathcal{N}(C_tx_t, Q_t)
+p(z_t|\overline{x}_t) \sim \mathcal{N}(C_t\overline{x}_t, Q_t)
 \]
 
 <div id="Kalman Filter-Gaussian World"><h2 id="Gaussian World" class="header"><a href="#Kalman Filter-Gaussian World">Gaussian World</a></h2></div>
@@ -265,11 +265,11 @@ As we have said, we are assuming everything is Gaussian. Up until now we have de
 </p>
 
 <p>
-If we suppose \(\hat{bel}(x_t)\) is Gaussian, then \(bel(x_t)\) is Gaussian because the product of Gaussian distribution is a Gaussian distribution. Therefore we need to show that \(\hat{bel}(x_t)\) is also Gaussian. That is:
+If we suppose \(\overline{bel}(x_t)\) is Gaussian, then \(bel(x_t)\) is Gaussian because the product of Gaussian distribution is a Gaussian distribution. Therefore we need to show that \(\overline{bel}(x_t)\) is also Gaussian. That is:
 </p>
 
 \[
-\hat{bel}(x_t) = \int p(x_t|u_t,x_{t-1})bel(x_{t-1})dx_{t-1}
+\overline{bel}(x_t) = \int p(x_t|u_t,x_{t-1})bel(x_{t-1})dx_{t-1}
 \]
 
 <p>
@@ -277,11 +277,11 @@ We know, by its definition, that \(p(x_t|u_t,x_{t-1})\) is Gaussian, and also we
 </p>
 
 <p>
-Noting that the convolution of two Gaussian stays Gaussian we conclude that \(\hat{bel}(x_t)\) is Gaussian and thus \(bel(t)\) is also Gaussian. Let's show however that the integral preserves the Gaussian. Note that we can express the predicted belief by using our linear models as follows:
+Noting that the convolution of two Gaussian stays Gaussian we conclude that \(\overline{bel}(x_t)\) is Gaussian and thus \(bel(t)\) is also Gaussian. Let's show however that the integral preserves the Gaussian. Note that we can express the predicted belief by using our linear models as follows:
 </p>
 
 \[
-\hat{bel}(x_t) = \int p(x_t|u_t,x_{t-1}) bel(x_{t-1})dx_{t-1} 
+\overline{bel}(x_t) = \int p(x_t|u_t,x_{t-1}) bel(x_{t-1})dx_{t-1} 
 \]
 
 \[
@@ -306,7 +306,7 @@ Now, we combine both exponentials, given \(exp(x) \cdot exp(y) = exp(x + y)\):
 
 
 \[
-\hat{bel}(x_t) = \eta \int \exp(-L_t)dx_{t-1}
+\overline{bel}(x_t) = \eta \int \exp(-L_t)dx_{t-1}
 \]
 
 <p>
@@ -334,11 +334,11 @@ Thus:
 </p>
 
 \[
-\hat{bel}(x_t) = \eta \int \exp(-L_t(x_{t-1}, x_t) -L_t(x_t))dx_{t-1}
+\overline{bel}(x_t) = \eta \int \exp(-L_t(x_{t-1}, x_t) -L_t(x_t))dx_{t-1}
 \]
 
 \[
-\hat{bel}(x_t) = \eta \exp(-L_t(x_t)) \int \exp(-L_t(x_{t-1}, x_t) )dx_{t-1}
+\overline{bel}(x_t) = \eta \exp(-L_t(x_t)) \int \exp(-L_t(x_{t-1}, x_t) )dx_{t-1}
 \]
 
 <p>
@@ -403,12 +403,12 @@ The algorithm is, as usual, divided into a prediction step and a correction step
 </p>
 
 <p>
-In the prediction step we estimate our next belief, described by a Gaussian \(\hat{bel}(x_t) \sim \mathcal{N}(\hat{\mu_t}, \hat{\Sigma_t})\). 
+In the prediction step we estimate our next belief, described by a Gaussian \(\overline{bel}(x_t) \sim \mathcal{N}(\overline{\mu_t}, \overline{\Sigma_t})\). 
 </p>
 
 <ul>
 <li>
-First we compute our new estimated mean \(\hat{\mu}_t\) by multiplying our transformation function \(A_t\) by the previous mean \(\mu_{t-1}\) which tells us how the state evolves generally without any motion added to it (i.e. velocity, acceleration, etc). To add the motion we add \(B_tx_{t-1}\).
+First we compute our new estimated mean \(\overline{\mu}_t\) by multiplying our transformation function \(A_t\) by the previous mean \(\mu_{t-1}\) which tells us how the state evolves generally without any motion added to it (i.e. velocity, acceleration, etc). To add the motion we add \(B_tx_{t-1}\).
 
 <li>
 Then we update our uncertainty. The estimate of the new covariance is derived from how a Gaussian changes through a linear transformation, thus we compute \(A_t \Sigma_{t-1} A_t^T\). We also add additional noise that the motion adds to the new belief by adding \(R_t\).
@@ -435,11 +435,11 @@ Then we divide the two terms to obtain a factor that tells us if we trust more t
 
 </ul>
 <li>
-Then we modify our estimated mean \(\hat{\mu}_{t}\) with a weighted correction:
+Then we modify our estimated mean \(\overline{\mu}_{t}\) with a weighted correction:
 
 <ul>
 <li>
-We compute the error between what we observed and what we predicted \(z_t - C_t \hat{\mu}_t\) (again \(C\) to map to the observation space).
+We compute the error between what we observed and what we predicted \(z_t - C_t \overline{\mu}_t\) (again \(C\) to map to the observation space).
 
 <li>
 Then we change the estimated state by this error pondered by \(K\).
