@@ -59,6 +59,23 @@
 <li>
 <a href="Occpancy Grid Maps.html#Occupancy Grid Maps-Introduction">Introduction</a>
 
+<li>
+<a href="Occpancy Grid Maps.html#Occupancy Grid Maps-Description of the Mapping Task">Description of the Mapping Task</a>
+
+<li>
+<a href="Occpancy Grid Maps.html#Occupancy Grid Maps-Grid Maps">Grid Maps</a>
+
+<ol>
+<li>
+<a href="Occpancy Grid Maps.html#Occupancy Grid Maps-Grid Maps-Assumptions">Assumptions</a>
+
+<li>
+<a href="Occpancy Grid Maps.html#Occupancy Grid Maps-Grid Maps-Occupancy Probability">Occupancy Probability</a>
+
+<li>
+<a href="Occpancy Grid Maps.html#Occupancy Grid Maps-Grid Maps-Joint Distribution">Joint Distribution</a>
+
+</ol>
 </ol>
 
 <hr />
@@ -90,6 +107,122 @@ Volumetric maps are most typically used to store free space.
 <p>
 <img src="./assets/volumetric_map.png" alt="Volumetric Map" style="transform:translate(30vw)" />
 </p>
+
+<div id="Occupancy Grid Maps-Description of the Mapping Task"><h2 id="Description of the Mapping Task" class="header"><a href="#Occupancy Grid Maps-Description of the Mapping Task">Description of the Mapping Task</a></h2></div>
+
+<p>
+The goal to obtain a map of a given environment is to compute the most likely map given the sensor data:
+</p>
+
+\[
+m^* = \arg \max_m P(m|u_1,z_1, \cdots, u_t,z_t)
+\]
+
+<p>
+However, we will simplify this problem by assuming we already know the poses for certain, thus we swap the control commands \(u_t\) for poses \(x_t\):
+</p>
+
+\[
+m^* = \arg \max_m P(m|x_1,z_1, \cdots, x_t,z_t)
+\]
+
+<div id="Occupancy Grid Maps-Grid Maps"><h2 id="Grid Maps" class="header"><a href="#Occupancy Grid Maps-Grid Maps">Grid Maps</a></h2></div>
+
+<p>
+Grid Maps discretize the environment by dividing it into a finite number of cells, which encode information about its occupation. That is, a cell is either free or occupied. 
+</p>
+
+<p>
+Grids are rigid structures, where cells are distributed uniformly along the grid and represent a definite space. 
+</p>
+
+<p>
+Generally we describe cells as pixels.
+</p>
+
+<div id="Occupancy Grid Maps-Grid Maps-Assumptions"><h3 id="Assumptions" class="header"><a href="#Occupancy Grid Maps-Grid Maps-Assumptions">Assumptions</a></h3></div>
+
+<ul>
+<li>
+For each cell, the area corresponding to the cell are completely free or occupied.
+
+<li>
+Every cell can be described with a binary random variable that models the occupancy:
+
+</ul>
+
+<p>
+<img src="./assets/binary_random_variable_occupancy.png" alt="Binary Random Variable" style="transform:translate(30vw,0)" />
+</p>
+
+<ul>
+<li>
+The world is static.
+
+<li>
+The cells are independent of each other. Which means: if I know the occupancy state of a given cell, it does not help me estimate the occupancy state of another.
+
+</ul>
+
+<div id="Occupancy Grid Maps-Grid Maps-Occupancy Probability"><h3 id="Occupancy Probability" class="header"><a href="#Occupancy Grid Maps-Grid Maps-Occupancy Probability">Occupancy Probability</a></h3></div>
+
+<p>
+As we have said, each cell is a binary random variable that models the occupancy, that is:
+</p>
+
+<ul>
+<li>
+If we are certain a cell \(m_i\) is occupied: \(p(m_i) = 1\)
+
+<li>
+If we are certain a cell \(m_i\) is free: \(p(m_i) = 0\)
+
+<li>
+If we have no knowledge about the cell \(m_i\): \(p(m_i) = 0.5\)
+
+</ul>
+
+<div id="Occupancy Grid Maps-Grid Maps-Occupancy Probability-Notation"><h4 id="Notation" class="header"><a href="#Occupancy Grid Maps-Grid Maps-Occupancy Probability-Notation">Notation</a></h4></div>
+
+<p>
+The probability of a cell \(m_i\) being occupied is expressed as follows:
+</p>
+
+\[
+P(M_i = occ) = P_{occ}(M_i) = p(m_i)
+\]
+
+<p>
+The probability of it being free is given by:
+</p>
+
+\[
+P(M_i = free) = P_{free}(M_i) = 1- P_{occ}(M_i) = p(\neg m_i)
+\]
+
+<p>
+Also, the shading in the map tells us how certain we are about \(p(m_i)\), that is the more intense the shade the higher the probability.
+</p>
+
+<div id="Occupancy Grid Maps-Grid Maps-Joint Distribution"><h3 id="Joint Distribution" class="header"><a href="#Occupancy Grid Maps-Grid Maps-Joint Distribution">Joint Distribution</a></h3></div>
+
+<p>
+The map is described by a probability distribution defined as the joint belief of each cell in the map:
+</p>
+
+\[
+p(m) = p(m_1, m_2, \cdots, m_N)
+\]
+
+<p>
+To simplify this distribution we exploit one of the assumptions made before, that said cells were independent of each other, thus:
+</p>
+
+\[
+p(m) = \prod_i p(m_i)
+\]
+
+<div id="Occupancy Grid Maps-Grid Maps-Estimating a Map from Data"><h3 id="Estimating a Map from Data" class="header"><a href="#Occupancy Grid Maps-Grid Maps-Estimating a Map from Data">Estimating a Map from Data</a></h3></div>
 </div>
   </body>
   <script

@@ -243,7 +243,7 @@ We will apply the same reasoning to obtain the observation model under a Gaussia
 </p>
 
 \[
-p(z_t|\overline{x}_t) = \det(2\pi Q_t)^{-\frac{1}{2}} \exp(-\frac{1}{2}(z_t - C_t\overline{x}_t)^TQ^{-1}_t(z_t - C_t\overline{x}_t))
+p(z_t|x_t) = \det(2\pi Q_t)^{-\frac{1}{2}} \exp(-\frac{1}{2}(z_t - C_t\overline{x}_t)^TQ^{-1}_t(z_t - C_t\overline{x}_t))
 \]
 
 <p>
@@ -251,7 +251,7 @@ Which means we are obtaining the difference between the observation \(z_t\) and 
 </p>
 
 \[
-p(z_t|\overline{x}_t) \sim \mathcal{N}(C_t\overline{x}_t, Q_t)
+p(z_t|x_t) \sim \mathcal{N}(C_t\overline{x}_t, Q_t)
 \]
 
 <div id="Kalman Filter-Gaussian World"><h2 id="Gaussian World" class="header"><a href="#Kalman Filter-Gaussian World">Gaussian World</a></h2></div>
@@ -408,7 +408,7 @@ In the prediction step we estimate our next belief, described by a Gaussian \(\o
 
 <ul>
 <li>
-First we compute our new estimated mean \(\overline{\mu}_t\) by multiplying our transformation function \(A_t\) by the previous mean \(\mu_{t-1}\) which tells us how the state evolves generally without any motion added to it (i.e. velocity, acceleration, etc). To add the motion we add \(B_tx_{t-1}\).
+First we compute our new estimated mean \(\overline{\mu}_t\) by multiplying our transformation function \(A_t\) by the previous mean \(\mu_{t-1}\) which tells us how the state evolves generally without any motion added to it (i.e. velocity, acceleration, etc). To add the motion we add \(B_tu_{t}\).
 
 <li>
 Then we update our uncertainty. The estimate of the new covariance is derived from how a Gaussian changes through a linear transformation, thus we compute \(A_t \Sigma_{t-1} A_t^T\). We also add additional noise that the motion adds to the new belief by adding \(R_t\).
@@ -421,7 +421,7 @@ The we apply the correction step: what we mainly do is computing the weighted su
 
 <ul>
 <li>
-First we obtain the weighting factor \(K_t\), also known as the Kalman Gain. This equals a ration between the prediction and the observation.
+First we obtain the weighting factor \(K_t\), also known as the Kalman Gain. This equals a ratio between the prediction and the observation.
 
 <ul>
 <li>
